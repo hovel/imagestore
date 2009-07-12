@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Gallery -" %} {{ category.title|escape }}{% endblock %}
+
+{% block breadcrumb %}
+<div id="breadcrumb">
+    <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a> &gt; &gt;
+</div>
+{% endblock breadcrumb %}
+
+{% block sidebar %}
+{% endblock sidebar %}
+{% block content %}
+ 
+{% if is_paginated %}
+    <div class="pagination">
+        <span class="step-links spaced">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">{% trans "previous page" %}</a>
+        {% endif %}
+             <span class="current">
+                 {% trans "page" %} {{ page_obj.number }} {% trans "of" %} {{ paginator.num_pages }}.
+             </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">{% trans "next page" %}</a>
+        {% endif %}
+        </span>
+    </div>
+{% endif %}
+
+{% for image in images_list %}
+<a href="{{ image.get_absolute_url }}"><img class="preview" src="{{ image.image.extra_thumbnails.small }}"></a>
+{% endfor %}
+
+
+{% endblock content %}
