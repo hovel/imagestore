@@ -11,7 +11,8 @@
 {% block sidebar %}
 {% endblock sidebar %}
 {% block content %}
- 
+
+<h1>{{ category.title }}</h1>
 {% if is_paginated %}
     <div class="pagination">
         <span class="step-links spaced">
@@ -29,7 +30,7 @@
 {% endif %}
 
 {% for image in images_list %}
-<a href="{{ image.get_absolute_url }}"><img class="preview" src="{{ image.image.extra_thumbnails.small }}"></a>
+<a href="{{ image.get_absolute_url }}"><img class="preview" src="{{ image.image.extra_thumbnails.preview }}"></a>
 {% endfor %}
 
 
