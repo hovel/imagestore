@@ -2,17 +2,14 @@ from django.db import models
 from django.db.models import permalink
 from tagging.fields import TagField
 from tagging.models import Tag, TaggedItem
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.cache import cache
 from persons.models import Person
-from PIL import Image
-from django.core.files import File
 from sorl.thumbnail.fields import ImageWithThumbnailsField
 
 
-import logging
+#import logging
 
 UPLOAD_TO = 'imagestore/'
 

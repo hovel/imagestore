@@ -9,7 +9,10 @@ def watermark(im, requested_size, opts):
     font_scale = settings.IMAGESTORE_FONT_SCALE
     text = settings.IMAGESTORE_WATERMARK_TEXT
     font_size = int(font_scale*height)
-    im0 = watermarkit(im, text, font_size)
+    if font_size < 10:
+        font_size = 10
+    margin = (int(width*0.1), int(height*0.1))
+    im0 = watermarkit(im, text, font_size, margin=margin)
     return im0
 
 def watermarkit(image, text, font_size=90, font_name = 'tahoma.ttf', opacity = 0.6, color=(0,0,0), margin=(30,30)):

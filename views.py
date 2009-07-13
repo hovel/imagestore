@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from django.views.generic.list_detail import object_list
 from django.template import RequestContext
 
-import logging
+#import logging
 
 PREVIEW_LIST = 2
 
@@ -16,7 +16,7 @@ def category(request, slug, *args, **kwargs):
         raise Http404
 
     kwargs['queryset'] = Image.objects.filter(category=category).all()
-    logging.debug(kwargs['queryset'].count())
+    #logging.debug(kwargs['queryset'].count())
     kwargs['template_object_name'] = 'images'
     kwargs['paginate_by'] = 9
     kwargs['template_name'] = 'imagestore/category.html'

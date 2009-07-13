@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-12 21:22+0400\n"
+"POT-Creation-Date: 2009-07-13 22:25+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,35 +16,35 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: models.py:22
+#: models.py:19
 msgid "Category"
 msgstr "Категория"
 
-#: models.py:23
+#: models.py:20
 msgid "Categories"
 msgstr "Категории"
 
-#: models.py:25 models.py:40
+#: models.py:22 models.py:37
 msgid "Slug"
 msgstr "Метка"
 
-#: models.py:26 models.py:41
+#: models.py:23 models.py:38
 msgid "Title"
 msgstr "Заголовок"
 
-#: models.py:37
+#: models.py:34
 msgid "Image"
 msgstr "Изображение"
 
-#: models.py:38
+#: models.py:35
 msgid "Images"
 msgstr "Изображение"
 
-#: models.py:42
+#: models.py:39
 msgid "Description"
 msgstr "Описание"
 
-#: models.py:43
+#: models.py:40
 msgid "Tags"
 msgstr "Теги"
 
@@ -57,19 +57,19 @@ msgstr "Галерея -"
 msgid "Gallery"
 msgstr "Галерея"
 
-#: templates/imagestore/category.html:19
+#: templates/imagestore/category.html:20
 msgid "previous page"
 msgstr "Предыдущая страница"
 
-#: templates/imagestore/category.html:22
+#: templates/imagestore/category.html:23
 msgid "page"
 msgstr "странца"
 
-#: templates/imagestore/category.html:22
+#: templates/imagestore/category.html:23
 msgid "of"
 msgstr "из"
 
-#: templates/imagestore/category.html:25
+#: templates/imagestore/category.html:26
 msgid "next page"
 msgstr "следующая страница"
 
@@ -84,3 +84,7 @@ msgstr "следующая >"
 #: templates/imagestore/image.html:38
 msgid "Photographer"
 msgstr "Фотограф"
+
+#: templates/imagestore/image.html:38
+msgid "only premium package"
+msgstr "только премиум пакет"

@@ -35,6 +35,6 @@
     <img class="gallery-image"  src="{{ image.image.extra_thumbnails.display }}">
 </div>
 <div id="adata">
-    {% trans "Photographer" %}: {{ image.author.get_full_name }}
+    {% trans "Photographer" %}: {{ image.author.get_full_name }} {% if image.author.is_premium %}<span class="premium-author">{% trans "only premium package" %}</span> {% endif %}
 </div>
 {% endblock %}
