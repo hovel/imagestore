@@ -9,29 +9,17 @@
 {% endblock breadcrumb %}
 
 {% block sidebar %}
+<div class="author-list">
+    <h1>{% trans "Our photographers" %}</h1>
+    <ul>
+    {% for author in author_list %}
+    <li><a href="{% url imagestore-author slug=author.slug %}">{{ author.get_full_name }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock sidebar %}
+
 {% block content %}
-
-<h1>{{ category.title }}</h1>
-{% if is_paginated %}
-    <div class="pagination">
-        <span class="step-links spaced">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">{% trans "previous page" %}</a>
-        {% endif %}
-             <span class="current">
-                 {% trans "page" %} {{ page_obj.number }} {% trans "of" %} {{ paginator.num_pages }}.
-             </span>
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">{% trans "next page" %}</a>
-        {% endif %}
-        </span>
-    </div>
-{% endif %}
-
-{% for image in images_list %}
-<a href="{{ image.get_absolute_url }}"><img class="preview" src="{{ image.image.extra_thumbnails.preview }}"></a>
-{% endfor %}
-
-
+    <h1>{{ category.title }}</h1>
+    {% include "imagestore/image-list.html" %}
 {% endblock content %}

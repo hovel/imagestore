@@ -21,6 +21,7 @@ class Category(models.Model):
 
     slug = models.SlugField(_('Slug'), max_length=200, blank=False, null=False)
     title = models.CharField(_('Title'), max_length=200, blank=False, null=False)
+    order = models.IntegerField(_('Order'), null=False)
 
     def __unicode__(self):
         return self.title
@@ -38,8 +39,9 @@ class Image(models.Model):
     title = models.CharField(_('Title'), max_length=200, blank=True, null=True)
     description = models.TextField(_('Description'), blank=True, null=True)
     tags = TagField(_('Tags'), blank=True)
-    category = models.ForeignKey('Category', null=False, blank=False)
-    author = models.ForeignKey(Person, null=False, blank=False)
+    category = models.ForeignKey('Category', null=False, blank=False, verbose_name=_('Category'))
+    author = models.ForeignKey(Person, null=False, blank=False, verbose_name=_('Author'))
+    order = models.IntegerField(_('Order'), null=False)
     image = ImageWithThumbnailsField(
         upload_to='imagestore',
         thumbnail={'size': (100, 100)},

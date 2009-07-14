@@ -14,12 +14,18 @@ category = url(
     name = 'imagestore-category'
 )
 
+author = url(
+    regex = '^author/(?P<slug>[^/]+)/$',
+    view = 'imagestore.views.author',
+    name = 'imagestore-author'
+)
+
 category_list = url(
     regex = '^$',
     view = 'imagestore.views.category_list',
     name = 'imagestore-category-list'
 )
-urlpatterns = patterns('', images, category, category_list)
+urlpatterns = patterns('', images, author, category, category_list)
 
 
 

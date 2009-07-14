@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-13 22:25+0400\n"
+"POT-Creation-Date: 2009-07-14 18:49+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: models.py:19
+#: models.py:19 models.py:42
 msgid "Category"
 msgstr "Категория"
 
@@ -24,52 +24,65 @@ msgstr "Категория"
 msgid "Categories"
 msgstr "Категории"
 
-#: models.py:22 models.py:37
+#: models.py:22 models.py:38
 msgid "Slug"
 msgstr "Метка"
 
-#: models.py:23 models.py:38
+#: models.py:23 models.py:39
 msgid "Title"
 msgstr "Заголовок"
 
-#: models.py:34
+#: models.py:24 models.py:44
+msgid "Order"
+msgstr "Порядок"
+
+#: models.py:35
 msgid "Image"
 msgstr "Изображение"
 
-#: models.py:35
+#: models.py:36
 msgid "Images"
 msgstr "Изображение"
 
-#: models.py:39
+#: models.py:40
 msgid "Description"
 msgstr "Описание"
 
-#: models.py:40
+#: models.py:41
 msgid "Tags"
 msgstr "Теги"
+
+#: models.py:43 templates/imagestore/author.html:3
+msgid "Author"
+msgstr "Автор"
+
+#: templates/imagestore/author.html:7 templates/imagestore/category.html:7
+#: templates/imagestore/gallery.html:3 templates/imagestore/image.html:4
+#: templates/imagestore/image.html.py:8
+msgid "Gallery"
+msgstr "Галерея"
 
 #: templates/imagestore/category.html:3
 msgid "Gallery -"
 msgstr "Галерея -"
 
-#: templates/imagestore/category.html:7 templates/imagestore/gallery.html:3
-#: templates/imagestore/image.html:4 templates/imagestore/image.html.py:8
-msgid "Gallery"
-msgstr "Галерея"
+#: templates/imagestore/category.html:13
+msgid "Our photographers"
+msgstr "Наши фотографы"
 
-#: templates/imagestore/category.html:20
+#: templates/imagestore/image-list.html:5
 msgid "previous page"
-msgstr "Предыдущая страница"
+msgstr "предыдущая страница"
 
-#: templates/imagestore/category.html:23
+#: templates/imagestore/image-list.html:8
 msgid "page"
 msgstr "странца"
 
-#: templates/imagestore/category.html:23
+#: templates/imagestore/image-list.html:8
 msgid "of"
 msgstr "из"
 
-#: templates/imagestore/category.html:26
+#: templates/imagestore/image-list.html:11
 msgid "next page"
 msgstr "следующая страница"
 

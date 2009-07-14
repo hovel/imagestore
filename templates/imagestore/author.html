@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Author" %} - {{ author.get_full_name|escape }}{% endblock %}
+
+{% block breadcrumb %}
+<div id="breadcrumb">
+    <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a> &gt; &gt;
+</div>
+{% endblock breadcrumb %}
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content %}
+    <h1>{{ author.get_full_name }}</h1>
+    {% include "imagestore/image-list.html" %}
+{% endblock content %}
