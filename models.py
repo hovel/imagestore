@@ -43,6 +43,7 @@ class Image(models.Model):
     author = models.ForeignKey(Person, null=False, blank=False, verbose_name=_('Author'))
     order = models.IntegerField(_('Order'), null=False)
     image = ImageWithThumbnailsField(
+        verbose_name = _('Image'),
         upload_to='imagestore',
         thumbnail={'size': (100, 100)},
         extra_thumbnails={

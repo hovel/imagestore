@@ -3,6 +3,17 @@
 
 {% block title %}{% trans "Gallery" %} - {{ image.title|escape }}{% endblock %}
 
+{% comment %}
+{% block head %}
+    <script type="text/javascript">
+    $(document).ready(function(){ 
+            $('#imageboard').css('background','#E8E8E8');
+            $('#imageboard').css('padding','10px');
+            })
+    </script>
+{% endblock %}
+{% endcomment %}
+
 {% block breadcrumb %}
 <div id="breadcrumb">
     <a href="{% url imagestore-category-list %}"> {% trans "Gallery" %}</a> &gt; &gt;
@@ -30,11 +41,12 @@
 </div>
  
 
-
+<div id="imageboard">
 <div id="current-image">
     <img class="gallery-image"  src="{{ image.image.extra_thumbnails.display }}">
 </div>
 <div id="adata">
-    {% trans "Photographer" %}: {{ image.author.get_full_name }} {% if image.author.is_premium %}<span class="premium-author">{% trans "only premium package" %}</span> {% endif %}
+    {% trans "Photographer" %}: <a href="{% url imagestore-author slug=image.author.slug %}">{{ image.author.get_full_name }}</a> {% if image.author.is_premium %}<span class="premium-author">{% trans "only premium package" %}</span> {% endif %}
+</div>
 </div>
 {% endblock %}

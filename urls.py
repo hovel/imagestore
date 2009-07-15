@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from imagestore.views import image
 
 
 images = url(

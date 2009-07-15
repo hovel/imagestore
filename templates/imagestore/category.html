@@ -9,14 +9,7 @@
 {% endblock breadcrumb %}
 
 {% block sidebar %}
-<div class="author-list">
-    <h1>{% trans "Our photographers" %}</h1>
-    <ul>
-    {% for author in author_list %}
-    <li><a href="{% url imagestore-author slug=author.slug %}">{{ author.get_full_name }}</a></li>
-    {% endfor %}
-    </ul>
-</div>
+    {% include "imagestore/author-list.html" %}
 {% endblock sidebar %}
 
 {% block content %}

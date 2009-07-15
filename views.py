@@ -2,13 +2,13 @@ from django.http import HttpResponse
 from imagestore.models import Image, Category
 from persons.models import Person
 from django.http import Http404
-from django.shortcuts import render_to_response get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404
 from django.views.generic.list_detail import object_list
 from django.template import RequestContext
 from django.conf import settings
 
 
-IMAGESTORE_ON_PAGE = settings.getattr(IMAGESTORE_ON_PAGE, 12)
+IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 12)
 
 def category(request, slug, *args, **kwargs):
     category = get_object_or_404(Category, slug=slug)
@@ -17,16 +17,17 @@ def category(request, slug, *args, **kwargs):
     kwargs['template_object_name'] = 'images'
     kwargs['paginate_by'] = IMAGESTORE_ON_PAGE
     kwargs['template_name'] = 'imagestore/category.html'
-    kwargs['extra_context'] = {'category': category, 'authors': author_list}
+    kwargs['extra_context'] = {'category': category, 'author_list': authors}
     return object_list(request, *args, **kwargs)
 
 def author(request, slug, *args, **kwargs):
-    author = get_object_or_404(Persons, slug=slug)
+    author = get_object_or_404(Person, slug=slug)
+    authors = Person.objects.all().order_by('order')
     kwargs['queryset'] = Image.objects.filter(author=author).order_by('order', 'id')
     kwargs['template_object_name'] = 'images'
     kwargs['paginate_by'] = IMAGESTORE_ON_PAGE
     kwargs['template_name'] = 'imagestore/author.html'
-    kwargs['extra_context'] = {'author': author}
+    kwargs['extra_context'] = {'author': author, 'author_list': authors}
     return object_list(request, *args, **kwargs)
 
 
