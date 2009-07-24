@@ -34,25 +34,24 @@ def author(request, slug, *args, **kwargs):
 
 def image(request, slug_or_id):
     try:
-        image = Image.objects.get(slug=slug_or_id)
+        image = Image.objects.get(id=slug_or_id)
     except:
         try:
-            image = Image.objects.get(id=slug_or_id)
+            image = Image.objects.get(slug=slug_or_id)
         except:
             raise Http404
-    result = {}
-    images_after = list(Image.objects.filter(category=image.category, id__gt=image.id).order_by('order', 'id'))
-    images_before = list(Image.objects.filter(category=image.category, id__lt=image.id).order_by('order', 'id'))
-    images = [image]
-    image.current = True
+    images = list(Image.objects.filter(category=image.category).order_by('order', 'author__order', 'id'))
     previous = None
     next = None
-    if len(images_before) > 0:
-        previous = images_before[-1]
-        images = images_before + images
-    if len(images_after) > 0:
-        next = images_after[0]
-        images += list(images_after)
+    last = len(images)-1
+    for i, img in enumerate(images):
+        if img.id == image.id:
+            img.current = True
+            if i>0:
+                previous = images[i-1]
+            if i<last:
+                next = images[i+1]
+            break
     return render_to_response('imagestore/image.html', {'image': image, 'images': images, 'previous': previous, 'next': next, 'category': image.category}, context_instance=RequestContext(request))
 
 def category_list(request):
