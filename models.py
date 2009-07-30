@@ -22,6 +22,7 @@ class Category(models.Model):
     slug = models.SlugField(_('Slug'), max_length=200, blank=False, null=False)
     title = models.CharField(_('Title'), max_length=200, blank=False, null=False)
     order = models.IntegerField(_('Order'), null=False)
+    is_public = models.BooleanField(_('Is public'), default=False)
 
     def __unicode__(self):
         return self.title

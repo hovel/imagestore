@@ -6,6 +6,9 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.views.generic.list_detail import object_list
 from django.template import RequestContext
 from django.conf import settings
+from django.core.cache import cache
+from django.db.models.signals import post_save, pre_delete
+
 
 
 IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 12)
@@ -40,19 +43,22 @@ def image(request, slug_or_id):
             image = Image.objects.get(slug=slug_or_id)
         except:
             raise Http404
-    images = list(Image.objects.filter(category=image.category).order_by('order', 'author__order', 'id'))
-    previous = None
-    next = None
+    response = {}
+    response['image'] = image
+    response['images'] = list(Image.objects.filter(category=image.category).order_by('order', 'author__order', 'id'))
+    response['previous'] = None
+    response['next'] = None
     last = len(images)-1
-    for i, img in enumerate(images):
+    for i, img in enumerate(response['images']):
         if img.id == image.id:
             img.current = True
-            if i>0:
-                previous = images[i-1]
-            if i<last:
-                next = images[i+1]
+            if i > 0:
+                resonse['previous'] = images[i-1]
+            if i < last:
+                response['next'] = images[i+1]
             break
-    return render_to_response('imagestore/image.html', {'image': image, 'images': images, 'previous': previous, 'next': next, 'category': image.category}, context_instance=RequestContext(request))
+    response['category'] = image.category
+    return render_to_response('imagestore/image.html', response, context_instance=RequestContext(request))
 
 def category_list(request):
     categories = Category.objects.order_by('order')
