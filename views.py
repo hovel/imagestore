@@ -20,10 +20,13 @@ def filter_image_access(request, category=None, author=None):
     if not request.user.is_staff:
         filter['is_public'] = True
         filter['author__is_public'] = True
-
     return filter
    
 def category(request, slug, *args, **kwargs):
+    '''
+    Category view
+    Filter images for current user access
+    '''
     category = get_object_or_404(Category, slug=slug)
     if not (request.user.is_staff or category.is_public):
         return HttpResponseForbidden()
@@ -37,6 +40,9 @@ def category(request, slug, *args, **kwargs):
     return object_list(request, *args, **kwargs)
 
 def author(request, slug, *args, **kwargs):
+    '''
+    All images by author
+    '''
     author = get_object_or_404(Person, slug=slug)
     if not (request.user.is_staff or author.is_public):
         return HttpResponseForbidden()
@@ -50,16 +56,16 @@ def author(request, slug, *args, **kwargs):
     kwargs['extra_context'] = {'author': author, 'author_list': authors}
     return object_list(request, *args, **kwargs)
 
-
-
 def image(request, slug_or_id):
+    cache_id = 'image-%s' % slug_or_id
     try:
-        image = Image.objects.get(id=slug_or_id)
+        image = cache.get(cache_id, 'expired')
+        if image == 'expired':
+            image = Image.objects.get(id=slug_or_id)
+            cache.set(cache_id, image)
     except:
-        try:
-            image = Image.objects.get(slug=slug_or_id)
-        except:
-            raise Http404
+        image = get_object_or_404(Image,slug=slug_or_id)
+        cache.set(cache_id, image)
     if not (request.user.is_staff or image.is_public):
         return HttpResponseForbidden()
     filter = filter_image_access(request)
@@ -84,3 +90,12 @@ def image(request, slug_or_id):
 def category_list(request):
     categories = Category.objects.order_by('order')
     return render_to_response('imagestore/gallery.html', {'categories_list': categories}, context_instance=RequestContext(request))
+
+
+# CACHE SERVING
+def image_sd(sender, instance, **kwargs):
+        cache.delete('image-%s' % instance.id)
+        cache.delete('image-%s' % instance.slug)
+
+post_save.connect(image_sd, sender=Image)
+pre_delete.connect(image_sd, sender=Image)
