@@ -43,6 +43,7 @@ class Image(models.Model):
     category = models.ForeignKey('Category', null=False, blank=False, verbose_name=_('Category'))
     author = models.ForeignKey(Person, null=False, blank=False, verbose_name=_('Author'))
     order = models.IntegerField(_('Order'), null=False)
+    is_public = models.BooleanField(_('Is public'), default=True)
     image = ImageWithThumbnailsField(
         verbose_name = _('Image'),
         upload_to='imagestore',
