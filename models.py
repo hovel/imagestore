@@ -41,8 +41,8 @@ class Image(models.Model):
     description = models.TextField(_('Description'), blank=True, null=True)
     tags = TagField(_('Tags'), blank=True)
     category = models.ForeignKey('Category', null=False, blank=False, verbose_name=_('Category'))
-    author = models.ForeignKey(Person, null=False, blank=False, verbose_name=_('Author'))
-    order = models.IntegerField(_('Order'), null=False)
+    author = models.ForeignKey(Person, null=True, blank=True, verbose_name=_('Author'))
+    order = models.IntegerField(_('Order'), null=True, blank=True)
     is_public = models.BooleanField(_('Is public'), default=True)
     image = ImageWithThumbnailsField(
         verbose_name = _('Image'),
