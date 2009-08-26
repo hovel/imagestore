@@ -1,4 +1,5 @@
 {% load i18n %}
+{% comment %}
 {% if is_paginated %}
     <div class="pagination">
         <span class="step-links spaced">
@@ -14,8 +15,27 @@
         </span>
     </div>
 {% endif %}
-
+{% endcomment %}
+<div id="gallery">
 {% for image in images_list %}
-<a href="{{ image.get_absolute_url }}"><img class="preview" src="{{ image.image.extra_thumbnails.preview }}"></a>
+    <a href="{{ image.image.extra_thumbnails.display }}"><img class="preview" src="{{ image.image.extra_thumbnails.preview }}"></a>
 {% endfor %}
+</div>
+
+<script type="text/javascript">  
+    $(function() {
+            var settings = {
+                imageLoading: '{{ MEDIA_URL }}lightbox/loading.gif',
+                imageBtnPrev: '{{ MEDIA_URL }}lightbox/prev.png',
+                imageBtnNext: '{{ MEDIA_URL }}lightbox/next.png',
+                imageBtnClose: '{{ MEDIA_URL }}lightbox/close.png',
+                imageBlank: '{{ MEDIA_URL }}lightbox/blank.gif',
+                imageBtnBottomPrev: '{{ MEDIA_URL }}lightbox/prev.png',
+                imageBtnBottomNext: '{{ MEDIA_URL }}lightbox/next.png',
+                imageBtnPlay: '{{ MEDIA_URL }}lightbox/start.png',
+                imageBtnStop: '{{ MEDIA_URL }}lightbox/pause.png',                                                                                                                        };
+            $('#gallery a').lightBox(settings); // Select all links in object with gallery ID
+    })
+</script>
+
 

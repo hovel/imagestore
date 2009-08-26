@@ -2,6 +2,11 @@
 {% load i18n %}
 {% block title %}{% trans "Author" %} - {{ author.get_full_name|escape }}{% endblock %}
 
+{% block head %}
+{% include "imagestore/lightbox.html" %}
+{% endblock head %}
+
+
 {% block breadcrumb %}
 <div id="breadcrumb">
     <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a> &gt; &gt;

@@ -34,7 +34,7 @@ def category(request, slug, *args, **kwargs):
     filter = filter_image_access(request)
     kwargs['queryset'] = Image.objects.filter(**filter).filter(category=category).order_by('order', 'author__order', 'id')
     kwargs['template_object_name'] = 'images'
-    kwargs['paginate_by'] = IMAGESTORE_ON_PAGE
+    #kwargs['paginate_by'] = IMAGESTORE_ON_PAGE
     kwargs['template_name'] = 'imagestore/category.html'
     kwargs['extra_context'] = {'category': category, 'author_list': authors}
     return object_list(request, *args, **kwargs)
