@@ -1,0 +1,25 @@
+{% load i18n %}
+{% comment %}
+{% if is_paginated %}
+    <div class="pagination">
+        <span class="step-links spaced">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">{% trans "previous page" %}</a>
+        {% endif %}
+             <span class="current">
+                 {% trans "page" %} {{ page_obj.number }} {% trans "of" %} {{ paginator.num_pages }}.
+             </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">{% trans "next page" %}</a>
+        {% endif %}
+        </span>
+    </div>
+{% endif %}
+{% endcomment %}
+<div id="gallery">
+{% for image in images_list %}
+    <a class="thumb" rel="group" href="{{ image.image.extra_thumbnails.display }}"><img class="preview" src="{{ image.image.extra_thumbnails.preview }}"></a>
+{% endfor %}
+</div>
+
+

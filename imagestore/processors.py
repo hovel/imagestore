@@ -1,15 +1,20 @@
 from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 from django.conf import settings
+import logging
+from traceback import format_exc
 
+IMAGESTORE_FONT_SCALE = getattr(settings, 'IMAGESTORE_FONT_SCALE', 0.05)
+IMAGESTORE_WATERMARK_TEXT = getattr(settings, 'IMAGESTORE_WATERMARK_TEXT', 'WATERMARK!')
+IMAGESTORE_WATERMARK_FONT = getattr(settings, 'IMAGESTORE_WATERMARK_FONT', 'tahoma.ttf')
 def watermark(im, requested_size, opts):
     width, height = im.size
-    font_scale = settings.IMAGESTORE_FONT_SCALE
-    text = settings.IMAGESTORE_WATERMARK_TEXT
+    font_scale = IMAGESTORE_FONT_SCALE
+    text = IMAGESTORE_WATERMARK_TEXT
     font_size = int(font_scale*height)
     if font_size < 5:
         font_size = 5
     margin = (int(width*0.05), int(height*0.05))
-    im0 = watermarkit(im, text, font_size, margin=margin, font_name=settings.IMAGESTORE_WATERMARK_FONT)
+    im0 = watermarkit(im, text, font_size, margin=margin, font_name=IMAGESTORE_WATERMARK_FONT)
     return im0
 
 def watermarkit(image, text, font_size=90, font_name = 'tahoma.ttf', opacity = 0.6, color=(0,0,0), margin=(30,30)):

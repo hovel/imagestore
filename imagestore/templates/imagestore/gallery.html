@@ -11,9 +11,9 @@
 {% endblock sidebar %}
 {% block content %}
 
-<ul>
+<ul class="galleries-list">
     {% for category in categories_list %}
-    <li> <a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+    <li class="gallery-title"> <a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
     {%  endfor %}
 </ul>
 {% endblock %}

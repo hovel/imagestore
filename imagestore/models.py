@@ -5,13 +5,12 @@ from tagging.models import Tag, TaggedItem
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.cache import cache
-from persons.models import Person
 from sorl.thumbnail.fields import ImageWithThumbnailsField
 
 
 #import logging
 
-UPLOAD_TO = 'imagestore/'
+UPLOAD_TO = getattr(settings, 'IMAGESTORE_UPLOAD_TO', 'imagestore/')
 
 
 class Category(models.Model):
@@ -41,12 +40,11 @@ class Image(models.Model):
     description = models.TextField(_('Description'), blank=True, null=True)
     tags = TagField(_('Tags'), blank=True)
     category = models.ForeignKey('Category', null=False, blank=False, verbose_name=_('Category'))
-    author = models.ForeignKey(Person, null=True, blank=True, verbose_name=_('Author'))
     order = models.IntegerField(_('Order'), null=True, blank=True)
     is_public = models.BooleanField(_('Is public'), default=True)
     image = ImageWithThumbnailsField(
         verbose_name = _('Image'),
-        upload_to='imagestore',
+        upload_to=UPLOAD_TO,
         thumbnail={'size': (100, 100)},
         extra_thumbnails={
             'icon': {'size': (16, 16), 'options': ['crop', 'upscale'], 'extension': 'jpg'},
