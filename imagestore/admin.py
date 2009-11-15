@@ -12,6 +12,6 @@ admin.site.register(Category, CategoryAdmin)
 class ImageAdmin(admin.ModelAdmin):
     fieldsets = ((None, {'fields': ['title', 'slug', 'image', 'description', 'order', 'tags', 'category', 'is_public']}),)
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('id', 'order', 'title', 'slug', 'tags', 'is_public')
+    list_display = ('id', 'order', 'category', 'title', 'slug', 'tags', 'is_public')
 
 admin.site.register(Image, ImageAdmin)

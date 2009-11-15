@@ -35,38 +35,10 @@ def category(request, slug, *args, **kwargs):
     kwargs['extra_context'] = {'category': category,}
     return object_list(request, *args, **kwargs)
 
-#def image(request, slug_or_id):
-#    cache_id = 'image-%s' % slug_or_id
-#        if image == 'expired':
-#            image = Image.objects.get(id=slug_or_id)
-#            cache.set(cache_id, image)
-#    except:
-#        image = get_object_or_404(Image,slug=slug_or_id)
-#        cache.set(cache_id, image)
-#    if not (request.user.is_staff or image.is_public):
-#        return HttpResponseForbidden()
-#    filter = filter_image_access(request)
-#    response = {}
-#    response['image'] = image
-#    images = list(Image.objects.filter(category=image.category).filter(**filter).order_by('order', 'author__order', 'id'))
-#    response['images'] = images
-#    response['previous'] = None
-#    response['next'] = None
-#    last = len(images)-1
-#    for i, img in enumerate(images):
-#        if img.id == image.id:
-#            img.current = True
-#            if i > 0:
-#                response['previous'] = images[i-1]
-#            if i < last:
-#                response['next'] = images[i+1]
-#            break
-#    response['category'] = image.category
-#    return render_to_response('imagestore/image.html', response, context_instance=RequestContext(request))
-#
-
 def category_list(request):
     categories = Category.objects.order_by('order')
+    if not request.user.is_staff:
+        categories = categories.filter(is_public__exact=True)
     return render_to_response('imagestore/gallery.html', {'categories_list': categories}, context_instance=RequestContext(request))
 
 
