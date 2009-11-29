@@ -49,7 +49,7 @@ class Image(models.Model):
         extra_thumbnails={
             'icon': {'size': (16, 16), 'options': ['crop', 'upscale'], 'extension': 'jpg'},
             'small': {'size': (70, 70), 'extension': 'jpg'},
-            'preview': {'size': (120, 120), 'extension': 'jpg'},
+            'preview': {'size': (120, 120), 'extension': 'jpg', 'options': ['crop'],},
             'display': {'size': (700, 900), 'extension': 'jpg'},
         },
     )
