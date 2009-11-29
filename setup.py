@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
         name = 'imagestore',
-        version = '1.0',
+        version = '1.0.1',
             packages = ['imagestore'],
         install_requires = [
             'django',
