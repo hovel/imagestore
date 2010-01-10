@@ -13,6 +13,13 @@
 {% endblock head %}
 
 {% block content %}
-    <h1>{{ category.title }}</h1>
+<h1>{{ category.title }}</h1>
+    {% if childrens %}
+        <ul class="galleries-list">
+        {% for category in childrens %}
+            <li class="gallery-title"> <a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+        {%  endfor %}
+        </ul>
+    {% endif %}
     {% include "imagestore/image-list.html" %}
 {% endblock content %}

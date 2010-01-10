@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from imagestore.models import Image, Category
 
 class CategoryAdmin(admin.ModelAdmin):
-    fieldsets = ((None, {'fields': ['slug', 'title', 'order', 'is_public']}),)
+    fieldsets = ((None, {'fields': ['slug', 'title', 'order', 'parent_category', 'is_public']}),)
     prepopulated_fields = {'slug': ('title',)}
     list_display = ('title', 'slug', 'order', 'is_public')
 

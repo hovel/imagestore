@@ -30,9 +30,12 @@ def category(request, slug, *args, **kwargs):
         return HttpResponseForbidden()
     filter = filter_image_access(request)
     kwargs['queryset'] = Image.objects.filter(**filter).filter(category=category).order_by('order', 'id')
+    childrens = Category.objects.filter(parent_category = category).all()
+    if len(childrens) == 0:
+        childrens = False
     kwargs['template_object_name'] = 'images'
     kwargs['template_name'] = 'imagestore/category.html'
-    kwargs['extra_context'] = {'category': category,}
+    kwargs['extra_context'] = {'category': category, 'childrens': childrens}
     return object_list(request, *args, **kwargs)
 
 def category_list(request):

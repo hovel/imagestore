@@ -18,6 +18,7 @@ class Category(models.Model):
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
 
+    parent_category = models.ForeignKey('self', blank=True, null=True)
     slug = models.SlugField(_('Slug'), max_length=200, blank=False, null=False)
     title = models.CharField(_('Title'), max_length=200, blank=False, null=False)
     order = models.IntegerField(_('Order'), null=False)
