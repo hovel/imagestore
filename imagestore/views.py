@@ -41,7 +41,7 @@ def category(request, slug, *args, **kwargs):
 def category_list(request):
     categories = Category.objects.order_by('order')
     if not request.user.is_staff:
-        categories = categories.filter(is_public__exact=True)
+        categories = categories.filter(is_public__exact=True, parent_category=None)
     return render_to_response('imagestore/gallery.html', {'categories_list': categories}, context_instance=RequestContext(request))
 
 
