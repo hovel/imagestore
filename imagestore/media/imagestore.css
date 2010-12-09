@@ -1,0 +1,14 @@
+#category-list li{
+    font-size: 120%;
+    padding-bottom: 15px;
+}
+
+#category-list {
+    padding-bottom: 10px;
+}
+
+#tag-cloud {
+    float: right;
+    display: block;
+    width: 200px;
+}

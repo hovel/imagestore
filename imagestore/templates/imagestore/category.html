@@ -1,28 +1,43 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Gallery -" %} {{ category.title|escape }}{% endblock %}
+{% load thumbnail %}
 
-{% block breadcrumb %}
-<div id="breadcrumb">
-    <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a> &gt; &gt;
-</div>
-{% endblock breadcrumb %}
 
 {% block head %}
-{% include "imagestore/lightbox.html" %}
+    {% include "imagestore/pphoto.html" %}
 {% endblock head %}
 
-{% block content-related %}
-    {% if childrens %}
-        <ul class="galleries-list">
-        {% for category in childrens %}
-            <li class="gallery-title"> <a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
-        {%  endfor %}
-        </ul>
+{% block title %}
+    {% if category %}
+        {{ category.title }}
+    {%  else  %}
+        {% trans "Gallery" %}
     {% endif %}
 {% endblock %}
 
+{% block breadcrumb %}
+    {{ block.super }} &#187;
+    {% if category %}
+        <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a>
+    {% else %}
+        {% trans "Gallery" %}
+    {%  endif %}
+    {% if category %}
+        &#187; {{  category.title }}
+    {% endif %}
+{% endblock breadcrumb %}
+
 {% block content %}
-<h1>{{ category.title }}</h1>
-   {% include "imagestore/image-list.html" %}
+    {% if category %}
+        <h1>{{ category.title }}</h1>
+    {% else %}
+        <h1>{% trans "Gallery" %}</h1>
+    {% endif %}
+
+    {% include "imagestore/tag-cloud.html" %}
+
+    <h2>{% trans 'Categories' %}:</h2>
+    {% include "imagestore/category-list.html" %}
+    {% if not category %} {% trans "All images:" %} {% endif %}
+    {% include "imagestore/image-list.html" %}
 {% endblock content %}

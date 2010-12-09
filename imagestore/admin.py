@@ -1,17 +1,17 @@
 from django.contrib import admin
-from django.utils.translation import ugettext as _
 from imagestore.models import Image, Category
+from mptt.admin import MPTTModelAdmin
 
-class CategoryAdmin(admin.ModelAdmin):
-    fieldsets = ((None, {'fields': ['slug', 'title', 'order', 'parent_category', 'is_public']}),)
+class CategoryAdmin(MPTTModelAdmin):
+    fieldsets = ((None, {'fields': ['slug', 'title', 'order', 'parent', 'is_public']}),)
     prepopulated_fields = {'slug': ('title',)}
     list_display = ('title', 'slug', 'order', 'is_public')
 
 admin.site.register(Category, CategoryAdmin)
 
 class ImageAdmin(admin.ModelAdmin):
-    fieldsets = ((None, {'fields': ['title', 'slug', 'image', 'description', 'order', 'tags', 'category', 'is_public']}),)
-    prepopulated_fields = {'slug': ('title',)}
-    list_display = ('id', 'order', 'category', 'title', 'slug', 'tags', 'is_public')
+    fieldsets = ((None, {'fields': ['title', 'image', 'description', 'order', 'tags', 'category', 'is_public']}),)
+    list_display = ('id', 'order', 'category', 'title', 'is_public')
+    list_filter = ('category', 'tags')
 
 admin.site.register(Image, ImageAdmin)

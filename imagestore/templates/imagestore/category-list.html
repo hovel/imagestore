@@ -1,0 +1,13 @@
+{% load thumbnail %}
+<ul id="category-list">
+    {% for category in category_list %}
+        <li>
+            <div><a href="{{ category.get_absolute_url }}">{{ category.title }} &#187;</a></div>
+            {% for image in category.preview %}
+                        {% thumbnail image.image "50x50" crop="center" as im %}
+                            <a class="thumb" href="{{ category.get_absolute_url }}"><img class="preview" src="{{ im.url }}"></a>
+                        {% endthumbnail %}
+            {% endfor %}
+        </li>
+    {%  endfor %}
+</ul>

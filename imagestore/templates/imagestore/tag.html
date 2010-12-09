@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load thumbnail %}
+
+{% block head %}
+    {% include "imagestore/pphoto.html" %}
+{% endblock head %}
+
+{% block title %}
+    {% if category %}
+        {{ category.title }}
+    {%  else  %}
+        {% trans "Gallery" %}
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ block.super }} &#187;
+    <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a> &#187;
+    {% trans "Tag" %}: {{ tag }}
+{% endblock breadcrumb %}
+
+{% block content %}
+    {% include "imagestore/tag-cloud.html" %}
+    <h1>{% trans "Tag" %} - {{ tag }}</h1>
+    {% include "imagestore/image-list.html" %}
+{% endblock content %}

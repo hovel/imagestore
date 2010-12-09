@@ -42,7 +42,7 @@ msgstr "Изображение"
 
 #: models.py:36
 msgid "Images"
-msgstr "Изображение"
+msgstr "Изображения"
 
 #: models.py:40
 msgid "Description"
@@ -50,7 +50,7 @@ msgstr "Описание"
 
 #: models.py:41
 msgid "Tags"
-msgstr "Теги"
+msgstr "Метки"
 
 #: models.py:43 templates/imagestore/author.html:3
 msgid "Author"

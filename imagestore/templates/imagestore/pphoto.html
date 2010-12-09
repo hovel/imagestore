@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="{{ MEDIA_URL }}prettyphoto/css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+<script src="{{ MEDIA_URL }}prettyphoto/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript" charset="utf-8">
+    var prettyparams = {
+        animation_speed: 'fast',
+        slideshow: 3000,
+        autoplay_slideshow: false,
+        opacity: 0.90,
+        show_title: false,
+        allow_resize: true,
+        default_width: 1000,
+        default_height: 344,
+        counter_separator_label: '/',
+        theme: 'facebook',
+        overlay_gallery: true,
+        changepicturecallback: function() {$pp_overlay.css({'height':$(document).height()})},
+        };
+    google.setOnLoadCallback(function(){$("a[rel^='gallery-image']").prettyPhoto(prettyparams)});
+</script>

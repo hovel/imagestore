@@ -1,0 +1,2 @@
+recursive-include imagestore/media *
+recursive-include imagestore/templates *
