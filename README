@@ -1,7 +1,7 @@
 ImageStore
 ==========
 
-An image library, created for easy integration for an exiting django project
+An image library, created for easy integration for an exiting django project.
 Very ligth, builded around django generic views
 
 Features:
@@ -17,7 +17,7 @@ Installation:
 =============
 
 * Install with pip or easy install (All dependencies will be installed automatically)
-* Put .. _prettyPhoto: http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/ to your media directory
+* Put `prettyPhoto <http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/>`__ to your media directory
 * Symlink or copy imagestore/media/imagestore.css to your MEDIA_ROOT
 * Add imagestore to your INSTALLED_APPS
 * Add imagestore.urls to your urls

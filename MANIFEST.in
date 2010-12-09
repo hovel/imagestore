@@ -1,2 +1,3 @@
 recursive-include imagestore/media *
 recursive-include imagestore/templates *
+recursive-include imagestore/migrations *.py
