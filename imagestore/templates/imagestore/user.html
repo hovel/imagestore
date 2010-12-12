@@ -8,17 +8,16 @@
 {% endblock head %}
 
 {% block title %}
-    {% trans "Gallery" %} - {% trans "Tag" %}: {{ tag }}
+    {% trans "Gallery" %} - {% trans "User" %}: {{ gallery_owner.username }}
 {% endblock %}
-
 {% block breadcrumb %}
     {{ block.super }} &#187;
     <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a> &#187;
-    {% trans "Tag" %}: {{ tag }}
+    {{ gallery_owner.username }}
 {% endblock breadcrumb %}
 
 {% block content %}
     {% include "imagestore/tag-cloud.html" %}
-    <h1>{% trans "Tag" %} - {{ tag }}</h1>
+    <h1>{% trans "User" %} - {{ gallery_owner.username }}</h1>
     {% include "imagestore/image-list.html" %}
 {% endblock content %}

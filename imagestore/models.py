@@ -3,6 +3,7 @@ import os
 
 from django.db import models
 from django.db.models import permalink
+from django.contrib.auth.models import User
 from tagging.fields import TagField
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -49,6 +50,7 @@ class Image(models.Model):
     order = models.IntegerField(_('Order'), null=True, blank=True)
     is_public = models.BooleanField(_('Is public'), default=True)
     image = ImageField(verbose_name = _('Image'), upload_to=get_file_path)
+    user = models.ForeignKey(User, verbose_name=_('User'), null=True, blank=True, related_name='images')
 
     @permalink
     def get_absolute_url(self):

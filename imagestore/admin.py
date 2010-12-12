@@ -10,8 +10,9 @@ class CategoryAdmin(MPTTModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 
 class ImageAdmin(admin.ModelAdmin):
-    fieldsets = ((None, {'fields': ['title', 'image', 'description', 'order', 'tags', 'category', 'is_public']}),)
-    list_display = ('id', 'order', 'category', 'title', 'is_public')
+    fieldsets = ((None, {'fields': ['user', 'title', 'image', 'description', 'order', 'tags', 'category', 'is_public']}),)
+    list_display = ('id', 'user', 'order', 'category', 'title', 'is_public')
     list_filter = ('category', 'tags')
+    raw_id_fields = ('user', )
 
 admin.site.register(Image, ImageAdmin)

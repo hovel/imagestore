@@ -3,6 +3,7 @@ from imagestore.models import Category, Image
 from django.shortcuts import get_object_or_404
 from django.views.generic.list_detail import object_list
 from django.conf import settings
+from django.contrib.auth.models import User
 from tagging.views import tagged_object_list
 
 IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 12)
@@ -67,4 +68,18 @@ def tag(request, tag):
     }
     return tagged_object_list(request, **kwargs)
 
-    
+def user_gallery(request, username):
+    '''
+    List images uploaded by target user
+    '''
+    filter = filter_access(request)
+    user = get_object_or_404(User, username=username)
+    filter['user'] = user
+    kwargs = {
+        'queryset': Image.objects.filter(**filter),
+        'template_object_name': 'image',
+        'template_name': 'imagestore/user.html',
+        'paginate_by': IMAGESTORE_ON_PAGE,
+        'extra_context': {'gallery_owner': user}
+    }
+    return object_list(request, **kwargs)
