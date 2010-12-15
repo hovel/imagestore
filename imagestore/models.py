@@ -46,7 +46,7 @@ class Image(models.Model):
     title = models.CharField(_('Title'), max_length=200, blank=True, null=True)
     description = models.TextField(_('Description'), blank=True, null=True)
     tags = TagField(_('Tags'), blank=True)
-    category = models.ForeignKey('Category', null=False, blank=False, related_name='images' )
+    category = models.ForeignKey('Category', verbose_name=_('Category'), null=False, blank=False, related_name='images' )
     order = models.IntegerField(_('Order'), null=True, blank=True)
     is_public = models.BooleanField(_('Is public'), default=True)
     image = ImageField(verbose_name = _('Image'), upload_to=get_file_path)
@@ -54,7 +54,7 @@ class Image(models.Model):
 
     @permalink
     def get_absolute_url(self):
-        return ('imagestore-image', (), {'slug_or_id': self.id})
+        return ('imagestore-image', (), {'id': self.id})
 
     def __unicode__(self):
         return self.title

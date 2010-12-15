@@ -1,0 +1,22 @@
+{% extends "imagestore/base.html" %}
+{% load i18n %}
+{% load thumbnail %}
+
+
+{% block title %}
+    {% trans "Upload image" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ block.super }} &#187;
+    <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a>
+    &#187; {% trans "Upload image" %}
+{% endblock breadcrumb %}
+
+{% block content %}
+    {{ block.super }}
+    <form action="." method="post" enctype="multipart/form-data">
+    <table>{{ form.as_table }}</table>
+    <input type="submit" value="{% trans "Upload" %}">
+    </form>
+{% endblock content %}

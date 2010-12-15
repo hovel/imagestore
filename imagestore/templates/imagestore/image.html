@@ -1,0 +1,28 @@
+{% extends "imagestore/base.html" %}
+{% load i18n %}
+{% load thumbnail %}
+
+{% block title %}
+    {% trans "Image" %} - {{ image.title }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ block.super }} &#187;
+    <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a> &#187;
+    {% trans "Image" %}: {{ image.title }}
+{% endblock %}
+
+{% block content %}
+        <div id="controls">
+        <a href="{% url imagestore-upload %}">{% trans "Upload image" %}</a>
+        <div class="controls-group">
+            <ul>
+                <li><a href="{% url imagestore-update image.id %}">{% trans "Edit image" %}</a></li>
+                <li><a href="{% url imagestore-delete image.id %}">{% trans "Delete image" %}</a></li>
+            </ul>
+        </div>
+        </div>
+        {% thumbnail image.image "800x800" as full_im %}
+            <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ full_im.url }}">
+        {% endthumbnail %}
+{% endblock content %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "imagestore/base.html" %}
 
 {% load i18n %}
 {% load thumbnail %}
@@ -17,6 +17,7 @@
 {% endblock breadcrumb %}
 
 {% block content %}
+    {{ block.super }}
     {% include "imagestore/tag-cloud.html" %}
     <h1>{% trans "User" %} - {{ gallery_owner.username }}</h1>
     {% include "imagestore/image-list.html" %}

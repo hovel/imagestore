@@ -4,11 +4,9 @@
 <div id="image-thumbnails">
     {% for image in image_list %}
     {% thumbnail image.image "120x120" crop="center" as im %}
-    <a class="thumb"
-       title="{{ image.description }} | {% if image.user.get_full_name %}{{ image.user.get_full_name }}{% else %} {{ image.user.username }} {% endif %}"
-       rel="gallery-image[ims_gal]" href="{{ image.image.url }}">
-        <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
-    </a>
+            <a class="thumb" href="{{ image.get_absolute_url }}">
+                <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
+            </a>
     {% endthumbnail %}
     {% endfor %}
     {% include "pagination-template/pagination.html" %}

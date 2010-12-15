@@ -1,10 +1,16 @@
-from django.http import HttpResponseForbidden
 from imagestore.models import Category, Image
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponseForbidden
 from django.views.generic.list_detail import object_list
 from django.conf import settings
 from django.contrib.auth.models import User
 from tagging.views import tagged_object_list
+from django.contrib.auth.decorators import login_required
+from forms import ImageForm
+from django.utils.translation import ugettext_lazy as _
+from django.contrib import messages
+from django.views.generic.simple import direct_to_template
+from django.views.generic.create_update import delete_object, update_object
 
 IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 12)
 IMAGESTORE_STORAGE_PREVIEW = getattr(settings, 'IMAGESTORE_STORAGE_PREVIEW', 5)
@@ -83,3 +89,49 @@ def user_gallery(request, username):
         'extra_context': {'gallery_owner': user}
     }
     return object_list(request, **kwargs)
+
+@login_required
+def image_add(request):
+    '''
+    Show form for image uploading
+    '''
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.save(commit=False)
+            image.user = request.user
+            image.save()
+            msg = _("Image was created successfully.")
+            messages.success(request, msg, fail_silently=True)
+            return redirect(image.get_absolute_url())
+    else:
+        form = ImageForm()
+    return direct_to_template(request, template='imagestore/image-form.html', extra_context={'form': form})
+
+@login_required
+def delete_image(request, id):
+    image = get_object_or_404(Image, id=id)
+    if not (request.user.is_superuser or request.user == image.user):
+        return HttpResponseForbidden
+    return delete_object(request, Image, object_id=id, post_delete_redirect=image.category.get_absolute_url())
+
+@login_required
+def update_image(request, id):
+    image = get_object_or_404(Image, id=id)
+    if not (request.user.is_superuser or request.user == image.user):
+        return HttpResponseForbidden
+    return update_object(request, Image, object_id=id,
+                         post_save_redirect=image.get_absolute_url(),
+                         form_class=ImageForm,
+                         template_name='imagestore/image-form.html')
+
+def image(request, id):
+    '''
+    Check premissions and ouput an image
+    '''
+    image = get_object_or_404(Image, id=id)
+    if (not image.is_public) and (not request.user.is_superuser) and (not image.user == request.user):
+        return HttpResponseForbidden()
+        #TODO Show gallery/user
+    return direct_to_template(request, template='imagestore/image.html', extra_context={'image': image})
+    

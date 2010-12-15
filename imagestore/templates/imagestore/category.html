@@ -1,11 +1,6 @@
-{% extends "base.html" %}
+{% extends "imagestore/base.html" %}
 {% load i18n %}
 {% load thumbnail %}
-
-
-{% block head %}
-    {% include "imagestore/pphoto.html" %}
-{% endblock head %}
 
 {% block title %}
     {% if category %}
@@ -28,6 +23,7 @@
 {% endblock breadcrumb %}
 
 {% block content %}
+    {{ block.super }}
     {% if category %}
         <h1>{{ category.title }}</h1>
     {% else %}

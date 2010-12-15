@@ -7,10 +7,10 @@ Very ligth, builded around django generic views
 Features:
 =========
 * PrettyPhoto for image/gallery show
-* Nested categories
+* Nested categories (mptt)
 * Category preview
 * Tagging support
-* Sorl support for upgrades
+* South support for upgrades
 
 
 Installation:
@@ -22,4 +22,9 @@ Installation:
 * Add imagestore to your INSTALLED_APPS
 * Add imagestore.urls to your urls
 * run ./manage.py syncdb or ./manage.py migrate
+
+Watermarking:
+=============
+
+Use `watermarker <http://pypi.python.org/pypi/watermarker/>`__ sorl integration to add watermark to your images
 
