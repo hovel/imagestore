@@ -16,5 +16,5 @@
         overlay_gallery: true,
         changepicturecallback: function() {$pp_overlay.css({'height':$(document).height()})},
         };
-    google.setOnLoadCallback(function(){$("a[rel^='gallery-image']").prettyPhoto(prettyparams)});
+    $(function(){$("a[rel^='gallery-image']").prettyPhoto(prettyparams)});
 </script>

@@ -18,8 +18,36 @@
     width: 200px;
     margin-left: 50px;
     margin-right: 10px;
+    font-size: 90%;
 }
 
 #controls .controls-group {
     padding-top: 10px;
+}
+
+.image-description {
+    padding: 10px 0 10px 0;
+}
+
+.navigation {
+    text-align: center;
+    padding: 0 0 10px 0;
+    font-size: 110%;
+}
+
+.navigation .next-link {
+    margin-left: 100px;
+}
+
+img.current {
+    border: 1px red solid;
+}
+
+#image-view img.preview {
+    display: block;
+    margin: 0 auto 0 auto;
+}
+
+#image-view {
+    margin-right: 300px;
 }

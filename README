@@ -6,7 +6,7 @@ Very ligth, builded around django generic views
 
 Features:
 =========
-* PrettyPhoto for image/gallery show
+* Optional PrettyPhoto for image/gallery show
 * Nested categories (mptt)
 * Category preview
 * Tagging support
@@ -17,11 +17,30 @@ Installation:
 =============
 
 * Install with pip or easy install (All dependencies will be installed automatically)
-* Put `prettyPhoto <http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/>`__ to your media directory
-* Symlink or copy imagestore/media/imagestore.css to your MEDIA_ROOT
+* Symlink or copy imagestore/media/imagestore.css to your MEDIA_ROOT (or write youre own style)
 * Add imagestore to your INSTALLED_APPS
 * Add imagestore.urls to your urls
-* run ./manage.py syncdb or ./manage.py migrate
+* Run ./manage.py syncdb or ./manage.py migrate
+* Add jquery and jqueryui load to your template to use tagging autocomplete and/or prettyphoto
+* If you want to use prettyPhoto put `prettyPhoto <http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/>`__ to your media directory and include imagesotore/prettyphoto.html to your template
+
+Configuration:
+==============
+
+You can control, who can upload images with IMAGESTORE_CAN_UPLOAD settings, set it to function, that accept user as param and return True/False::
+
+ def check_upload_rights(user):
+     if user.is_authenticated:
+         return True
+     else:
+         return False
+ IMAGESTORE_CAN_UPLOAD = check_upload_rights
+
+Translation:
+============
+
+* Russian
+* English
 
 Watermarking:
 =============

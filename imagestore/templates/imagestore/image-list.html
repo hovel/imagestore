@@ -3,13 +3,13 @@
 
 <div id="image-thumbnails">
     {% for image in image_list %}
-    {% thumbnail image.image "120x120" crop="center" as im %}
-            <a class="thumb" href="{{ image.get_absolute_url }}">
-                <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
-            </a>
-    {% endthumbnail %}
+        {% thumbnail image.image "120x120" crop="center" as im %}
+                <a class="thumb" rel='gallery-image[ilist]' href="{{ image.get_absolute_url }}">
+                    <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
+                </a>
+        {% endthumbnail %}
     {% endfor %}
-    {% include "pagination-template/pagination.html" %}
+    {% include "imagestore/pagination.html" %}
 </div>
 
 

@@ -11,9 +11,20 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.views.generic.simple import direct_to_template
 from django.views.generic.create_update import delete_object, update_object
+import math
+from django.db.models import Q
 
-IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 12)
+IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 20)
+IMAGESTORE_ON_IMAGE_PAGE = getattr(settings, 'IMAGESTORE_ON_IMAGE_PAGE', 9)
 IMAGESTORE_STORAGE_PREVIEW = getattr(settings, 'IMAGESTORE_STORAGE_PREVIEW', 5)
+
+def check_upload_rights(user):
+    if user.is_authenticated:
+        return True
+    else:
+        return False
+
+IMAGESTORE_CAN_UPLOAD = getattr(settings, 'IMAGESTORE_CAN_UPLOAD', check_upload_rights)
 
 def filter_access(request):
     '''
@@ -90,16 +101,18 @@ def user_gallery(request, username):
     }
     return object_list(request, **kwargs)
 
-@login_required
 def image_add(request):
     '''
     Show form for image uploading
     '''
+    if not IMAGESTORE_CAN_UPLOAD(request.user):
+        return HttpResponseForbidden()
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.save(commit=False)
-            image.user = request.user
+            if request.user.is_authenticated:
+                image.user = request.user
             image.save()
             msg = _("Image was created successfully.")
             messages.success(request, msg, fail_silently=True)
@@ -132,6 +145,30 @@ def image(request, id):
     image = get_object_or_404(Image, id=id)
     if (not image.is_public) and (not request.user.is_superuser) and (not image.user == request.user):
         return HttpResponseForbidden()
-        #TODO Show gallery/user
-    return direct_to_template(request, template='imagestore/image.html', extra_context={'image': image})
+    filter = filter_access(request)
+    base_qs = Image.objects.filter(**filter).filter(category=image.category).order_by('order', 'id')
+    count = base_qs.count()
+    img_pos = base_qs.filter(order__lte=image.order, id__lt=image.id).count()
+    next = None
+    previous = None
+    if count-1 > img_pos:
+        try:
+            next = base_qs.filter(Q(order__gte=image.order, id__gt=image.id)|Q(order__gt=image.order))[0]
+        except IndexError:
+            pass
+    if img_pos > 0:
+        try:
+            previous = base_qs.filter(Q(order__lte=image.order, id__lt=image.id)|Q(order__lt=image.order))[0]
+        except IndexError:
+            pass
+    page = math.ceil(img_pos/IMAGESTORE_ON_IMAGE_PAGE)
+    kwargs = {
+        'queryset': base_qs,
+        'template_object_name': 'image',
+        'template_name': 'imagestore/image.html',
+        'paginate_by': IMAGESTORE_ON_IMAGE_PAGE,
+        'page': page,
+        'extra_context': {'image': image, 'next': next, 'previous': previous}
+    }
+    return object_list(request, **kwargs)
     

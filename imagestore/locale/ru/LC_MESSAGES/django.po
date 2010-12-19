@@ -2,20 +2,18 @@
 # This file is distributed under the same license as the imagestore package.
 # Pavel Zhukov <gelios@gmail.com> 2010
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: IMAGESTORE \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-14 00:41+0300\n"
+"POT-Creation-Date: 2010-12-20 00:47+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Zhukov <gelios@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: models.py:24
+#: models.py:24 models.py:50
 msgid "Category"
 msgstr "Категория"
 
@@ -27,20 +25,20 @@ msgstr "Категории"
 msgid "Slug"
 msgstr "Метка"
 
-#: models.py:30 models.py:46
+#: models.py:30 models.py:47
 msgid "Title"
 msgstr "Заголовок"
 
-#: models.py:31 models.py:50
+#: models.py:31 models.py:51
 msgid "Order"
 msgstr "Порядок"
 
-#: models.py:32 models.py:51
+#: models.py:32 models.py:52
 msgid "Is public"
 msgstr "Открытое"
 
-#: models.py:43 models.py:52 templates/imagestore/image.html:6
-#: templates/imagestore/image.html.py:12
+#: models.py:43 models.py:53 templates/imagestore/image.html:7
+#: templates/imagestore/image.html.py:13
 msgid "Image"
 msgstr "Изображение"
 
@@ -48,31 +46,32 @@ msgstr "Изображение"
 msgid "Images"
 msgstr "Изображения"
 
-#: models.py:47
+#: models.py:48
 msgid "Description"
 msgstr "Описание"
 
-#: models.py:48 templates/imagestore/tag-cloud.html:5
+#: models.py:49 templates/imagestore/image.html:52
+#: templates/imagestore/tag-cloud.html:5
 msgid "Tags"
 msgstr "Метки"
 
-#: models.py:53 templates/imagestore/user.html:11
+#: models.py:54 templates/imagestore/user.html:11
 #: templates/imagestore/user.html.py:22
 msgid "User"
 msgstr ""
 
-#: views.py:104
+#: views.py:117
 msgid "Image was created successfully."
 msgstr "Изображение загружено успешно"
 
-#: templates/imagestore/base.html:6 templates/imagestore/form.html:7
-#: templates/imagestore/form.html.py:13
+#: templates/imagestore/base.html:6 templates/imagestore/image-form.html:7
+#: templates/imagestore/image-form.html:65 templates/imagestore/image.html:18
 msgid "Upload image"
 msgstr "Загрузить изображение"
 
 #: templates/imagestore/category.html:9 templates/imagestore/category.html:16
 #: templates/imagestore/category.html:18 templates/imagestore/category.html:30
-#: templates/imagestore/form.html:12 templates/imagestore/image.html:11
+#: templates/imagestore/image-form.html:64 templates/imagestore/image.html:12
 #: templates/imagestore/tag.html:11 templates/imagestore/tag.html.py:16
 #: templates/imagestore/user.html:11 templates/imagestore/user.html.py:15
 msgid "Gallery"
@@ -82,6 +81,55 @@ msgstr "Галерея"
 msgid "All images:"
 msgstr "Все изображения:"
 
-#: templates/imagestore/form.html:20
+#: templates/imagestore/image-form.html:72
 msgid "Upload"
 msgstr "Загрузить"
+
+#: templates/imagestore/image.html:21
+msgid "Edit image"
+msgstr "Редактировать изображение"
+
+#: templates/imagestore/image.html:22
+msgid "Delete image"
+msgstr "Удалить изображение"
+
+#: templates/imagestore/image.html:38
+#: templates/imagestore/mini-pagination.html:5
+#: templates/imagestore/pagination.html:5
+msgid "previous"
+msgstr "предыдущие"
+
+#: templates/imagestore/image.html:41
+#: templates/imagestore/mini-pagination.html:8
+#: templates/imagestore/pagination.html:9
+msgid "next"
+msgstr "следующие"
+
+#: templates/imagestore/image.html:60
+msgid "previous image"
+msgstr "предыдущее изображение"
+
+#: templates/imagestore/image.html:61
+msgid "next image"
+msgstr "следующее изображение"
+
+#: templates/imagestore/image_confirm_delete.html:6
+msgid "Are you sure that you would like to delete this image?"
+msgstr "Вы уверенны, что хотите удалить это изображение"
+
+#: templates/imagestore/image_confirm_delete.html:8
+msgid "Yes"
+msgstr "Да"
+
+#: templates/imagestore/image_confirm_delete.html:10
+msgid "No"
+msgstr "Нет"
+
+#: templates/imagestore/pagination.html:7
+msgid "of"
+msgstr ""
+
+#: templates/imagestore/tag.html:11 templates/imagestore/tag.html.py:17
+#: templates/imagestore/tag.html:23
+msgid "Tag"
+msgstr "Метка"

@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<div class="pagination mini">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="previous">← {% trans "previous" %}</a>
+    {% endif %}
+    {{ page_obj.start_index }} - {{ page_obj.end_index }} {% trans "of" %} {{ paginator.count }}
+    {% if page_obj.has_next%}
+        <a href="?page={{ page_obj.next_page_number }}" class="next">{% trans "next" %} →</a>
+    {% endif %}
+</div>
