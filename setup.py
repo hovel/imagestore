@@ -2,13 +2,13 @@ from setuptools import setup
 
 setup(
         name = 'imagestore',
-        version = '1.3.0',
+        version = '1.3.1',
         packages = ['imagestore'],
         install_requires = [
             'django',
             'sorl-thumbnail',
             'south',
-            'djagno-mptt',
+            'django-mptt',
             'pil',
             'django-fancy-autocomplete',
             ],
