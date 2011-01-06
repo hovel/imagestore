@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
         name = 'imagestore',
-        version = '1.3.1',
+        version = '1.3.2',
         packages = ['imagestore'],
         install_requires = [
             'django',
@@ -11,6 +11,7 @@ setup(
             'django-mptt',
             'pil',
             'django-fancy-autocomplete',
+            'django-tagging',
             ],
         author = 'Pavel Zhukov',
         author_email = 'gelios@gmail.com',
