@@ -7,17 +7,7 @@
     padding-bottom: 10px;
 }
 
-#tag-cloud {
-    float: right;
-    display: block;
-    width: 200px;
-}
-
 #controls {
-    float:right;
-    width: 200px;
-    margin-left: 50px;
-    margin-right: 10px;
     font-size: 90%;
 }
 

@@ -14,7 +14,30 @@
 {% endblock %}
 
 {% block content %}
-        <div id="controls">
+        <h1>{{ image.title }}</h1>
+        <div class="image-description">
+            {{ image.description }}
+        </div>
+        <div class="tagging">
+            {% trans "Tags" %}:
+            {% tags_for_object image as itags %}
+            {% for tag in itags %}
+                <a href="{% url imagestore-tag tag.name %}">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+        <div id="image-view">
+            <div class="navigation">
+                {% if previous %} <a class="previous-link" href="{{ previous.get_absolute_url }}">← {% trans "previous image" %}</a> {% endif %}
+                {% if next %} <a class="next-link" href="{{ next.get_absolute_url }}">{% trans "next image" %}→</a> {% endif %}
+            </div>
+            {% thumbnail image.image "800x800" as full_im %}
+                <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ full_im.url }}">
+            {% endthumbnail %}
+        </div>
+{% endblock content %}
+
+{% block content-related %}
+     <div id="controls">
             <a href="{% url imagestore-upload %}">{% trans "Upload image" %}</a>
             <div class="controls-group">
                 <ul>
@@ -41,27 +64,7 @@
                         <a href="?page={{ page_obj.next_page_number }}" class="next">{% trans "next" %} →</a>
                     {% endif %}
                 </div>
-{% endif %}
+                {% endif %}
             </div>
         </div>
-        <h1>{{ image.title }}</h1>
-        <div class="image-description">
-            {{ image.description }}
-        </div>
-        <div class="tagging">
-            {% trans "Tags" %}:
-            {% tags_for_object image as itags %}
-            {% for tag in itags %}
-                <a href="{% url imagestore-tag tag.name %}">{{ tag.name }}</a>
-            {% endfor %}
-        </div>
-        <div id="image-view">
-            <div class="navigation">
-                {% if previous %} <a class="previous-link" href="{{ previous.get_absolute_url }}">← {% trans "previous image" %}</a> {% endif %}
-                {% if next %} <a class="next-link" href="{{ next.get_absolute_url }}">{% trans "next image" %}→</a> {% endif %}
-            </div>
-            {% thumbnail image.image "800x800" as full_im %}
-                <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ full_im.url }}">
-            {% endthumbnail %}
-        </div>
-{% endblock content %}
+{% endblock %}

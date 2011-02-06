@@ -23,17 +23,18 @@
 {% endblock breadcrumb %}
 
 {% block content %}
-    {{ block.super }}
     {% if category %}
         <h1>{{ category.title }}</h1>
     {% else %}
         <h1>{% trans "Gallery" %}</h1>
     {% endif %}
-
-    {% include "imagestore/tag-cloud.html" %}
-
     <h2>{% trans 'Categories' %}:</h2>
     {% include "imagestore/category-list.html" %}
     {% if not category %} {% trans "All images:" %} {% endif %}
     {% include "imagestore/image-list.html" %}
 {% endblock content %}
+
+{% block content-related %}
+    {{ block.super }}
+    {% include "imagestore/tag-cloud.html" %}
+{% endblock %}

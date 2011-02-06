@@ -14,8 +14,10 @@
 {% endblock breadcrumb %}
 
 {% block content %}
-    {{ block.super }} 
-    {% include "imagestore/tag-cloud.html" %}
     <h1>{% trans "Tag" %} - {{ tag }}</h1>
     {% include "imagestore/image-list.html" %}
 {% endblock content %}
+
+{% block content-related %}
+    {% include "imagestore/tag-cloud.html" %}
+{% endblock %}

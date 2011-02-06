@@ -66,7 +66,6 @@
 {% endblock breadcrumb %}
 
 {% block content %}
-    {{ block.super }}
     <form action="." method="post" enctype="multipart/form-data">
     <table>{{ form.as_table }}</table>
     <input type="submit" value="{% trans "Upload" %}">
