@@ -101,6 +101,7 @@ def user_gallery(request, username):
     }
     return object_list(request, **kwargs)
 
+@login_required
 def image_add(request):
     '''
     Show form for image uploading

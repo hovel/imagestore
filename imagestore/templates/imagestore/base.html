@@ -8,7 +8,9 @@
 {% endblock content %}
 
 {% block content-related %}
-        <div id="controls">
-            <a href={% url imagestore-upload %}>{% trans "Upload image" %}</a>
-        </div>
+        {% if request.user.is_authenticated %}
+            <div id="controls">
+                <a href={% url imagestore-upload %}>{% trans "Upload image" %}</a>
+            </div>
+        {% endif %}
 {% endblock %}
