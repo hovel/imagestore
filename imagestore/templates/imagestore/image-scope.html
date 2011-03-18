@@ -1,0 +1,10 @@
+{% load i18n %}
+{% if view_user %}
+    <span class='scope-view-user'>{% trans "User" %}: {{ view_user.username }}</span>
+{% endif %}
+{% if album %}
+    <span class='scope-album'>{% trans "Album" %}: {{ album.name }}</span>
+{% endif %}
+{% if tag %}
+    <span class='scope-tag'>{% trans "Tag" %}: {{ tag }}</span>
+{% endif %}

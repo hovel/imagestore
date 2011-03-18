@@ -41,3 +41,48 @@ img.current {
 #image-view {
     margin-right: 300px;
 }
+
+.album-list .album {
+    width: 160px;
+    float: left;
+    padding: 5px;
+    margin: 5px;
+}
+
+.album-name {
+    width: 100%;
+    text-align: center;
+}
+
+.album-user {
+    width: 100%;
+    text-align: center;
+    font-size: 80%;
+    color: #CCC;
+}
+
+.album-head {
+    height: 150px;
+    width: 150px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+.album-head a {
+    text-align: center;
+}
+
+.user-info {
+    padding: 20px 0;
+}
+
+.image-preview {
+    float: left;
+    width: 130px;
+    padding: 5px;
+    height: 160px;
+}
+
+.image-preview .image-title {
+    font-size: 80%;
+}

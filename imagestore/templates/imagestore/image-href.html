@@ -1,0 +1,9 @@
+{% if album %}
+    {% url imagestore:image-album album_id=album.id pk=image.id %}
+{% else %}
+    {% if tag %}
+        {% url imagestore:image-tag tag=tag pk=image.id %}
+    {% else %}
+        {{ image.get_absolute_url }}
+    {% endif %}
+{% endif %}

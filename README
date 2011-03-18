@@ -6,9 +6,8 @@ Very ligth, builded around django generic views
 
 Features:
 =========
-* Optional PrettyPhoto for image/gallery show
-* Nested categories (mptt)
-* Category preview
+* Optional PrettyPhoto for image/album show
+* Albums
 * Tagging support
 * South support for upgrades
 
@@ -26,15 +25,8 @@ Installation:
 
 Configuration:
 ==============
+If IMAGESTORE_SELF_MANAGE is True (default), all created users will get add/delete/change permissions for Images and Albums. If you don't wish users to create albums or upload images set this property to false.
 
-You can control, who can upload images with IMAGESTORE_CAN_UPLOAD settings, set it to function, that accept user as param and return True/False::
-
- def check_upload_rights(user):
-     if user.is_authenticated:
-         return True
-     else:
-         return False
- IMAGESTORE_CAN_UPLOAD = check_upload_rights
 
 Translation:
 ============

@@ -9,7 +9,7 @@
 {% endblock %}
 {% block breadcrumb %}
     {{ block.super }} &#187;
-    <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a> &#187;
+    <a href="{% url imagestore:category-list %}">{% trans "Gallery" %}</a> &#187;
     {{ gallery_owner.username }}
 {% endblock breadcrumb %}
 

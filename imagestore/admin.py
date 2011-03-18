@@ -1,18 +1,16 @@
 from django.contrib import admin
-from imagestore.models import Image, Category
-from mptt.admin import MPTTModelAdmin
+from imagestore.models import Image, Album
+from sorl.thumbnail.admin import AdminImageMixin
 
-class CategoryAdmin(MPTTModelAdmin):
-    fieldsets = ((None, {'fields': ['slug', 'title', 'order', 'parent', 'is_public']}),)
-    prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'slug', 'order', 'is_public')
+class AlbumAdmin(admin.ModelAdmin):
+    fieldsets = ((None, {'fields': ['name', 'user', 'is_public', 'head']}),)
+    list_display = ('name', 'admin_thumbnail','user', 'created', 'updated', 'is_public')
 
-admin.site.register(Category, CategoryAdmin)
+admin.site.register(Album, AlbumAdmin)
 
-class ImageAdmin(admin.ModelAdmin):
-    fieldsets = ((None, {'fields': ['user', 'title', 'image', 'description', 'order', 'tags', 'category', 'is_public']}),)
-    list_display = ('id', 'user', 'order', 'category', 'title', 'is_public')
-    list_filter = ('category', 'tags')
+class ImageAdmin(AdminImageMixin, admin.ModelAdmin):
+    fieldsets = ((None, {'fields': ['user', 'title', 'image', 'description', 'order', 'tags', 'album']}),)
+    list_display = ('admin_thumbnail', 'user', 'order', 'album', 'title')
     raw_id_fields = ('user', )
 
 admin.site.register(Image, ImageAdmin)

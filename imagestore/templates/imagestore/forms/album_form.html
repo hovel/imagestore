@@ -1,0 +1,23 @@
+{% extends "imagestore/base.html" %}
+{% load i18n %}
+{% load thumbnail %}
+
+
+{% block title %}
+    {% trans "Create album" %}
+{% endblock %}
+
+
+{% block breadcrumb %}
+    {{ block.super }} &#187;
+    <a href="{% url imagestore:index %}">{% trans "Gallery" %}</a> &#187;
+{% endblock breadcrumb %}
+
+{% block content %}
+    <h1>{% trans "Create album" %}</h1>
+    <form action="." method="post">
+    {% csrf_token %}
+    <table>{{ form.as_table }}</table>
+    <input type="submit" value="{% trans "Save" %}">
+    </form>
+{% endblock content %}
