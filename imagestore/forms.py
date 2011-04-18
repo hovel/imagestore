@@ -1,31 +1,49 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
-import inspect
 
 __author__ = 'zeus'
 
 from django import forms
 from models import Image, Album
+from django.utils.translation import ugettext_lazy as _
+
+try:
+    from places.models import GeoPlace
+except:
+    GeoPlace = None
 
 class ImageForm(forms.ModelForm):
+    class Meta(object):
+        model = Image
+        exclude = ('user', 'order')
+
+    description = forms.CharField(widget=forms.Textarea(attrs={'rows': 2, 'cols': 19}), required=False,
+                                  label=_('Description'))
 
     def __init__(self, user, *args, **kwargs):
         super(ImageForm, self).__init__(*args, **kwargs)
         self.fields['album'].queryset = Album.objects.filter(user=user)
         self.fields['album'].required = True
 
-    class Meta(object):
-        model = Image
-        exclude = ('user', 'order')
+        if GeoPlace:
+            self.fields['place'] = forms.CharField(required=False, label=_('Place'), widget=forms.HiddenInput)
+            self.fields['place_text'] = forms.CharField(required=False, label=_('Place'))
 
-    description = forms.CharField(widget=forms.Textarea(attrs={'rows': 2, 'cols': 19}), required=False)
+            if 'instance' in kwargs and kwargs['instance'] and kwargs['instance'].place:
+                self.fields['place_text'].initial = kwargs['instance'].place.name
 
-#    def __init__(self, *args, **kwargs):
-#        if args:
-#            kwargs.update(dict(zip(inspect.getargspec(super(ImageForm, self).__init__)[0][1:], args)))
-#        super(ImageForm, self).__init__(**kwargs)
-#        if 'instance' in kwargs:
-#            self.fields['image'].required = False
+    def clean_place_text(self):
+        name = self.data.get('place_text', None)
+        if not name:
+            return None
+        try:
+            place = GeoPlace.objects.get(name=name)
+        except:
+            raise forms.ValidationError(_("Place doesn't found"))
+        return place
+
+    def clean_place(self):
+        return self.clean_place_text()
 
 
 class AlbumForm(forms.ModelForm):

@@ -9,53 +9,12 @@
 
 {% block head %}
     {{ block.super }}
-    <script type="text/javascript">
-        function split( val ) {
-            return val.split( /,\s*/ );
-        }
-        function extractLast( term ) {
-            return split( term ).pop();
-        }
-    $().ready(function (){$("#id_tags").autocomplete({
-        source: function(request, response){
-            $.ajax({
-                url: "{% url imagestore:autocomplete-tag 'tag'%}",
-                data: {q: extractLast(request.term)},
-                success: function(data) {
-                    response($.map(data, function(item) {
-                        return {
-                            label: item[1],
-                            value: item[1]
-                        };
-                    }));
-                },
-                dataType: "json"
-            });
-        },
-        search: function() {
-            // custom minLength
-            var term = extractLast( this.value );
-            if ( term.length < 2 ) {
-                return false;
-            }
-        },
-        focus: function() {
-            // prevent value inserted on focus
-            return false;
-        },
-        select: function( event, ui ) {
-            var terms = split( this.value );
-            // remove the current input
-            terms.pop();
-            // add the selected item
-            terms.push( ui.item.value );
-            // add placeholder to get the comma-and-space at the end
-            terms.push( "" );
-            this.value = terms.join( ", " );
-            return false;
-        }
-        });
-    });
+    <script src="{{ STATIC_URL }}autocomplete.js"></script>
+    <script>
+        $(function(){
+            completeField('#id_tags', '{% url imagestore:autocomplete "tag" %}');
+            completeField('#id_place_text', '{% url imagestore:autocomplete "place" %}');
+        })
     </script>
 {% endblock %}
 
@@ -68,7 +27,44 @@
 {% block content %}
     <form action="." method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <table>{{ form.as_table }}</table>
+   
+    <div class='basic-fields'>
+        <table>
+            <tr>
+                <th>{{ form.album.label_tag }}</th>
+                <td>{{ form.album.errors }} {{ form.album }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.image.label_tag }}</th>
+                <td>{{ form.image.errors }} {{ form.image }}</td>
+            </tr>
+
+            <tr>
+                <th>{{ form.tags.label_tag }}</th>
+                <td>{{ form.tags.errors }} {{ form.tags }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class='extra-fields'>
+        <table>
+            <tr>
+                <th>{{ form.title.label_tag }}</th>
+                <td>{{ form.title.errors }} {{ form.title }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.place_text.label_tag }}</th>
+                <td>{{ form.place_text.errors }} {{ form.place_text }}</td>
+            </tr>
+
+        <tr>
+            <td colspan='2'>
+               {{ form.description.label_tag }}<br>
+               {{ form.description.errors }} {{ form.description }}
+            </td>
+        </tr>
+       </table>
+    </div>
+    <div class='clr'></div>
     <input type="submit" value="{% trans "Upload" %}">
     </form>
 {% endblock content %}

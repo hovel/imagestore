@@ -10,6 +10,10 @@ from django.conf import settings
 from sorl.thumbnail import ImageField, get_thumbnail
 from django.contrib.auth.models import User, Permission
 from django.db.models.signals import post_save
+try:
+    from places.models import GeoPlace
+except:
+    GeoPlace = None
 
 UPLOAD_TO = getattr(settings, 'IMAGESTORE_UPLOAD_TO', 'imagestore/')
 SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
@@ -80,11 +84,11 @@ class Image(models.Model):
     description = models.TextField(_('Description'), blank=True, null=True)
     tags = TagField(_('Tags'), blank=True)
     order = models.IntegerField(_('Order'), null=False, blank=False, default=0)
-    image = ImageField(verbose_name = _('Image'), upload_to=get_file_path)
+    image = ImageField(verbose_name = _('File'), upload_to=get_file_path)
     user = models.ForeignKey(User, verbose_name=_('User'), null=True, blank=True, related_name='images')
     created = models.DateTimeField(_('Created'), auto_now_add=True, null=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True, null=True)
-    album = models.ForeignKey(Album, null=True, blank=True, related_name='images')
+    album = models.ForeignKey(Album, verbose_name=_('Album'), null=True, blank=True, related_name='images')
 
     @permalink
     def get_absolute_url(self):
@@ -104,7 +108,12 @@ class Image(models.Model):
     admin_thumbnail.short_description = _('Thumbnail')
     admin_thumbnail.allow_tags = True
 
+if GeoPlace:
+    field = models.ForeignKey(GeoPlace, verbose_name=_('Place'), null=True, blank=True, related_name='images')
+    field.contribute_to_class(Image, 'place')
 
+
+#noinspection PyUnusedLocal
 def setup_imagestore_permissions(instance, created, **kwargs):
         if not created:
             return

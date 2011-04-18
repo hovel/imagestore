@@ -19,6 +19,11 @@ IMAGESTORE_IMAGES_ON_PAGE = getattr(settings, 'IMAGESTORE_IMAGES_ON_PAGE', 20)
 IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 20)
 IMAGESTORE_ON_IMAGE_PAGE = getattr(settings, 'IMAGESTORE_ON_IMAGE_PAGE', 9)
 
+try:
+    from places.models import GeoPlace
+except:
+    GeoPlace = None
+
 class AlbumListView(ListView):
     context_object_name = 'album_list'
     template_name = 'imagestore/album_list.html'
@@ -175,6 +180,13 @@ class CreateImage(CreateView):
     @method_decorator(permission_required('imagestore.add_image'))
     def dispatch(self, *args, **kwargs):
         return super(CreateImage, self).dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateImage, self).get_form_kwargs()
+        if 'place_id' in self.kwargs:
+            place = get_object_or_404(GeoPlace,id=int(self.kwargs['place_id']))
+            kwargs['initial']['place_text'] = place.name
+        return kwargs
 
     def get_form(self, form_class):
         return form_class(user=self.request.user, **self.get_form_kwargs())

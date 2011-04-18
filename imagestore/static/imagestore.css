@@ -86,3 +86,17 @@ img.current {
 .image-preview .image-title {
     font-size: 80%;
 }
+
+.extra-fields {
+    font-size: 80%;
+    margin: 10px 0;
+}
+
+.extra-fields label {
+    color: #666666;
+}
+
+.basic-fields, .extra-fields {
+    display: block;
+    float: left;
+}

@@ -2,6 +2,11 @@ from django.conf.urls.defaults import *
 from tagging.models import Tag
 from views import AlbumListView, ImageListView, UpdateImage, UpdateAlbum, CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView
 
+try:
+    from places.models import GeoPlace
+except:
+    GeoPlace = None
+
 from fancy_autocomplete.views import AutocompleteSite
 autocomletes = AutocompleteSite()
 
@@ -9,7 +14,16 @@ autocomletes.register(
     'tag',
     queryset=Tag.objects.all(),
     search_fields=('name',),
-    limit=10
+    limit=10,
+    lookup='istartswith',
+)
+
+autocomletes.register(
+    'place',
+    queryset=GeoPlace.objects.all(),
+    search_fields=('name',),
+    limit=10,
+    lookup='istartswith',
 )
 
 urlpatterns = patterns('imagestore.views',
@@ -27,6 +41,7 @@ urlpatterns = patterns('imagestore.views',
                        url(r'^user/(?P<username>\w+)/$', ImageListView.as_view(), name='user-images'),
 
                        url(r'^upload/$', CreateImage.as_view(), name='upload'),
+                       url(r'^upload/?place_id=(?P<place_id>\d+)$', CreateImage.as_view(), name='upload_for_place'),
 
                        url(r'^image/(?P<pk>\d+)/$', ImageView.as_view(), name='image'),
                        url(r'^album/(?P<album_id>\d+)/image/(?P<pk>\d+)/$', ImageView.as_view(), name='image-album'),
@@ -34,7 +49,7 @@ urlpatterns = patterns('imagestore.views',
                        url(r'^image/(?P<pk>\d+)/delete/$', DeleteImage.as_view(), name='delete-image'),
                        url(r'^image/(?P<pk>\d+)/update/$', UpdateImage.as_view(), name='update-image'),
 
-                       url(r'^autocomplete/(.*)/$', autocomletes, name='autocomplete-tag')
+                       url(r'^autocomplete/(.*)/$', autocomletes, name='autocomplete')
                        )
 
 

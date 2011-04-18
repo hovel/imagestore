@@ -51,7 +51,7 @@
                 ">← {% trans "previous image" %}</a> {% endif %}
                 {% if next %} <a class="next-link" href="{% with next as image %}
                     {% include "imagestore/image-href.html" %}
-                {% endwith %}">{% trans "next image" %}→</a> {% endif %}
+                {% endwith %}">{% trans "next image" %} →</a> {% endif %}
             </div>
             {% thumbnail image.image "800x800" as full_im %}
                 <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ full_im.url }}">
@@ -74,4 +74,10 @@
                 <a href="{% url imagestore:tag tag.name %}">{{ tag.name }}</a>
             {% endfor %}
      </div>
+     {% if image.place %}
+         <div class='place'>
+            <h2>{% trans "Place" %}</h2>
+            <a href="{{ image.place.get_absolute_url }}">{{ image.place.name }} →</a>
+         </div>
+     {% endif %}
 {% endblock %}
