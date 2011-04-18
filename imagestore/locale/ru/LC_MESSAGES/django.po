@@ -115,7 +115,7 @@ msgstr "Нет"
 #: templates/imagestore/album_list.html:7
 #: templates/imagestore/album_list.html:26
 msgid "Albums for user"
-msgstr ""
+msgstr "Альбомы пользователя"
 
 #: templates/imagestore/album_list.html:9
 #: templates/imagestore/album_list.html:28

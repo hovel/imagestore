@@ -14,20 +14,8 @@
 
 {% block imagestore-info %}
     <div class='user-info'>
-        <h2>{% trans "Uploaded by" %}:</h2>
         {% with image.user.get_profile as profile %}
-            <div class="avatar">
-                        <a href="{{ profile.get_absolute_url }}">
-                        {% thumbnail profile.avatar request.pybb_avatar_dimensions as avatar %}
-                            <img src="{{ avatar.url }}" alt="avatar">
-                        {% empty %}
-                            <img src="{{ request.pybb_default_avatar }}" alt="avatar">
-                        {% endthumbnail %}
-                        </a>
-            </div>
-            <div class='user-name'>
-                <a href="{{ profile.get_absolute_url }}">{{ image.user.username }}</a>
-            </div>
+            {% include "imagestore/user_info.html" %}
         {% endwith %}
     </div>
 {% endblock %}
@@ -67,6 +55,7 @@
 {% endblock %}
 
 {% block imagestore-related %}
+
      <div class="tagging">
             <h2>{% trans "Tags" %}</h2>
             {% tags_for_object image as itags %}

@@ -22,6 +22,21 @@
     {% endif %}
 {% endblock %}
 
+{% block imagestore-info %}
+    {% if view_user %}
+        {% with view_user.get_profile as profile %}
+            {% include "imagestore/user_info.html" %}
+        {% endwith %}
+    {% endif %}
+    {% if album %}
+        {% with album.user.get_profile as profile %}
+            {% include "imagestore/user_info.html" %}
+        {% endwith %}
+    {% endif %}
+
+{% endblock %}
+
+
 {% block controls %}
     {% if album %}
         {% if request.user == album.user or perms.imagestore.moderate_albums %}

@@ -17,6 +17,14 @@
     {% endif %}
 {% endblock %}
 
+{% block imagestore-info %}
+    {% if view_user %}
+        {% with view_user.get_profile as profile %}
+            {% include "imagestore/user_info.html" %}
+        {% endwith %}
+    {% endif %}
+{% endblock %}
+
 {% block imagestore-related %}
     {% include "imagestore/tag-cloud.html" %}
 {% endblock %}
