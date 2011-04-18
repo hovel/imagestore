@@ -37,22 +37,28 @@
     {% endif %}</h1>
     <div class='album-list'>
         {% for album in album_list %}
-            <div class='album'><div class='album-head'><a href="{{ album.get_absolute_url }}">
-                {% if album.get_head %}
-                    {% thumbnail album.get_head.image "150x150" as album_head %}
-                        <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}">
-                    {% endthumbnail %}
-                {% else %}
-                    [{% trans "Empty album" %}]
-                {% endif %}
-                </a></div>
-            <div class="album-name"><a href="{{ album.get_absolute_url }}">{{ album.name }}</a></div>
-            {% if not view_user %}
-                <div class="album-user">
-                    {% trans "user" %}: <a href="{% url imagestore:user username=album.user.username %}">{{ album.user.username }}</a>
+            {% if album.get_head  or album.user == request.user %}
+            <div class='album'>
+                <div class='album-head'>
+                    <a href="{{ album.get_absolute_url }}">
+                    {% if album.get_head %}
+                        {% thumbnail album.get_head.image "150x150" as album_head %}
+                            <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}">
+                        {% endthumbnail %}
+                    {% else %}
+                        [{% trans "Empty album" %}]
+                    {% endif %}
+                    </a>
                 </div>
-            {% endif %}
+
+                <div class="album-name"><a href="{{ album.get_absolute_url }}">{{ album.name }}</a></div>
+                {% if not view_user %}
+                    <div class="album-user">
+                        {% trans "user" %}: <a href="{% url imagestore:user username=album.user.username %}">{{ album.user.username }}</a>
+                    </div>
+                {% endif %}
             </div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
