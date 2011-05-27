@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
         name = 'imagestore',
-        version = '2.0.0',
+        version = '2.1.0',
         packages = ['imagestore'],
         install_requires = [
             'django',
@@ -16,7 +16,7 @@ setup(
         author = 'Pavel Zhukov',
         author_email = 'gelios@gmail.com',
         description = 'Django simple image gallery',
-        long_description = open('README').read(),
+        long_description = open('README.rst').read(),
         license = 'GPL',
         keywords = 'django gallery',
         url = 'http://bitbucket.org/zeus/imagestore/'

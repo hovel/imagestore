@@ -7,12 +7,9 @@ from django.conf import settings
 def imagestore_processor(request):
     template = getattr(settings, 'IMAGESTORE_TEMPLATE', False)
     imagestore_show_user = getattr(settings, 'IMAGESTORE_SHOW_USER', True)
+    ret = {'IMAGESTORE_SHOW_USER': imagestore_show_user,}
     if template:
-        return {
-            'IMAGESTORE_TEMPLATE': template,
-            'IMAGESTORE_SHOW_USER': imagestore_show_user,
-        }
-    else:
-        return {}
+        ret['IMAGESTORE_TEMPLATE'] = template,
+    return ret
 
   

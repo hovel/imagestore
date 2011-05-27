@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block imagestore-info %}
-    {% if view_user %}
+    {% if view_user and IMAGESTORE_SHOW_USER %}
         {% with view_user.get_profile as profile %}
             {% include "imagestore/user_info.html" %}
         {% endwith %}

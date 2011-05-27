@@ -17,14 +17,14 @@ autocomletes.register(
     limit=10,
     lookup='istartswith',
 )
-
-autocomletes.register(
-    'place',
-    queryset=GeoPlace.objects.all(),
-    search_fields=('name',),
-    limit=10,
-    lookup='istartswith',
-)
+if GeoPlace:
+    autocomletes.register(
+        'place',
+        queryset=GeoPlace.objects.all(),
+        search_fields=('name',),
+        limit=10,
+        lookup='istartswith',
+    )
 
 urlpatterns = patterns('imagestore.views',
                        url(r'^$', AlbumListView.as_view(), name='index'),

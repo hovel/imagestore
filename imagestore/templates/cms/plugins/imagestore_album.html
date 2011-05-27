@@ -1,0 +1,10 @@
+{% load thumbnail %}
+{% for image in album.images.all %}
+    {% thumbnail image.image "120x120" crop="center" as im %}
+        {% thumbnail image.image "600x600" as full %}
+            <a rel='gallery[pp_gal]' href="{{ full.url }}">
+                    <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
+            </a>
+        {% endthumbnail %}
+    {% endthumbnail %}
+{% endfor %}
