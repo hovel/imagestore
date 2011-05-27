@@ -16,8 +16,7 @@ Installation:
 =============
 
 * Install with pip or easy install (All dependencies will be installed automatically)
-* Symlink or copy imagestore/static/imagestore.css to your MEDIA_ROOT, or write youre own style (staticfiles supported
-as well).
+* Symlink or copy imagestore/static/imagestore.css to your MEDIA_ROOT, or write youre own style (staticfiles supported as well).
 * Add imagestore to your INSTALLED_APPS
 * Add imagestore.urls to your urls with `namespace='imagestore'`
 * Set `IMAGESTORE_SHOW_USER` to False, if you don't want to show information from user profile or have no user profile.
