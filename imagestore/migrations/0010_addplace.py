@@ -3,13 +3,17 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+try:
+    from places.models import GeoPlace
+except:
+    GeoPlace = None
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
-        # Adding field 'Image.place'
-        db.add_column('imagestore_image', 'place', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='images', null=True, to=orm['places.GeoPlace']), keep_default=False)
+        if GeoPlace:
+            # Adding field 'Image.place'
+            db.add_column('imagestore_image', 'place', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='images', null=True, to=orm['places.GeoPlace']), keep_default=False)
 
 
     def backwards(self, orm):

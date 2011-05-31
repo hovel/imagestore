@@ -124,11 +124,12 @@ def setup_imagestore_permissions(instance, created, **kwargs):
             change_album_permission = Permission.objects.get(codename='change_album', content_type__name='Album')
             delete_image_permission = Permission.objects.get(codename='delete_image', content_type__name='Image')
             delete_album_permission = Permission.objects.get(codename='delete_album', content_type__name='Album')
+            instance.user_permissions.add(add_image_permission, add_album_permission,)
+            instance.user_permissions.add(change_image_permission, change_album_permission,)
+            instance.user_permissions.add(delete_image_permission, delete_album_permission,)
         except Permission.DoesNotExist:
             pass
-        instance.user_permissions.add(add_image_permission, add_album_permission,)
-        instance.user_permissions.add(change_image_permission, change_album_permission,)
-        instance.user_permissions.add(delete_image_permission, delete_album_permission,)
+
 
 if SELF_MANAGE:
     post_save.connect(setup_imagestore_permissions, User)
