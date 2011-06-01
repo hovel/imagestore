@@ -9,7 +9,7 @@ def imagestore_processor(request):
     imagestore_show_user = getattr(settings, 'IMAGESTORE_SHOW_USER', True)
     ret = {'IMAGESTORE_SHOW_USER': imagestore_show_user,}
     if template:
-        ret['IMAGESTORE_TEMPLATE'] = template,
+        ret['IMAGESTORE_TEMPLATE'] = template
     return ret
 
   
