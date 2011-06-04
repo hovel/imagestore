@@ -1,9 +1,9 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
         name = 'imagestore',
-        version = '2.1.0',
-        packages = ['imagestore'],
+        version = '2.1.1',
+        packages = find_packages(),
         install_requires = [
             'django',
             'sorl-thumbnail',

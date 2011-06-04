@@ -34,7 +34,7 @@ Django CMS Integration:
 
 Imagestore can show an album as a plugin in django-cms, and can be used as djang-cms app.
 
-To use plugin, just add `imagestore.cms` to your INSTALLED_APPS
+To use plugin, just add `imagestore.imagestore_cms` to your INSTALLED_APPS
 
 If you want to use imagesotore a djang-cms application, you need to tell django where to search imagestore namespace,
 you can do it by adding django-cms urls with 'imagestore' namespace::
