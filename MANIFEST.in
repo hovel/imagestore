@@ -2,3 +2,4 @@ recursive-include imagestore/static *
 recursive-include imagestore/templates *
 recursive-include imagestore/migrations *.py
 recursive-include imagestore/locale *
+include README.rst
