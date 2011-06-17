@@ -4,7 +4,7 @@
     {% for image in images %}
         {% thumbnail image.image carousel.size crop="center" as im %}
             {% thumbnail image.image carousel.full_size as full %}
-                <li><a rel='gallery[pp_gal]' href="{{ full.url }}">
+                <li><a rel='gallery{{ carousel.id }}[pp_gal]' href="{{ full.url }}">
                         <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
                 </a></li>
             {% endthumbnail %}
@@ -14,7 +14,15 @@
 
     <script type="text/javascript">
         $(function(){
-            $('#carusel{{ carousel.id }}').jcarousel()
+            $('#carusel{{ carousel.id }}').jcarousel();
+            $("a[rel^='gallery{{ carousel.id }}']").prettyPhoto({
+            allow_resize: true,
+            changepicturecallback: function() {
+                $(".pp_overlay").css("height", $(document).height());
+            }
+            });
         })
+
+
     </script>
 </div>
