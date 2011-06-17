@@ -1,5 +1,5 @@
 from django.contrib import admin
-from imagestore.models import Image, Album
+from imagestore.models import Image, Album, AlbumUpload
 from sorl.thumbnail.admin import AdminImageMixin
 
 try:
@@ -18,8 +18,13 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = ('admin_thumbnail', 'user', 'order', 'album', 'title')
     raw_id_fields = ('user', )
 
+class AlbumUploadAdmin(admin.ModelAdmin):
+    def has_change_permission(self, request, obj=None):
+        return False
+
 if GeoPlace:
     ImageAdmin.fieldsets[0][1]['fields'].append('place')
     ImageAdmin.raw_id_fields = ('place',)
 
 admin.site.register(Image, ImageAdmin)
+admin.site.register(AlbumUpload, AlbumUploadAdmin)

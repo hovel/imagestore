@@ -1,4 +1,6 @@
 import uuid
+import zipfile
+from django.core.files.base import ContentFile
 import os
 
 from django.db import models
@@ -11,11 +13,18 @@ from sorl.thumbnail import ImageField, get_thumbnail
 from django.contrib.auth.models import User, Permission
 from django.db.models.signals import post_save
 try:
+    import Image as PILImage
+except ImportError:
+    from PIL import Image as PILImage
+
+try:
     from places.models import GeoPlace
 except:
     GeoPlace = None
 
+
 UPLOAD_TO = getattr(settings, 'IMAGESTORE_UPLOAD_TO', 'imagestore/')
+TEMP_DIR = getattr(settings, 'TEMP_DIR', 'temp/')
 SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
 
 #noinspection PyUnusedLocal
@@ -83,7 +92,7 @@ class Image(models.Model):
     title = models.CharField(_('Title'), max_length=20, blank=True, null=True)
     description = models.TextField(_('Description'), blank=True, null=True)
     tags = TagField(_('Tags'), blank=True)
-    order = models.IntegerField(_('Order'), null=False, blank=False, default=0)
+    order = models.IntegerField(_('Order'), default=0)
     image = ImageField(verbose_name = _('File'), upload_to=get_file_path)
     user = models.ForeignKey(User, verbose_name=_('User'), null=True, blank=True, related_name='images')
     created = models.DateTimeField(_('Created'), auto_now_add=True, null=True)
@@ -112,6 +121,65 @@ if GeoPlace:
     field = models.ForeignKey(GeoPlace, verbose_name=_('Place'), null=True, blank=True, related_name='images')
     field.contribute_to_class(Image, 'place')
 
+
+class AlbumUpload(models.Model):
+    """
+    Used django-photologue GalleryUpload method
+    """
+    zip_file = models.FileField(_('images file (.zip)'), upload_to=TEMP_DIR,
+                                help_text=_('Select a .zip file of images to upload into a new Gallery.'))
+    album = models.ForeignKey(
+        Album, null=True, blank=True,
+        help_text=_('Select an album to add these images to. leave this empty to create a new album from the supplied title.')
+    )
+    new_album_name = models.CharField(max_length=255, blank=True, verbose_name=_('New album name'))
+    tags = models.CharField(max_length=255, blank=True, verbose_name=_('tags'))
+
+    class Meta(object):
+        verbose_name = _('gallery upload')
+        verbose_name_plural = _('gallery uploads')
+
+    def save(self, *args, **kwargs):
+        super(AlbumUpload, self).save(*args, **kwargs)
+        album = self.process_zipfile()
+        super(AlbumUpload, self).delete()
+        return album
+
+    def process_zipfile(self):
+        if os.path.isfile(self.zip_file.path):
+            # TODO: implement try-except here
+            zip = zipfile.ZipFile(self.zip_file.path)
+            bad_file = zip.testzip()
+            if bad_file:
+                raise Exception('"%s" in the .zip archive is corrupt.' % bad_file)
+            count = 1
+            album = self.album
+            if not album:
+                album = Album.objects.create(name=self.new_album_name)
+            from cStringIO import StringIO
+            for filename in sorted(zip.namelist()):
+                if filename.startswith('__'): # do not process meta files
+                    continue
+                data = zip.read(filename)
+                if len(data):
+                    try:
+                        # the following is taken from django.newforms.fields.ImageField:
+                        #  load() is the only method that can spot a truncated JPEG,
+                        #  but it cannot be called sanely after verify()
+                        trial_image = PILImage.open(StringIO(data))
+                        trial_image.load()
+                        # verify() is the only method that can spot a corrupt PNG,
+                        #  but it must be called immediately after the constructor
+                        trial_image = PILImage.open(StringIO(data))
+                        trial_image.verify()
+                    except Exception:
+                        # if a "bad" file is found we just skip it.
+                        continue
+                    img = Image(album=album)
+                    img.image.save(filename, ContentFile(data))
+                    img.save()
+            zip.close()
+            return album
 
 #noinspection PyUnusedLocal
 def setup_imagestore_permissions(instance, created, **kwargs):
