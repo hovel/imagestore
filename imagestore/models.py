@@ -124,7 +124,7 @@ if GeoPlace:
 
 class AlbumUpload(models.Model):
     """
-    Used django-photologue GalleryUpload method
+    Just re-written django-photologue GalleryUpload method
     """
     zip_file = models.FileField(_('images file (.zip)'), upload_to=TEMP_DIR,
                                 help_text=_('Select a .zip file of images to upload into a new Gallery.'))
@@ -136,8 +136,8 @@ class AlbumUpload(models.Model):
     tags = models.CharField(max_length=255, blank=True, verbose_name=_('tags'))
 
     class Meta(object):
-        verbose_name = _('gallery upload')
-        verbose_name_plural = _('gallery uploads')
+        verbose_name = _('Album upload')
+        verbose_name_plural = _('Album uploads')
 
     def save(self, *args, **kwargs):
         super(AlbumUpload, self).save(*args, **kwargs)

@@ -2,8 +2,8 @@
 <div id='examples'>
     <ul id='carusel{{ carousel.id }}' class="{{ carousel.skin }}" >
     {% for image in images %}
-        {% thumbnail image.image "72x72" crop="center" as im %}
-            {% thumbnail image.image "600x600" as full %}
+        {% thumbnail image.image carousel.size crop="center" as im %}
+            {% thumbnail image.image carousel.full_size as full %}
                 <li><a rel='gallery[pp_gal]' href="{{ full.url }}">
                         <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
                 </a></li>
