@@ -1,10 +1,12 @@
 {% load tagging_tags %}
 {% load i18n %}
 
-<div id="tag-cloud">
-    <h1>{% trans "Tags" %}</h1>
-    {% tag_cloud_for_model imagestore.Image as image_tags %}
-    {% for tag in image_tags %}
-        <a href={% url imagestore:tag tag.name %}>{{ tag.name }}</a>
-    {% endfor %}
-</div>
+{% if IMAGESTORE_SHOW_TAGS %}
+    <div id="tag-cloud">
+        <h1>{% trans "Tags" %}</h1>
+        {% tag_cloud_for_model imagestore.Image as image_tags %}
+        {% for tag in image_tags %}
+            <a href={% url imagestore:tag tag.name %}>{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+{% endif %}

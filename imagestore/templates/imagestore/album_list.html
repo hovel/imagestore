@@ -42,7 +42,7 @@
                 <div class='album-head'>
                     <a href="{{ album.get_absolute_url }}">
                     {% if album.get_head %}
-                        {% thumbnail album.get_head.image "150x150" as album_head %}
+                        {% thumbnail album.get_head.image "150x150" crop='center' as album_head %}
                             <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}">
                         {% endthumbnail %}
                     {% else %}
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="album-name"><a href="{{ album.get_absolute_url }}">{{ album.name }}</a></div>
-                {% if not view_user %}
+                {% if not view_user and IMAGESTORE_SHOW_USER %}
                     <div class="album-user">
                         {% trans "user" %}: <a href="{% url imagestore:user username=album.user.username %}">{{ album.user.username }}</a>
                     </div>

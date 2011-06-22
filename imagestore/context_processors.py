@@ -6,8 +6,10 @@ from django.conf import settings
 
 def imagestore_processor(request):
     template = getattr(settings, 'IMAGESTORE_TEMPLATE', False)
-    imagestore_show_user = getattr(settings, 'IMAGESTORE_SHOW_USER', True)
-    ret = {'IMAGESTORE_SHOW_USER': imagestore_show_user,}
+    ret = {
+        'IMAGESTORE_SHOW_USER': getattr(settings, 'IMAGESTORE_SHOW_USER', True),
+        'IMAGESTORE_SHOW_TAGS': getattr(settings, 'IMAGESTORE_SHOW_TAGS', True)
+        }
     if template:
         ret['IMAGESTORE_TEMPLATE'] = template
     return ret
