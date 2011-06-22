@@ -8,7 +8,7 @@ except:
     GeoPlace = None
 
 class AlbumAdmin(admin.ModelAdmin):
-    fieldsets = ((None, {'fields': ['name', 'user', 'is_public', 'head']}),)
+    fieldsets = ((None, {'fields': ['name', 'user', 'is_public']}),)
     list_display = ('name', 'admin_thumbnail','user', 'created', 'updated', 'is_public')
 
 admin.site.register(Album, AlbumAdmin)
