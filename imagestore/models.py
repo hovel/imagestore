@@ -49,6 +49,8 @@ class Album(models.Model):
     is_public = models.BooleanField(_('Is public'), default=True)
     head = models.ForeignKey('Image', related_name='head_of', null=True, blank=True)
 
+    order = models.IntegerField(_('Order'), default=0)
+
     def get_head(self):
         if self.head:
             return self.head
@@ -104,7 +106,7 @@ class Image(models.Model):
         return 'imagestore:image', (), {'pk': self.id}
 
     def __unicode__(self):
-        return self.title
+        return self.id
 
     def admin_thumbnail(self):
         try:
