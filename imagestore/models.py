@@ -106,7 +106,7 @@ class Image(models.Model):
         return 'imagestore:image', (), {'pk': self.id}
 
     def __unicode__(self):
-        return self.id
+        return '%s'% self.id
 
     def admin_thumbnail(self):
         try:
