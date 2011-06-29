@@ -91,7 +91,7 @@ class Image(models.Model):
             ('moderate_images', 'View, update and delete any image'),
         )
         
-    title = models.CharField(_('Title'), max_length=20, blank=True, null=True)
+    title = models.CharField(_('Title'), max_length=100, blank=True, null=True)
     description = models.TextField(_('Description'), blank=True, null=True)
     tags = TagField(_('Tags'), blank=True)
     order = models.IntegerField(_('Order'), default=0)
