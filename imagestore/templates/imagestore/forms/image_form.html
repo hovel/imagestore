@@ -25,6 +25,7 @@
 {% endblock breadcrumb %}
 
 {% block content %}
+    <h1>{% trans "Upload image" %}</h1>
     <form action="." method="post" enctype="multipart/form-data">
     {% csrf_token %}
    

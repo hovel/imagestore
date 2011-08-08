@@ -12,17 +12,20 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from tagging.models import TaggedItem
 from tagging.utils import get_tag
-from forms import ImageForm, AlbumForm
+from django.contrib.contenttypes.models import ContentType
+from utils import load_class
 
 IMAGESTORE_IMAGES_ON_PAGE = getattr(settings, 'IMAGESTORE_IMAGES_ON_PAGE', 20)
 
 IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 20)
 IMAGESTORE_ON_IMAGE_PAGE = getattr(settings, 'IMAGESTORE_ON_IMAGE_PAGE', 9)
 
-try:
-    from places.models import GeoPlace
-except:
-    GeoPlace = None
+ImageForm = load_class(getattr(settings, 'IMAGESTORE_IMAGE_FORM', 'imagestore.forms.ImageForm'))
+AlbumForm = load_class(getattr(settings, 'IMAGESTORE_ALBUM_FORM', 'imagestore.forms.AlbumForm'))
+
+
+album_type = load_class('imagestore.models.Album')._meta.app_label
+image_type = load_class('imagestore.models.Image')._meta.app_label
 
 class AlbumListView(ListView):
     context_object_name = 'album_list'
@@ -125,7 +128,7 @@ class CreateAlbum(CreateView):
     form_class = AlbumForm
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('imagestore.add_album'))
+    @method_decorator(permission_required('%s.add_album' % album_type))
     def dispatch(self, *args, **kwargs):
         return super(CreateAlbum, self).dispatch(*args, **kwargs)
 
@@ -151,7 +154,7 @@ class UpdateAlbum(UpdateView):
     get_queryset = filter_album_queryset
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('imagestore.add_album'))
+    @method_decorator(permission_required('%s.add_album' % album_type))
     def dispatch(self, *args, **kwargs):
         return super(UpdateAlbum, self).dispatch(*args, **kwargs)
 
@@ -166,7 +169,7 @@ class DeleteAlbum(DeleteView):
     get_queryset = filter_album_queryset
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('imagestore.change_album'))
+    @method_decorator(permission_required('%s.change_album' % album_type))
     def dispatch(self, *args, **kwargs):
         return super(DeleteAlbum, self).dispatch(*args, **kwargs)
 
@@ -177,16 +180,9 @@ class CreateImage(CreateView):
     form_class = ImageForm
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('imagestore.add_image'))
+    @method_decorator(permission_required('%s.add_image' % image_type))
     def dispatch(self, *args, **kwargs):
         return super(CreateImage, self).dispatch(*args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super(CreateImage, self).get_form_kwargs()
-        if 'place_id' in self.kwargs:
-            place = get_object_or_404(GeoPlace,id=int(self.kwargs['place_id']))
-            kwargs['initial']['place_text'] = place.name
-        return kwargs
 
     def get_form(self, form_class):
         return form_class(user=self.request.user, **self.get_form_kwargs())
@@ -201,7 +197,7 @@ class CreateImage(CreateView):
 
 
 def get_edit_image_queryset(self):
-    if self.request.user.has_perm('imagestore.moderate_images'):
+    if self.request.user.has_perm('%s.moderate_images' % image_type):
         return Image.objects.all()
     else:
         return Image.objects.filter(user=self.request.user)
@@ -218,7 +214,7 @@ class UpdateImage(UpdateView):
         return form_class(user=self.object.user, **self.get_form_kwargs())
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('imagestore.change_image'))
+    @method_decorator(permission_required('%s.change_image' % image_type))
     def dispatch(self, *args, **kwargs):
         return super(UpdateImage, self).dispatch(*args, **kwargs)
 
@@ -233,6 +229,6 @@ class DeleteImage(DeleteView):
     get_queryset = get_edit_image_queryset
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('imagestore.delete_image'))
+    @method_decorator(permission_required('%s.delete_image' % image_type))
     def dispatch(self, *args, **kwargs):
         return super(DeleteImage, self).dispatch(*args, **kwargs)

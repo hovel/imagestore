@@ -7,14 +7,13 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 from models import *
+import os
+from django.contrib.auth.models import User
 
 try:
-    from places.models import GeoPlace
-    from places.tests import SimpleTest
+    from lxml import html
 except:
-    GeoPlace = None
-
-from lxml import html
+    raise ImportError('Imagestore require lxml for self-testing')
 
 class ImagestoreTest(TestCase):
     def setUp(self):
@@ -23,10 +22,6 @@ class ImagestoreTest(TestCase):
         self.client = Client()
         self.album = Album(name='test album', user=self.user)
         self.album.save()
-
-        if GeoPlace:
-            self.geo_test = SimpleTest('fakeRun')
-            self.geo_test.setUp()
 
     def test_empty_index(self):
         response = self.client.get(reverse('imagestore:index'))
@@ -88,21 +83,12 @@ class ImagestoreTest(TestCase):
         values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
         values['image'] = self.image_file
         values['album'] = Album.objects.filter(user=self.user)[0].id
-        if GeoPlace:
-            self.geo_test.test_add_place()
-            values['place_text'] = self.geo_test.place.name
         response = self.client.post(reverse('imagestore:upload'), values, follow=True)
         self.assertEqual(response.status_code, 200)
-        if GeoPlace:
-            self.assertTrue(response.context['image'].place==self.geo_test.place)
         img_url = Image.objects.get(user__username='zeus').get_absolute_url()
         response = self.client.get(img_url)
         self.assertEqual(response.status_code, 200)
         self.test_user()
-        if GeoPlace:
-            response = self.client.get(self.geo_test.place.get_absolute_url())
-            self.assertEqual(response.status_code, 200)
-            self.assertContains(response, img_url)
 
     def test_tagging(self):
         self.test_album_creation()

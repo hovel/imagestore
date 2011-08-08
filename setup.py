@@ -2,13 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
         name = 'imagestore',
-        version = '2.1.8',
+        version = '2.5.0',
         packages = find_packages(),
         install_requires = [
             'django',
             'sorl-thumbnail',
             'south',
-            'django-mptt',
             'pil',
             'django-fancy-autocomplete',
             'django-tagging',

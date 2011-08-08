@@ -1,11 +1,7 @@
 from django.contrib import admin
 from imagestore.models import Image, Album, AlbumUpload
 from sorl.thumbnail.admin import AdminImageMixin, AdminInlineImageMixin
-
-try:
-    from places.models import GeoPlace
-except:
-    GeoPlace = None
+from django.conf import settings
 
 class InlineImageAdmin(AdminInlineImageMixin, admin.TabularInline):
     model = Image
@@ -31,9 +27,10 @@ class AlbumUploadAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
 
-if GeoPlace:
-    ImageAdmin.fieldsets[0][1]['fields'].append('place')
-    ImageAdmin.raw_id_fields = ('place',)
+IMAGE_MODEL = getattr(settings, 'IMAGESTORE_IMAGE_MODEL', None)
+if not IMAGE_MODEL:
+    admin.site.register(Image, ImageAdmin)
 
-admin.site.register(Image, ImageAdmin)
-admin.site.register(AlbumUpload, AlbumUploadAdmin)
+ALBUM_MODEL = getattr(settings, 'IMAGESTORE_ALBUM_MODEL', None)
+if not ALBUM_MODEL:
+    admin.site.register(AlbumUpload, AlbumUploadAdmin)
