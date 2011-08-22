@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
         name = 'imagestore',
-        version = '2.5.0',
+        version = '2.6.0',
         packages = find_packages(),
         install_requires = [
             'django',
@@ -14,7 +14,7 @@ setup(
             ],
         author = 'Pavel Zhukov',
         author_email = 'gelios@gmail.com',
-        description = 'Django simple image gallery',
+        description = 'Gallery solution for django projects',
         long_description = open('README.rst').read(),
         license = 'GPL',
         keywords = 'django gallery',

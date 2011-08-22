@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html>
+    <head>
+        <meta http-equiv="content-type" content="application/html; charset=utf-8">
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/favicon.png" />
+
+        <link rel="stylesheet" href="{{ STATIC_URL }}reset.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}style.css">
+
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/i18n/jquery-ui-i18n.min.js"></script>
+        <script src="http://yandex.st/json2/2011-01-18/json2.min.js"></script>
+
+        <script src="{{ STATIC_URL }}csrf.js"></script>
+        
+        <title>{% block title %}{% endblock %}</title>
+
+        {% block head %}{% endblock %}
+
+    </head>
+    <body>
+        <div id="header">
+            <div id='menu'>
+                <ul>
+                    <li><a href="/">Main</a></li>
+                    <li><a href="/gallery">Example</a></li>
+                    <li><a href="">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="colmask {% block layout-menu %}fullpage {% endblock %}">
+            {% block full-content %} {% endblock %}
+            <div class="{% block layout-type %}colone{% endblock %}">
+                <div class="col1wrap">
+                    <div class="col1">
+                        <div id="breadcrumb">
+                            {% block breadcrumb %}
+                            {% endblock breadcrumb %}
+                        </div>
+                        <div id="content">
+                            {% block content %}
+                            {% endblock content %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col2">
+                    {% block content-related %}
+                    {% endblock %}
+                </div>
+            </div>
+            {% block end-full-content %} {% endblock %}
+        <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+        <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="button" data-yashareQuickServices="yaru,vkontakte,facebook,twitter,odnoklassniki,moimir,lj,friendfeed,moikrug"></div>
+        </div>
+        <div id="footer">
+            <div id="hovel-logo">
+                <a href="http://hovel.ru">hovel.ru</a>
+            </div>
+
+        </div>
+    </body>
+</html>

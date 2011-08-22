@@ -18,7 +18,6 @@ from utils import load_class
 IMAGESTORE_IMAGES_ON_PAGE = getattr(settings, 'IMAGESTORE_IMAGES_ON_PAGE', 20)
 
 IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 20)
-IMAGESTORE_ON_IMAGE_PAGE = getattr(settings, 'IMAGESTORE_ON_IMAGE_PAGE', 9)
 
 ImageForm = load_class(getattr(settings, 'IMAGESTORE_IMAGE_FORM', 'imagestore.forms.ImageForm'))
 AlbumForm = load_class(getattr(settings, 'IMAGESTORE_ALBUM_FORM', 'imagestore.forms.AlbumForm'))
