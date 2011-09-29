@@ -16,3 +16,8 @@ After you create your classes, tell imagestore to use them by setting next setti
 You should set settings as string with python path to required class. For example::
 
     IMAGESTORE_IMAGE_MODEL = 'image.models.Image'
+
+Warning
+-------
+
+It is required to add app_label to your Image and Album models.

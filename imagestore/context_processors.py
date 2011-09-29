@@ -4,6 +4,9 @@
 __author__ = 'zeus'
 from django.conf import settings
 from utils import get_model_string
+from imagestore.models import Album, Image
+from imagestore.models import image_applabel, image_classname
+from imagestore.models import album_applabel, album_classname
 
 def imagestore_processor(request):
     template = getattr(settings, 'IMAGESTORE_TEMPLATE', False)
@@ -14,6 +17,10 @@ def imagestore_processor(request):
         }
     if template:
         ret['IMAGESTORE_TEMPLATE'] = template
+    ret['imagestore_perms'] = {
+        'add_image': request.user.has_perm('%s.add_%s' % (image_applabel, image_classname)),
+        'add_album': request.user.has_perm('%s.add_%s' % (album_applabel, album_classname)),
+    }
     return ret
 
   

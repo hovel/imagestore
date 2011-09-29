@@ -2,6 +2,8 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from imagestore.models import Album, Image
+from imagestore.models import image_applabel, image_classname
+from imagestore.models import album_applabel, album_classname
 from django.shortcuts import get_object_or_404
 from django.http import  Http404, HttpResponseRedirect
 from django.conf import settings
@@ -21,10 +23,6 @@ IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 20)
 
 ImageForm = load_class(getattr(settings, 'IMAGESTORE_IMAGE_FORM', 'imagestore.forms.ImageForm'))
 AlbumForm = load_class(getattr(settings, 'IMAGESTORE_ALBUM_FORM', 'imagestore.forms.AlbumForm'))
-
-
-album_type = load_class('imagestore.models.Album')._meta.app_label
-image_type = load_class('imagestore.models.Image')._meta.app_label
 
 class AlbumListView(ListView):
     context_object_name = 'album_list'
@@ -127,7 +125,7 @@ class CreateAlbum(CreateView):
     form_class = AlbumForm
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('%s.add_album' % album_type))
+    @method_decorator(permission_required('%s.add_%s' % (album_applabel, album_classname)))
     def dispatch(self, *args, **kwargs):
         return super(CreateAlbum, self).dispatch(*args, **kwargs)
 
@@ -153,7 +151,7 @@ class UpdateAlbum(UpdateView):
     get_queryset = filter_album_queryset
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('%s.add_album' % album_type))
+    @method_decorator(permission_required('%s.add_%s' % (album_applabel, album_classname)))
     def dispatch(self, *args, **kwargs):
         return super(UpdateAlbum, self).dispatch(*args, **kwargs)
 
@@ -168,7 +166,7 @@ class DeleteAlbum(DeleteView):
     get_queryset = filter_album_queryset
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('%s.change_album' % album_type))
+    @method_decorator(permission_required('%s.change_%s' % (album_applabel, album_classname)))
     def dispatch(self, *args, **kwargs):
         return super(DeleteAlbum, self).dispatch(*args, **kwargs)
 
@@ -179,7 +177,7 @@ class CreateImage(CreateView):
     form_class = ImageForm
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('%s.add_image' % image_type))
+    @method_decorator(permission_required('%s.add_%s' % (image_applabel, image_classname)))
     def dispatch(self, *args, **kwargs):
         return super(CreateImage, self).dispatch(*args, **kwargs)
 
@@ -196,7 +194,7 @@ class CreateImage(CreateView):
 
 
 def get_edit_image_queryset(self):
-    if self.request.user.has_perm('%s.moderate_images' % image_type):
+    if self.request.user.has_perm('%s.moderate_%s' % (image_applabel, image_classname)):
         return Image.objects.all()
     else:
         return Image.objects.filter(user=self.request.user)
@@ -213,7 +211,7 @@ class UpdateImage(UpdateView):
         return form_class(user=self.object.user, **self.get_form_kwargs())
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('%s.change_image' % image_type))
+    @method_decorator(permission_required('%s.change_%s' % (image_applabel, image_classname)))
     def dispatch(self, *args, **kwargs):
         return super(UpdateImage, self).dispatch(*args, **kwargs)
 
@@ -228,6 +226,6 @@ class DeleteImage(DeleteView):
     get_queryset = get_edit_image_queryset
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('%s.delete_image' % image_type))
+    @method_decorator(permission_required('%s.delete_%s' % (image_applabel, image_classname)))
     def dispatch(self, *args, **kwargs):
         return super(DeleteImage, self).dispatch(*args, **kwargs)

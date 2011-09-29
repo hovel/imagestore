@@ -70,12 +70,15 @@ def setup_imagestore_permissions(instance, created, **kwargs):
         if not created:
             return
         try:
+            from imagestore.models import Album, Image
             album_type = ContentType.objects.get(
-                app_label=load_class('imagestore.models.Album')._meta.app_label,
+                #app_label=load_class('imagestore.models.Album')._meta.app_label,
+                app_label = Album._meta.app_label,
                 name='Album'
             )
             image_type = ContentType.objects.get(
-                app_label=load_class('imagestore.models.Image')._meta.app_label,
+                #app_label=load_class('imagestore.models.Image')._meta.app_label,
+                app_label = Image._meta.app_label,
                 name='Image'
             )
             add_image_permission = Permission.objects.get(codename='add_image', content_type=image_type)

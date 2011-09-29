@@ -13,10 +13,10 @@
         {% endblock %}
         <div id="controls">
             <ul>
-                {% if perms.imagestore.add_image %}
+                {% if imagestore_perms.add_image %}
                     <li><a href={% url imagestore:upload %}>{% trans "Upload image" %}</a></li>
                 {% endif %}
-                {% if perms.imagestore.add_album %}
+                {% if imagestore_perms.add_album %}
                     <li><a href={% url imagestore:create-album %}>{% trans "Create new album" %}</a></li>
                 {% endif %}
                 {% block controls %}
