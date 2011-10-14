@@ -6,123 +6,196 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IMAGESTORE \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-17 22:20+0400\n"
+"POT-Creation-Date: 2011-10-14 04:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Zhukov <gelios@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:21 models.py:84
+#: forms.py:18 models.py:95 models/bases/image.py:40
 msgid "Description"
 msgstr "Описание"
 
-#: forms.py:29 forms.py:30 models.py:112
-msgid "Place"
-msgstr "Место"
-
-#: forms.py:42
-msgid "Place doesn't found"
-msgstr "Место не найдено"
-
-#: models.py:29 models.py:91 templates/imagestore/image-scope.html:6
+#: models.py:38 models.py:102 imagestore_cms/cms_plugins.py:13
+#: imagestore_cms/models.py:12 imagestore_cms/models.py:15 models/album.py:14
+#: models/bases/image.py:47 templates/imagestore/image-scope.html:6
 #: templates/imagestore/image_lists/image_list.html:18
 msgid "Album"
 msgstr "Альбом"
 
-#: models.py:30
+#: models.py:39 models/album.py:15
 msgid "Albums"
 msgstr "Альбомы"
 
-#: models.py:36 models.py:88 templates/imagestore/image-scope.html:3
-#: templates/imagestore/user.html:8 templates/imagestore/user.html.py:17
+#: models.py:45 models.py:99 models/bases/album.py:36 models/bases/image.py:44
+#: templates/imagestore/image-scope.html:3 templates/imagestore/user.html:8
+#: templates/imagestore/user.html.py:17 templates/imagestore/user_info.html:5
 #: templates/imagestore/image_lists/image_list.html:15
 msgid "User"
 msgstr "Пользователь"
 
-#: models.py:37
+#: models.py:46 models/bases/album.py:37
 msgid "Name"
 msgstr "Имя"
 
-#: models.py:38 models.py:89
+#: models.py:47 models.py:100 models/bases/album.py:38
+#: models/bases/image.py:45
 msgid "Created"
 msgstr "Создано"
 
-#: models.py:39 models.py:90
+#: models.py:48 models.py:101 models/bases/album.py:39
+#: models/bases/image.py:46
 msgid "Updated"
 msgstr "Обновлено"
 
-#: models.py:40
+#: models.py:49 models/bases/album.py:40
 msgid "Is public"
 msgstr "Публичный"
 
-#: models.py:68 templates/imagestore/album_list.html:38
-msgid "Empty album"
-msgstr "Пустой альбом"
-
-#: models.py:70
-msgid "Head"
-msgstr "Обложка"
-
-#: models.py:76 templates/imagestore/image.html:7
-msgid "Image"
-msgstr "Изображение"
-
-#: models.py:77
-msgid "Images"
-msgstr "Изображения"
-
-#: models.py:83
-msgid "Title"
-msgstr "Название"
-
-#: models.py:85 templates/imagestore/image.html:71
-#: templates/imagestore/tag-cloud.html:5
-msgid "Tags"
-msgstr "Метки"
-
-#: models.py:86
+#: models.py:52 models.py:97 models/bases/album.py:43 models/bases/image.py:42
 msgid "Order"
 msgstr "Порядок"
 
-#: models.py:87
+#: models.py:79 models/bases/album.py:70
+#: templates/imagestore/album_list.html:50
+msgid "Empty album"
+msgstr "Пустой альбом"
+
+#: models.py:81 models/bases/album.py:72
+msgid "Head"
+msgstr "Обложка"
+
+#: models.py:87 models/image.py:13 templates/imagestore/image.html:7
+msgid "Image"
+msgstr "Изображение"
+
+#: models.py:88 models/image.py:14
+msgid "Images"
+msgstr "Изображения"
+
+#: models.py:94 models/bases/image.py:39
+msgid "Title"
+msgstr "Название"
+
+#: models.py:96 models/bases/image.py:41 templates/imagestore/image.html:62
+#: templates/imagestore/tag-cloud.html:6
+msgid "Tags"
+msgstr "Метки"
+
+#: models.py:98 models/bases/image.py:43
 msgid "File"
 msgstr "Файл"
 
-#: models.py:108
+#: models.py:119 models/bases/image.py:64
 msgid "Thumbnail"
 msgstr "Эскиз"
 
-#: views.py:49
+#: models.py:123 templates/imagestore/image.html:70
+msgid "Place"
+msgstr "Место"
+
+#: models.py:131 models/upload.py:26
+msgid "images file (.zip)"
+msgstr ""
+
+#: models.py:132 models/upload.py:27
+msgid "Select a .zip file of images to upload into a new Gallery."
+msgstr ""
+
+#: models.py:135 models/upload.py:32
+msgid ""
+"Select an album to add these images to. leave this empty to create a new "
+"album from the supplied title."
+msgstr ""
+
+#: models.py:137 models/upload.py:37
+msgid "New album name"
+msgstr ""
+
+#: models.py:138 models/upload.py:40
+msgid "tags"
+msgstr ""
+
+#: models.py:141 models/upload.py:43
+msgid "Album upload"
+msgstr ""
+
+#: models.py:142 models/upload.py:44
+#, fuzzy
+msgid "Album uploads"
+msgstr "Альбомы"
+
+#: views.py:54
 #, python-format
 msgid "No Tag found matching \"%s\"."
 msgstr "Нет тэгов совпадающих с \"%s\"."
+
+#: imagestore_cms/cms_app.py:11
+#, fuzzy
+msgid "Imagestore App"
+msgstr "Изображения"
+
+#: imagestore_cms/cms_plugins.py:24
+#, fuzzy
+msgid "Album as carousel"
+msgstr "Альбомы пользователя"
+
+#: imagestore_cms/models.py:16
+msgid "Skin"
+msgstr ""
+
+#: imagestore_cms/models.py:17
+#, fuzzy
+msgid "Image limit"
+msgstr "Изображение"
+
+#: imagestore_cms/models.py:18
+#, fuzzy
+msgid "Thumbnail size"
+msgstr "Эскиз"
+
+#: imagestore_cms/models.py:19
+msgid "Full size view"
+msgstr ""
+
+#: models/upload.py:38
+msgid ""
+"If not empty new album with this name will be created and images will be "
+"upload to this album"
+msgstr ""
 
 #: templates/imagestore/album_delete.html:6
 msgid "Are you sure that you would like to delete this album?"
 msgstr "Вы уверенны, что хотите удалить это изображение"
 
 #: templates/imagestore/album_delete.html:9
+#: templates/imagestore/image_confirm_delete.html:8
 #: templates/imagestore/image_delete.html:9
 msgid "Yes"
 msgstr "Да"
 
 #: templates/imagestore/album_delete.html:11
+#: templates/imagestore/image_confirm_delete.html:10
 #: templates/imagestore/image_delete.html:11
 msgid "No"
 msgstr "Нет"
 
 #: templates/imagestore/album_list.html:7
-#: templates/imagestore/album_list.html:26
+#: templates/imagestore/album_list.html:34
 msgid "Albums for user"
 msgstr "Альбомы пользователя"
 
 #: templates/imagestore/album_list.html:9
-#: templates/imagestore/album_list.html:28
+#: templates/imagestore/album_list.html:36
 msgid "All albums"
 msgstr "Все альбомы"
 
-#: templates/imagestore/album_list.html:16 templates/imagestore/image.html:12
+#: templates/imagestore/album_list.html:16
+#: templates/imagestore/category.html:9 templates/imagestore/category.html:16
+#: templates/imagestore/category.html:18 templates/imagestore/category.html:29
+#: templates/imagestore/image-form.html:64 templates/imagestore/image.html:12
+#: templates/imagestore/tag.html:7 templates/imagestore/tag.html.py:12
 #: templates/imagestore/user.html:8 templates/imagestore/user.html.py:12
 #: templates/imagestore/forms/album_form.html:13
 #: templates/imagestore/forms/image_form.html:23
@@ -130,12 +203,14 @@ msgstr "Все альбомы"
 msgid "Gallery"
 msgstr "Галерея"
 
-#: templates/imagestore/album_list.html:44
+#: templates/imagestore/album_list.html:58
 msgid "user"
 msgstr "пользователь"
 
-#: templates/imagestore/base.html:17
+#: templates/imagestore/base.html:17 templates/imagestore/image-form.html:7
+#: templates/imagestore/image-form.html:65
 #: templates/imagestore/forms/image_form.html:7
+#: templates/imagestore/forms/image_form.html:28
 msgid "Upload image"
 msgstr "Загрузить изображение"
 
@@ -143,30 +218,41 @@ msgstr "Загрузить изображение"
 msgid "Create new album"
 msgstr "Создать новый альбом"
 
-#: templates/imagestore/image-scope.html:9
+#: templates/imagestore/category.html:31
+msgid "Categories"
+msgstr "Категории"
+
+#: templates/imagestore/category.html:33
+msgid "All images:"
+msgstr "Все изображения:"
+
+#: templates/imagestore/image-form.html:71
+#: templates/imagestore/forms/image_form.html:69
+msgid "Upload"
+msgstr "Загрузить"
+
+#: templates/imagestore/image-scope.html:9 templates/imagestore/tag.html:7
+#: templates/imagestore/tag.html.py:13 templates/imagestore/tag.html:17
 msgid "Tag"
 msgstr "Метка"
 
-#: templates/imagestore/image.html:17
-msgid "Uploaded by"
-msgstr "Загружено"
-
-#: templates/imagestore/image.html:51
+#: templates/imagestore/image.html:41
 msgid "previous image"
 msgstr "предыдущее изображение"
 
-#: templates/imagestore/image.html:54
+#: templates/imagestore/image.html:44
 msgid "next image"
 msgstr "следующее изображение"
 
-#: templates/imagestore/image.html:64
+#: templates/imagestore/image.html:54
 msgid "Edit info"
 msgstr "Редактировать информацию"
 
-#: templates/imagestore/image.html:65
+#: templates/imagestore/image.html:55
 msgid "Delete image"
 msgstr "Удалить изображение"
 
+#: templates/imagestore/image_confirm_delete.html:6
 #: templates/imagestore/image_delete.html:6
 msgid "Are you sure that you would like to delete this image?"
 msgstr "Вы уверенны, что хотите удалить это изображение"
@@ -194,29 +280,25 @@ msgstr "Создать альбом"
 msgid "Save"
 msgstr "Сохранить"
 
-#: templates/imagestore/forms/image_form.html:56
-msgid "Upload"
-msgstr "Загрузить"
-
 #: templates/imagestore/image_lists/image_list.html:21
 msgid "Tag:"
 msgstr "Метка"
 
-#: templates/imagestore/image_lists/image_list.html:28
+#: templates/imagestore/image_lists/image_list.html:43
 msgid "Change album"
 msgstr "Изменить альбом"
 
+#~ msgid "Place doesn't found"
+#~ msgstr "Место не найдено"
+
+#~ msgid "Uploaded by"
+#~ msgstr "Загружено"
+
 #~ msgid "Category"
 #~ msgstr "Категория"
-
-#~ msgid "Categories"
-#~ msgstr "Категории"
 
 #~ msgid "Slug"
 #~ msgstr "Метка"
 
 #~ msgid "Image was created successfully."
 #~ msgstr "Изображение загружено успешно"
-
-#~ msgid "All images:"
-#~ msgstr "Все изображения:"
