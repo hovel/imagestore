@@ -1,4 +1,7 @@
-2.3.0
+2.6.2
+Fix previous/next links when ordering enable
 
-* Replacable Image and Album models
+2.6.0
+
+* Replaceable Image and Album models
 * Add testapp with example gallery

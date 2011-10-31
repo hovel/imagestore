@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from models import *
 import os
 from django.contrib.auth.models import User
+from django.db import models
 
 try:
     from lxml import html
@@ -22,6 +23,28 @@ class ImagestoreTest(TestCase):
         self.client = Client()
         self.album = Album(name='test album', user=self.user)
         self.album.save()
+
+    def _upload_test_image(self, username='zeus', password='zeus'):
+        self.client.login(username=username, password=password)
+        self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'))
+        response = self.client.get(reverse('imagestore:upload'))
+        self.assertEqual(response.status_code, 200)
+        tree = html.fromstring(response.content)
+        values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
+        values['image'] = self.image_file
+        values['album'] = Album.objects.filter(user=self.user)[0].id
+        response = self.client.post(reverse('imagestore:upload'), values, follow=True)
+        return response
+
+    def _create_test_album(self, username='zeus', password='zeus'):
+        self.client.login(username=username, password=password)
+        response = self.client.get(reverse('imagestore:create-album'))
+        self.assertEqual(response.status_code, 200)
+        tree = html.fromstring(response.content)
+        values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
+        values['name'] = 'test album creation'
+        response = self.client.post(reverse('imagestore:create-album'), values, follow=True)
+        return response
 
     def test_empty_index(self):
         response = self.client.get(reverse('imagestore:index'))
@@ -43,17 +66,11 @@ class ImagestoreTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_album_creation(self):
-        self.client.login(username='zeus', password='zeus')
-        response = self.client.get(reverse('imagestore:create-album'))
-        self.assertEqual(response.status_code, 200)
-        tree = html.fromstring(response.content)
-        values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
-        values['name'] = 'test album creation'
-        self.client.post(reverse('imagestore:create-album'), values, follow=True)
+        response = self._create_test_album()
         self.assertEqual(response.status_code, 200)
 
     def test_album_edit(self):
-        self.test_album_creation()
+        response = self._create_test_album()
         album_id = Album.objects.get(name='test album creation').id
         self.client.login(username='zeus', password='zeus')
         response = self.client.get(reverse('imagestore:update-album', kwargs={'pk': album_id}))
@@ -66,7 +83,7 @@ class ImagestoreTest(TestCase):
         self.assertTrue(Album.objects.get(id=album_id).name == 'test album update')
 
     def test_album_delete(self):
-        self.test_album_creation()
+        response = self._create_test_album()
         self.client.login(username='zeus', password='zeus')
         album_id = Album.objects.get(name='test album creation').id
         response = self.client.post(reverse('imagestore:delete-album', kwargs={'pk': album_id}), follow=True)
@@ -75,15 +92,8 @@ class ImagestoreTest(TestCase):
 
 
     def test_image_upload(self):
-        self.test_album_creation()
-        self.client.login(username='zeus', password='zeus')
-        response = self.client.get(reverse('imagestore:upload'))
-        self.assertEqual(response.status_code, 200)
-        tree = html.fromstring(response.content)
-        values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
-        values['image'] = self.image_file
-        values['album'] = Album.objects.filter(user=self.user)[0].id
-        response = self.client.post(reverse('imagestore:upload'), values, follow=True)
+        response = self._create_test_album()
+        response = self._upload_test_image()
         self.assertEqual(response.status_code, 200)
         img_url = Image.objects.get(user__username='zeus').get_absolute_url()
         response = self.client.get(img_url)
@@ -91,7 +101,7 @@ class ImagestoreTest(TestCase):
         self.test_user()
 
     def test_tagging(self):
-        self.test_album_creation()
+        response = self._create_test_album()
         self.client.login(username='zeus', password='zeus')
         response = self.client.get(reverse('imagestore:upload'))
         self.assertEqual(response.status_code, 200)
@@ -108,7 +118,8 @@ class ImagestoreTest(TestCase):
 
     def test_delete(self):
         User.objects.create_user('bad', 'bad@example.com', 'bad')
-        self.test_image_upload()
+        response = self._create_test_album()
+        self._upload_test_image()
         self.client.login(username='bad', password='bad')
         image_id = Image.objects.get(user__username='zeus').id
         response = self.client.post(reverse('imagestore:delete-image', kwargs={'pk': image_id}), follow=True)
@@ -119,7 +130,7 @@ class ImagestoreTest(TestCase):
         self.assertEqual(len(Image.objects.all()), 0)
 
     def test_update_image(self):
-        self.test_image_upload()
+        self._upload_test_image()
         self.client.login(username='zeus', password='zeus')
         image_id = Image.objects.get(user__username='zeus').id
         response = self.client.get(reverse('imagestore:update-image', kwargs={'pk': image_id}), follow=True)
@@ -132,3 +143,20 @@ class ImagestoreTest(TestCase):
         self.client.post(reverse('imagestore:update-image', kwargs={'pk': image_id}), values, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(Image.objects.get(user__username='zeus').title == 'changed title')
+
+    def test_prev_next_with_ordering(self):
+        self.test_album_creation()
+        for i in range(1, 6):
+            self._upload_test_image()
+            img = Image.objects.order_by('-id')[0]
+            img.order = i
+            img.save()
+        # Swap two id's
+        im1 = Image.objects.get(order=2)
+        im2 = Image.objects.get(order=4)
+        im1.order, im2.order = 4, 2
+        im1.save()
+        im2.save()
+        response = self.client.get(Image.objects.get(order=3).get_absolute_url())
+        self.assertEqual(response.context['next'], im1)
+        self.assertEqual(response.context['previous'], im2)

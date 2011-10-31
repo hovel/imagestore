@@ -16,6 +16,7 @@ from tagging.models import TaggedItem
 from tagging.utils import get_tag
 from django.contrib.contenttypes.models import ContentType
 from utils import load_class
+from django.db.models import Q
 
 IMAGESTORE_IMAGES_ON_PAGE = getattr(settings, 'IMAGESTORE_IMAGES_ON_PAGE', 20)
 
@@ -100,17 +101,26 @@ class ImageView(DetailView):
                 raise PermissionDenied
         base_qs = self.get_queryset()
         count = base_qs.count()
-        img_pos = base_qs.filter(id__lt=image.id).count()
+        img_pos = base_qs.filter(
+            Q(order__lt=image.order)|
+            Q(id__lt=image.id, order=image.order)
+        ).count()
         next = None
         previous = None
         if count - 1 > img_pos:
             try:
-                next = base_qs.filter(id__gt=image.id)[0]
+                next = base_qs.filter(
+                    Q(order__gt=image.order)|
+                    Q(id__gt=image.id, order=image.order)
+                )[0]
             except IndexError:
                 pass
         if img_pos > 0:
             try:
-                previous = base_qs.filter(id__lt=image.id)[0]
+                previous = base_qs.filter(
+                    Q(order__lt=image.order)|
+                    Q(id__lt=image.id, order=image.order)
+                ).order_by('-order', '-id')[0]
             except IndexError:
                 pass
         context['next'] = next
