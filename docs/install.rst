@@ -6,7 +6,17 @@ Installation
     pip install imagestore
     
 * Symlink or copy `imagestore/static/imagestore.css` to your `MEDIA_ROOT`, or write youre own style (staticfiles supported as well).
-* Add `imagestore` to your `INSTALLED_APPS`
+* Add `imagestore`, `django-tagging` and `sorl.thumbnail` to your `INSTALLED_APPS`.
+  your `INSTALLED_APPS` should look like::
+
+    INSTALLED_APPS = (
+        ....
+        'imagestore',
+        'sorl.thumbnail',
+        'tagging',
+        'south' # Optionally but recommended
+    )
+
 * Add `imagestore.urls` to your urls with `namespace='imagestore'`::
 
     urlpatterns = patterns('',
