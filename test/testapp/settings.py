@@ -100,6 +100,7 @@ INSTALLED_APPS = (
     'imagestore',
     'sorl.thumbnail',
     'tagging',
+    'south'
 )
 
 STATICFILES_DIRS = (

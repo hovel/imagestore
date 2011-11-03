@@ -188,12 +188,12 @@ def setup_imagestore_permissions(instance, created, **kwargs):
         if not created:
             return
         try:
-            add_image_permission = Permission.objects.get(codename='add_image', content_type__name='Image')
-            add_album_permission = Permission.objects.get(codename='add_album', content_type__name='Album')
-            change_image_permission = Permission.objects.get(codename='change_image', content_type__name='Image')
-            change_album_permission = Permission.objects.get(codename='change_album', content_type__name='Album')
-            delete_image_permission = Permission.objects.get(codename='delete_image', content_type__name='Image')
-            delete_album_permission = Permission.objects.get(codename='delete_album', content_type__name='Album')
+            add_image_permission = Permission.objects.get_by_natural_key('add_image', 'imagestore', 'image')
+            add_album_permission = Permission.objects.get_by_natural_key('add_album', 'imagestore', 'album')
+            change_image_permission = Permission.objects.get_by_natural_key('change_image', 'imagestore', 'image')
+            change_album_permission = Permission.objects.get_by_natural_key('change_album', 'imagestore', 'album')
+            delete_image_permission = Permission.objects.get_by_natural_key('delete_image', 'imagestore','image')
+            delete_album_permission = Permission.objects.get_by_natural_key('delete_album', 'imagestore', 'album')
             instance.user_permissions.add(add_image_permission, add_album_permission,)
             instance.user_permissions.add(change_image_permission, change_album_permission,)
             instance.user_permissions.add(delete_image_permission, delete_album_permission,)
