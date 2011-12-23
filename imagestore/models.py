@@ -19,7 +19,7 @@ except ImportError:
 
 try:
     from places.models import GeoPlace
-except:
+except ImportError:
     GeoPlace = None
 
 
