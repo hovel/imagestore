@@ -29,7 +29,7 @@ class AlbumCarouselPlugin(CMSPluginBase):
         images = instance.album.images.all()
         if instance.limit:
             images = images[:instance.limit]
-        context.update({'images': images, 'carousel': instance})
+        context.update({'images': images, 'carousel': instance, 'template': instance.template_file})
         return context
 
 plugin_pool.register_plugin(AlbumCarouselPlugin)
