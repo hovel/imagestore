@@ -1,65 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
-    <head>
-        <meta http-equiv="content-type" content="application/html; charset=utf-8">
-        <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/favicon.png" />
+<head>
+    <meta http-equiv="content-type" content="application/html; charset=utf-8">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="{{ STATIC_URL }}style.css" type='text/css'>
 
-        <link rel="stylesheet" href="{{ STATIC_URL }}reset.css">
-        <link rel="stylesheet" href="{{ STATIC_URL }}style.css">
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/i18n/jquery-ui-i18n.min.js"></script>
+    <script src="http://yandex.st/json2/2011-01-18/json2.min.js"></script>
+    <script src="{{ STATIC_URL }}csrf.js"></script>
+    <title>{% block title %}{% endblock %}</title>
 
-        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" type="text/css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/i18n/jquery-ui-i18n.min.js"></script>
-        <script src="http://yandex.st/json2/2011-01-18/json2.min.js"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
 
-        <script src="{{ STATIC_URL }}csrf.js"></script>
-        
-        <title>{% block title %}{% endblock %}</title>
+<div class="topbar">
+    <div class="fill">
+        <div class="container">
+            <a class="brand" href="/">Django gallery solution</a>
+            <ul class="nav">
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url admin:logout %}">Logout</a>
+                    </li>
+                    {% if request.user.is_superuser %}
+                        <li>
+                            <a href="{% url admin:index %}">Admin interface</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                <li><a href="http://bitbucket.org/zeus/imagestore">Code</a></li>
+                <li><a href="http://pypi.python.org/pypi/imagestore">Download</a></li>
+                <li><a href="http://readthedocs.org/docs/imagestore/en/latest/">Documentation</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-        {% block head %}{% endblock %}
-
-    </head>
-    <body>
-        <div id="header">
-            <div id='menu'>
-                <ul>
-                    <li><a href="/">Main</a></li>
-                    <li><a href="/gallery">Example</a></li>
-                    <li><a href="">Documentation</a></li>
+<div class="container-fluid">
+    <div class="sidebar">
+        {% block content-related %}
+            
+        {% endblock %}
+    </div>
+    <!-- Main hero unit for a primary marketing message or call to action -->
+    <div class="content">
+        <div class="main-block">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
                 </ul>
-            </div>
-        </div>
-        <div class="colmask {% block layout-menu %}fullpage {% endblock %}">
-            {% block full-content %} {% endblock %}
-            <div class="{% block layout-type %}colone{% endblock %}">
-                <div class="col1wrap">
-                    <div class="col1">
-                        <div id="breadcrumb">
-                            {% block breadcrumb %}
-                            {% endblock breadcrumb %}
-                        </div>
-                        <div id="content">
-                            {% block content %}
-                            {% endblock content %}
-                        </div>
-                    </div>
+            {% endif %}
+            {% if request.path != '/' %}
+                <div id="breadcrumb">
+                    {% block breadcrumb %}
+                        <a href="/">Main</a>
+                    {% endblock breadcrumb %}
                 </div>
-                <div class="col2">
-                    {% block content-related %}
-                    {% endblock %}
+            {% endif %}
+            {% if request.path == '/' %}
+                <div class='forum-headline'>
+                    This is a default installation of PyBBModified with default theme from example.
                 </div>
-            </div>
-            {% block end-full-content %} {% endblock %}
-        <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
-        <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="button" data-yashareQuickServices="yaru,vkontakte,facebook,twitter,odnoklassniki,moimir,lj,friendfeed,moikrug"></div>
+            {% endif %}
+           
+            {% block content %}
+            {% endblock content %}
+            <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+            <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="button" data-yashareQuickServices="yaru,vkontakte,facebook,twitter,odnoklassniki,moimir,lj,friendfeed,moikrug"></div>
+            
         </div>
-        <div id="footer">
-            <div id="hovel-logo">
-                <a href="http://hovel.ru">hovel.ru</a>
-            </div>
+    </div>
+    {% if request.path == '/' %}
+    {% endif %}
 
-        </div>
-    </body>
+</div> <!-- /container -->
+</body>
 </html>

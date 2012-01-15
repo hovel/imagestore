@@ -7,11 +7,9 @@
     {% trans "Gallery" %} - {% trans "Tag" %}: {{ tag }}
 {% endblock %}
 
-{% block breadcrumb %}
-    {{ block.super }} &#187;
-    <a href="{% url imagestore-category-list %}">{% trans "Gallery" %}</a> &#187;
-    {% trans "Tag" %}: {{ tag }}
-{% endblock breadcrumb %}
+{% block imagestore-breadcrumb %}
+    <li>{% trans "Tag" %}: {{ tag }}</li>
+{% endblock %}
 
 {% block content %}
     <h1>{% trans "Tag" %} - {{ tag }}</h1>

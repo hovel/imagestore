@@ -10,11 +10,14 @@
     {% endif %}
 {% endblock %}
 
-{% block breadcrumb %}
-    {{ block.super }}  &#187;
-    {% if view_user %}
-        <a href="{% url imagestore:index %}">{% trans "Gallery" %}</a> &#187;
-    {% endif %}
+{% block imagestore-breadcrumb %}
+    <li>
+        {% if view_user %}
+            {% trans "Albums for user" %} {{ view_user.username }}
+        {% else %}
+            {% trans "All albums" %}
+        {% endif %}
+    </li>
 {% endblock %}
 
 {% block imagestore-info %}
@@ -49,15 +52,16 @@
                     {% else %}
                         [{% trans "Empty album" %}]
                     {% endif %}
+                    <br>
+                    <span class="album-name">{{ album.name }}</span>
+                    {% if not view_user and IMAGESTORE_SHOW_USER %}
+                        <br>
+                        <span class="album-user">
+                            {% trans "user" %}: {{ album.user.username }}
+                        </span>
+                    {% endif %}
                     </a>
                 </div>
-
-                <div class="album-name"><a href="{{ album.get_absolute_url }}">{{ album.name }}</a></div>
-                {% if not view_user and IMAGESTORE_SHOW_USER %}
-                    <div class="album-user">
-                        {% trans "user" %}: <a href="{% url imagestore:user username=album.user.username %}">{{ album.user.username }}</a>
-                    </div>
-                {% endif %}
             </div>
             {% endif %}
         {% endfor %}

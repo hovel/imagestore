@@ -7,17 +7,27 @@
     {% trans "Create album" %}
 {% endblock %}
 
-
-{% block breadcrumb %}
-    {{ block.super }} &#187;
-    <a href="{% url imagestore:index %}">{% trans "Gallery" %}</a> &#187;
-{% endblock breadcrumb %}
+{% block imagestore-breadcrumb %}
+    <li>
+        {% if object %}
+            {% trans "Edit album" %}: {{ object.name }}
+        {% else %}
+            {% trans "Create album" %}
+        {% endif %}
+    </li>
+{% endblock %}
 
 {% block content %}
-    <h1>{% trans "Create album" %}</h1>
-    <form action="." method="post">
+    <h1>
+        {% if object %}
+            {% trans "Edit album" %}: {{ object.name }}
+        {% else %}
+            {% trans "Create album" %}
+        {% endif %}
+    </h1>
+    <form action="." method="post" class='album-form'>
     {% csrf_token %}
-    <table>{{ form.as_table }}</table>
-    <input type="submit" value="{% trans "Save" %}">
+    {{ form.as_p }}
+    <input type="submit" value="{% trans "Save" %}" class='btn success'>
     </form>
 {% endblock content %}

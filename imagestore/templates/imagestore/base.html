@@ -2,7 +2,22 @@
 {% load i18n %}
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}imagestore.css" media="screen" />
+    {% if IMAGESTORE_LOAD_CSS %}
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}imagestore.css" media="screen" />
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <ul class='breadcrumb'>
+        {% if request.path != '/' %}
+            <li><a href="/">{% trans "Home" %}</a> <span class="divider">/</span></li>
+        {% endif %}
+        {% if request.path != imagestore_index_url %}
+            <li><a href="{{ imagestore_index_url }}">{% trans "Gallery" %}</a> <span class="divider">/</span></li>
+        {% endif %}
+        {% block imagestore-breadcrumb %}
+    {% endblock %}
+    </ul>
 {% endblock %}
 
 {% block content %}
@@ -13,10 +28,10 @@
         {% endblock %}
         <div id="controls">
             <ul>
-                {% if imagestore_perms.add_image %}
+                {% if imagestore_perms.add_image or request.user.is_superuser %}
                     <li><a href={% url imagestore:upload %}>{% trans "Upload image" %}</a></li>
                 {% endif %}
-                {% if imagestore_perms.add_album %}
+                {% if imagestore_perms.add_album or request.user.is_superuser %}
                     <li><a href={% url imagestore:create-album %}>{% trans "Create new album" %}</a></li>
                 {% endif %}
                 {% block controls %}

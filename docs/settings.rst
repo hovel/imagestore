@@ -41,3 +41,6 @@ IMAGESTORE_IMAGE_FORM ("imagestore.forms.ImageForm")
 
 IMAGESTORE_ALBUM_FORM ("imagestore.forms.AlbumForm")
     Form for creating albums. See :doc:`extending imagestore <extending>` for details.
+
+IMAGESTORE_LOAD_CSS ("True")
+    Load CSS file 'static/imagestore.css' in imagestore templates. If you want to use custom theme - disable this settings.

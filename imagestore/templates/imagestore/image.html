@@ -7,9 +7,23 @@
     {% trans "Image" %} - {{ image.title }}
 {% endblock %}
 
-{% block breadcrumb %}
-    {{ block.super }} &#187;
-    <a href="{% url imagestore:index %}">{% trans "Gallery" %}</a> &#187;
+{% block imagestore-breadcrumb %}
+    {% if view_user and IMAGESTORE_SHOW_USER %}
+        <li class='scope-view-user'><a href="{% url imagestore:user-images username=view_user.username %}">{% trans "User" %}: {{ view_user.username }}</a> <span class="divider">/</span></li>
+    {% endif %}
+    {% if album %}
+        <li class='scope-album'><a href="{{ album.get_absolute_url }}">{% trans "Album" %}: {{ album.name }}</a> <span class="divider">/</span></li>
+    {% endif %}
+    {% if tag %}
+        <li class='scope-tag'><a href="{% url imagestore:tag tag=tag %}">{% trans "Tag" %}: {{ tag }}</a> <span class="divider">/</span></li>
+    {% endif %}
+    <li>
+        {% if image.title %}
+            {{ image.title }}
+        {% else %}
+            {{ image.id }}
+        {% endif %}
+    </li>
 {% endblock %}
 
 {% block imagestore-info %}
@@ -26,7 +40,7 @@
         <h1>{{ image.title }}</h1>
         {% if album or tag or view_user %}
             <h2>
-                {% include "imagestore/image-scope.html" %}
+                    {% include "imagestore/image-scope.html" %}
             </h2>
         {% endif %}
         <div class="image-description">

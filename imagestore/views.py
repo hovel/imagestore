@@ -72,7 +72,7 @@ def get_images_queryset(self):
 
 class ImageListView(ListView):
     context_object_name = 'image_list'
-    template_name = 'imagestore/image_lists/image_list.html'
+    template_name = 'imagestore/image_list.html'
     paginate_by = getattr(settings, 'IMAGESTORE_IMAGES_ON_PAGE', 20)
     allow_empty = True
 

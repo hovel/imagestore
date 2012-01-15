@@ -18,54 +18,15 @@
     </script>
 {% endblock %}
 
-{% block breadcrumb %}
-    {{ block.super }} &#187;
-    <a href="{% url imagestore:index %}">{% trans "Gallery" %}</a>
-    &#187;
-{% endblock breadcrumb %}
+{% block imagestore-breadcrumb %}
+    <li>{% trans "Upload image" %}</li>
+{% endblock %}
 
 {% block content %}
     <h1>{% trans "Upload image" %}</h1>
-    <form action="." method="post" enctype="multipart/form-data">
+    <form action="." method="post" enctype="multipart/form-data" class='upload-image'>
     {% csrf_token %}
-   
-    <div class='basic-fields'>
-        <table>
-            <tr>
-                <th>{{ form.album.label_tag }}</th>
-                <td>{{ form.album.errors }} {{ form.album }}</td>
-            </tr>
-            <tr>
-                <th>{{ form.image.label_tag }}</th>
-                <td>{{ form.image.errors }} {{ form.image }}</td>
-            </tr>
-
-            <tr>
-                <th>{{ form.tags.label_tag }}</th>
-                <td>{{ form.tags.errors }} {{ form.tags }}</td>
-            </tr>
-        </table>
-    </div>
-    <div class='extra-fields'>
-        <table>
-            <tr>
-                <th>{{ form.title.label_tag }}</th>
-                <td>{{ form.title.errors }} {{ form.title }}</td>
-            </tr>
-            <tr>
-                <th>{{ form.place_text.label_tag }}</th>
-                <td>{{ form.place_text.errors }} {{ form.place_text }}</td>
-            </tr>
-
-        <tr>
-            <td colspan='2'>
-               {{ form.description.label_tag }}<br>
-               {{ form.description.errors }} {{ form.description }}
-            </td>
-        </tr>
-       </table>
-    </div>
-    <div class='clr'></div>
-    <input type="submit" value="{% trans "Upload" %}">
+    {{ form.as_p }}
+    <input type="submit" value="{% trans "Upload" %}" class='btn success'>
     </form>
 {% endblock content %}

@@ -2,24 +2,14 @@
 {% load i18n %}
 {% load thumbnail %}
 
-{% block breadcrumb %}
-    {{ block.super }}  &#187;
-    <a href="{% url imagestore:index %}">{% trans "Gallery" %}</a> &#187;
-    {% if album %}
-        <a href="{% url imagestore:user username=album.user.username %}">{{ album.user.username }}</a> &#187;
-    {% endif %}
+{% block imagestore-breadcrumb %}
+    {% with "li" as scope_tag %}
+        {% include "imagestore/image-scope.html" %}
+    {% endwith %}
 {% endblock %}
 
 {% block title %}
-    {% if view_user %}
-        {% trans "User" %} {{ view_user.username }}
-    {% endif %}
-    {% if album %}
-        {% trans "Album" %} {{ album.name }}
-    {% endif %}
-    {% if tag %}
-        {% trans "Tag:" %} {{ tag }}
-    {% endif %}
+    {% include "imagestore/image-scope.html" %}
 {% endblock %}
 
 {% block imagestore-info %}
@@ -40,7 +30,7 @@
 {% block controls %}
     {% if album %}
         {% if request.user == album.user or perms.imagestore.moderate_albums %}
-            <li><a href='{% url imagestore:update-album pk=album.pk %}'>{% trans "Change album" %}</a></li>
+            <li><a href='{% url imagestore:update-album pk=album.pk %}'>{% trans "Edit album" %}</a></li>
         {% endif %}
     {% endif %}
 {% endblock %}
@@ -54,10 +44,8 @@
             <div class='image-preview'>
             {% thumbnail image.image "120x120" crop="center" as im %}
                 <a class="thumb" rel='gallery-image[ilist]' href="{% include "imagestore/image-href.html" %}">
-                        <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}"></a>
+                        <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}"><br><span class='image-title'>{{ image.title }}</span></a>
             {% endthumbnail %}
-
-            <div class='image-title'><a class="thumb" rel='gallery-image[ilist]' href="{% include "imagestore/image-href.html" %}">{{ image.title }}</a></div>
             </div>
         {% endfor %}
         {% include "imagestore/pagination.html" %}

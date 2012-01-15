@@ -1,12 +1,26 @@
 {% load i18n %}
+
 {% if is_paginated %}
-    <div class="pagination mini">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}" class="previous">← {% trans "previous" %}</a>
-        {% endif %}
-        {{ page_obj.start_index }} - {{ page_obj.end_index }} {% trans "of" %} {{ paginator.count }}
-        {% if page_obj.has_next%}
-            <a href="?page={{ page_obj.next_page_number }}" class="next">{% trans "next" %} →</a>
-        {% endif %}
+    <div class="pagination">
+        <ul>
+
+            <li class="prev {% if not page_obj.has_previous %}disabled{% endif %}">
+                <a href="?page={{ page_obj.previous_page_number }}" >← {% trans "previous page" %}</a>
+            </li>
+            {% for page in page_obj.pages %}
+                {% if page %}
+                    <li {% ifequal page page_obj.number %}class="disabled"{% endifequal %}>
+                        <a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="disabled">
+                        ...
+                    </li>
+                {% endif %}
+            {% endfor %}
+            <li class="next {% if not page_obj.has_next %}disabled{% endif %}">
+                <a href="?page={{ page_obj.next_page_number }}" >{% trans "next page" %} →</a>
+            </li>
+        </ul>
     </div>
 {% endif %}

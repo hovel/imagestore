@@ -1,3 +1,8 @@
+2.7.0
+Code cleanup
+Changed breadcrumb and pagination templates
+Add IMAGESTORE_LOAD_CSS settings (see docs for details)
+
 2.6.4
 Add fix for permissions selectors
 Docs updated

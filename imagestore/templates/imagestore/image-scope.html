@@ -1,10 +1,16 @@
 {% load i18n %}
 {% if view_user %}
-    <span class='scope-view-user'>{% trans "User" %}: {{ view_user.username }}</span>
+    {% if scope_tag %}<{{ scope_tag }} class='scope-view-user'>{% endif %}
+        {% trans "User" %}: {{ view_user.username }}
+    {% if scope_tag %}</{{ scope_tag }}>{% endif %}
 {% endif %}
 {% if album %}
-    <span class='scope-album'>{% trans "Album" %}: {{ album.name }}</span>
+    {% if scope_tag %}<{{ scope_tag }} class='scope-album'>{% endif %}
+        {% trans "Album" %}: {{ album.name }}
+    {% if scope_tag %}</{{ scope_tag }}>{% endif %}
 {% endif %}
 {% if tag %}
-    <span class='scope-tag'>{% trans "Tag" %}: {{ tag }}</span>
+    {% if scope_tag %}<{{ scope_tag }} class='scope-album'>{% endif %}
+    {% trans "Tag" %}: {{ tag }}
+    {% if scope_tag %}</{{ scope_tag }}>{% endif %}
 {% endif %}

@@ -78,6 +78,17 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
+TEMPLATE_CONTEXT_PROCESSORS =(
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.request",
+    "imagestore.context_processors.imagestore_processor"
+)
+
 import django
 if django.VERSION[0] < 1 or django.VERSION[1] <3:
     MIDDLEWARE_CLASSES.append('cbv.middleware.DeferredRenderingMiddleware')
@@ -85,6 +96,9 @@ if django.VERSION[0] < 1 or django.VERSION[1] <3:
 ROOT_URLCONF = 'testapp.urls'
 
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
+
+IMAGESTORE_SHOW_USER = False
+IMAGESTORE_LOAD_CSS = False
 
 INSTALLED_APPS = (
     'django.contrib.auth',
