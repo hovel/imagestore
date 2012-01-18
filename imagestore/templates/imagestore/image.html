@@ -37,7 +37,7 @@
 {% endblock %}
 
 {% block content %}
-        <h1>{{ image.title }}</h1>
+        {% if image.title %}<h1>{{ image.title }}</h1>{% endif %}
         {% if album or tag or view_user %}
             <h2>
                     {% include "imagestore/image-scope.html" %}

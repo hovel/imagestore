@@ -101,3 +101,7 @@ img.current {
     display: block;
     float: left;
 }
+
+.pagination .disabled {
+    display: none;
+}
