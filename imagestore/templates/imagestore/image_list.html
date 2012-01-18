@@ -46,8 +46,9 @@
                 <a class="thumb" rel='gallery-image[ilist]' href="{% include "imagestore/image-href.html" %}">
                         <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
                         {% if image.title %}
-                            <br><span class='image-title'>{{ image.title }}</span></a>
+                            <br><span class='image-title'>{{ image.title }}</span>
                         {% endif %}
+                </a>
             {% endthumbnail %}
             </div>
         {% endfor %}

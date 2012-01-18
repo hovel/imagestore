@@ -38,8 +38,8 @@
     {% else %}
         {% trans "All albums" %}
     {% endif %}</h1>
+    {% include "imagestore/pagination.html" %}
     <div class='album-list'>
-        {% include "imagestore/pagination.html" %}
         {% for album in album_list %}
             {% if album.get_head  or album.user == request.user %}
             <div class='album'>
@@ -65,6 +65,6 @@
             </div>
             {% endif %}
         {% endfor %}
-        {% include "imagestore/pagination.html" %}
     </div>
+    {% include "imagestore/pagination.html" %}
 {% endblock %}
