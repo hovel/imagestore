@@ -39,6 +39,7 @@
     <h1>
         {% include "imagestore/image-scope.html" %}
     </h1>
+    {% include "imagestore/pagination.html" %}
     <div id="image-thumbnails">
         {% for image in image_list %}
             <div class='image-preview'>
@@ -52,8 +53,8 @@
             {% endthumbnail %}
             </div>
         {% endfor %}
-        {% include "imagestore/pagination.html" %}
     </div>
+    {% include "imagestore/pagination.html" %}
 {% endblock %}
 
 
