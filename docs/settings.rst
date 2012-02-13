@@ -1,3 +1,5 @@
+.. _settings-label:
+
 Avaiable settings
 =================
 
@@ -30,10 +32,10 @@ IMAGESTORE_SHOW_USER (True)
     Default template expects that profile has avatar ImageField and get_absolute_url method
     You can customize view it by overriding `imagestore/user_info.html` template
 
-IMAGE_MODEL ("imagestore.models.Image")
+IMAGESTORE_IMAGE_MODEL ("imagestore.models.Image")
     Class for storing images. See :doc:`extending imagestore <extending>` for details.
 
-ALBUM_MODEL ("imagestore.models.Album")
+IMAGESTORE_ALBUM_MODEL ("imagestore.models.Album")
     Class for storing albums. See :doc:`extending imagestore <extending>` for details.
 
 IMAGESTORE_IMAGE_FORM ("imagestore.forms.ImageForm")
