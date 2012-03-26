@@ -1,4 +1,4 @@
-{% load thumbnail %}
+{% load thumbnail sekizai_tags %}
 <div id='gallery'>
     {% for image in album.images.all %}
         {% thumbnail image.image "120x120" crop="center" as im %}
@@ -9,7 +9,9 @@
             {% endthumbnail %}
         {% endthumbnail %}
     {% endfor %}
+</div>
 
+{% addtoblock "js" %}
     <script type="text/javascript" charset="utf-8">
     $(function() {
         $("a[rel^='gallery']").prettyPhoto({
@@ -20,4 +22,4 @@
         });
     });
     </script>
-</div>
+{% endaddtoblock "js" %}

@@ -8,12 +8,12 @@ custom fields to ``Image`` and ``Album`` models without modifying
 its core. The steps to extend imagestore are:
 
 #. Create a new app that will contain the customized models.
-#. Create your customized models by extending the basic abstract classes ``models.bases.image`` and ``models.bases.album`` which are provided by imagestore.
-#. Add the app containing your custom classes to the list of ``INSTALLED_APPS``.
+#. Create your custom models by extending the basic abstract classes ``models.bases.image`` and ``models.bases.album`` which are provided by imagestore.
+#. Add the app containing your custom models to the list of ``INSTALLED_APPS``.
 #. Use the ``IMAGESTORE_IMAGE_FORM`` and ``IMAGESTORE_IMAGE_FORM`` :ref:`settings <settings-label>` to tell imagestore to use your classes.
 #. Sync database schema (``syncdb``).
 
-You can also customize the forms used by imagestore for creating
+Imagestore also allows you to customize the forms used for creating
 new ``Image`` and ``Album`` instances. This is done by using
 the ``IMAGESTORE_IMAGE_FORM`` and ``IMAGESTORE_ALBUM_FORM``
 :ref:`settings <settings-label>` to tell imagestore which forms should
