@@ -1,0 +1,23 @@
+{% load thumbnail %}
+<div id='gallery'>
+    {% for image in album.images.all %}
+        {% thumbnail image.image "120x120" crop="center" as im %}
+            {% thumbnail image.image "600x600" as full %}
+                <a rel='gallery[pp_gal]' href="{{ full.url }}">
+                        <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
+                </a>
+            {% endthumbnail %}
+        {% endthumbnail %}
+    {% endfor %}
+
+    <script type="text/javascript" charset="utf-8">
+    $(function() {
+        $("a[rel^='gallery']").prettyPhoto({
+            allow_resize: true,
+            changepicturecallback: function() {
+                $(".pp_overlay").css("height", $(document).height());
+            }
+        });
+    });
+    </script>
+</div>
