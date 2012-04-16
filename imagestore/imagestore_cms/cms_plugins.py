@@ -26,10 +26,27 @@ class AlbumCarouselPlugin(CMSPluginBase):
     text_enabled = True
 
     def render(self, context, instance, placeholder):
+
+        # default carousel template in the settings file
+        carousel_template = getattr(settings, 'IMAGESTORE_CAROUSEL_TEMPLATE', None)
+        
+        if carousel_template:
+            self.render_template = carousel_template
+
+        if instance.template_file:
+            self.render_template = instance.template_file
+        else:
+            if carousel_template:
+                instance.template_file = carousel_template
+            else:
+                instance.template_file = self.render_template
+                instance.save()
+
         images = instance.album.images.all()
+        print instance.template_file
         if instance.limit:
             images = images[:instance.limit]
-        context.update({'images': images, 'carousel': instance, 'template': instance.template_file})
+        context.update({'images': images, 'carousel': instance})
         return context
 
 plugin_pool.register_plugin(AlbumCarouselPlugin)
