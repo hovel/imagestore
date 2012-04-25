@@ -1,4 +1,4 @@
-{% load thumbnail sekizai_tags %}
+{% load thumbnail %}
 <div id='examples'>
     <ul id='carusel{{ carousel.id }}' class="{{ carousel.skin }}" >
     {% for image in images %}
@@ -11,9 +11,7 @@
         {% endthumbnail %}
     {% endfor %}
     </ul>
-</div>A
 
-{% addtoblock "js" %}
     <script type="text/javascript">
         $(function(){
             $('#carusel{{ carousel.id }}').jcarousel();
@@ -27,4 +25,4 @@
 
 
     </script>
-{% endaddtoblock "js" %}
+</div>
