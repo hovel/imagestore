@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.conf import settings
 from utils import get_model_string
 from imagestore.models import image_applabel, image_classname
@@ -13,8 +13,11 @@ def imagestore_processor(request):
         'IMAGESTORE_SHOW_TAGS': getattr(settings, 'IMAGESTORE_SHOW_TAGS', True),
         'IMAGESTORE_MODEL_STRING': get_model_string('Image'),
         'IMAGESTORE_LOAD_CSS': getattr(settings, 'IMAGESTORE_LOAD_CSS', True),
-        'imagestore_index_url': reverse('imagestore:index'),
         }
+    try:
+        ret['imagestore_index_url'] = reverse('imagestore:index')
+    except NoReverseMatch: #Bastard django-cms from hell!!!!111
+        pass
     if template:
         ret['IMAGESTORE_TEMPLATE'] = template
     ret['imagestore_perms'] = {
