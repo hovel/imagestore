@@ -1,0 +1,11 @@
+.idea
+*.pyc
+local_path.py
+settings_local.py
+dist
+*.egg-info
+test/testapp/cache/
+test/testapp/temp
+test/testapp/imagestore
+test/testapp/test.sqlite
+
