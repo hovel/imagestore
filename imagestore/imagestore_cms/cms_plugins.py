@@ -5,7 +5,7 @@ __author__ = 'zeus'
 
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from models import ImagestoreAlbumPtr, ImagestoreAlbumCarousel
+from models import ImagestoreAlbumPtr, ImagestoreAlbumCarousel, ImagestoreAlbumImagePtr
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
@@ -49,5 +49,17 @@ class AlbumCarouselPlugin(CMSPluginBase):
         context.update({'images': images, 'carousel': instance})
         return context
 
+class AlbumImagePlugin(CMSPluginBase):
+    model = ImagestoreAlbumImagePtr
+    name = _('Image from Album')
+    render_template = "cms/plugins/imagestore_albumimage.html"
+    text_enabled = True
+    list_filter = ('album',)
+
+    def render(self, context, instance, placeholder):
+        context.update({'image': instance.image})
+        return context
+
 plugin_pool.register_plugin(AlbumCarouselPlugin)
 plugin_pool.register_plugin(AlbumPlugin)
+plugin_pool.register_plugin(AlbumImagePlugin)

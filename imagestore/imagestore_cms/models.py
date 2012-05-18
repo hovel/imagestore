@@ -5,7 +5,7 @@ __author__ = 'zeus'
 
 from cms.models import CMSPlugin
 from django.db import models
-from imagestore.models import Album
+from imagestore.models import Album, Image
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
@@ -18,4 +18,7 @@ class ImagestoreAlbumCarousel(CMSPlugin):
     limit = models.IntegerField(verbose_name=_('Image limit'), blank=True, null=True)
     size = models.CharField(max_length=20, verbose_name=_('Thumbnail size'), default='72x72')
     full_size = models.CharField(max_length=20, verbose_name=_('Full size view'), default='600x600')
-    template_file = models.CharField(max_length=100, verbose_name=_('Template file'), default=getattr(settings,'IMAGESTORE_CAROUSEL_TEMPLATE','cms/plugins/imagestore_album_carousel.html'), blank=True, null=True)
+    template_file = models.CharField(max_length=100, verbose_name=_('Template file'), default=getattr(settings,'IMAGESTORE_CAROUSEL_TEMPLATE','cms/plugins/imagestore_album_carousel.html'), blank=True)
+
+class ImagestoreAlbumImagePtr(CMSPlugin):
+    image = models.ForeignKey(Image, verbose_name=_('Image'), blank=False, null=False)

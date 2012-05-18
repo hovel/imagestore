@@ -1,0 +1,33 @@
+{% load thumbnail sekizai_tags %}
+<div class='gallery'>
+    {% thumbnail image.image "120x120" crop="center" as im %}
+        {% thumbnail image.image "600x600" as full %}
+            <a rel='gallery[pp_gal]' href="{{ full.url }}"><img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}"></a>
+        {% endthumbnail %}
+    {% endthumbnail %}
+</div>
+
+{% addtoblock "css" %}
+<link rel="stylesheet" href="{{ STATIC_URL }}prettyphoto/css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+{% endaddtoblock %}
+
+{% addtoblock "js" %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+{% endaddtoblock %}
+
+{% addtoblock "js" %}
+<script src="{{ STATIC_URL }}prettyphoto/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+{% endaddtoblock %}
+
+{% addtoblock "js" %}
+    <script type="text/javascript" charset="utf-8">
+    $(function() {
+        $(".gallery a[rel^='gallery']").prettyPhoto({
+            allow_resize: true,
+            changepicturecallback: function() {
+                $(".pp_overlay").css("height", $(document).height());
+            }
+        });
+    });
+    </script>
+{% endaddtoblock %}
