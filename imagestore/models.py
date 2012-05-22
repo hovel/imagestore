@@ -37,7 +37,7 @@ class Album(models.Model):
     class Meta(object):
         verbose_name = _('Album')
         verbose_name_plural = _('Albums')
-        ordering = ('created', 'name')
+        ordering = ('order', 'created', 'name')
         permissions = (
             ('moderate_albums', 'View, update and delete any album'),
         )
