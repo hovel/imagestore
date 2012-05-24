@@ -160,3 +160,12 @@ class ImagestoreTest(TestCase):
         response = self.client.get(Image.objects.get(order=3).get_absolute_url())
         self.assertEqual(response.context['next'], im1)
         self.assertEqual(response.context['previous'], im2)
+
+    def test_album_order(self):
+        self.album.delete()
+        Album.objects.create(name='b2', order=1, user=self.user)
+        Album.objects.create(name='a1', order=2, user=self.user)
+        response = self.client.get(reverse('imagestore:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'][0].name, 'b2')
+        self.assertEqual(response.context['object_list'][1].name, 'a1')

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
         name = 'imagestore',
-        version = '2.7.1',
+        version = '2.7.2',
         packages = find_packages(),
         install_requires = [
             'django',
