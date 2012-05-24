@@ -28,7 +28,7 @@ SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
 class BaseAlbum(models.Model):
     class Meta(object):
         abstract = True
-        ordering = ('created', 'name')
+        ordering = ('order', 'created', 'name')
         permissions = (
             ('moderate_albums', 'View, update and delete any album'),
         )
