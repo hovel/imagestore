@@ -14,3 +14,5 @@ class Album(BaseAlbum):
         verbose_name = _('Album')
         verbose_name_plural = _('Albums')
         app_label = 'imagestore'
+
+    head = models.ForeignKey(get_model_string('Image'), related_name='head_of', null=True, blank=True)
