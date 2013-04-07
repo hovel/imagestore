@@ -1,7 +1,7 @@
 {% extends "imagestore/base.html" %}
 {% load i18n %}
 {% load thumbnail %}
-
+{% load url from future %}
 
 {% block title %}
     {% trans "Upload image" %}
@@ -12,8 +12,8 @@
     <script src="{{ STATIC_URL }}autocomplete.js"></script>
     <script>
         $(function(){
-            completeField('#id_tags', '{% url imagestore:autocomplete "tag" %}');
-            completeField('#id_place_text', '{% url imagestore:autocomplete "place" %}');
+            completeField('#id_tags', '{% url "imagestore:autocomplete" "tag" %}');
+            completeField('#id_place_text', '{% url "imagestore:autocomplete" "place" %}');
         })
     </script>
 {% endblock %}

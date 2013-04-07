@@ -1,6 +1,7 @@
 {% extends "imagestore/base.html" %}
 {% load i18n %}
 {% load thumbnail %}
+{% load url from future %}
 
 {% block imagestore-breadcrumb %}
     {% with "li" as scope_tag %}
@@ -30,7 +31,7 @@
 {% block controls %}
     {% if album %}
         {% if request.user == album.user or perms.imagestore.moderate_albums %}
-            <li><a href='{% url imagestore:update-album pk=album.pk %}'>{% trans "Edit album" %}</a></li>
+            <li><a href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit album" %}</a></li>
         {% endif %}
     {% endif %}
 {% endblock %}
