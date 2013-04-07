@@ -11,19 +11,23 @@ from tagging.fields import TagField
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from sorl.thumbnail import ImageField, get_thumbnail
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import Permission
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
+
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+except ImportError:
+    from django.contrib.auth.models import User
 
 try:
     import Image as PILImage
 except ImportError:
     from PIL import Image as PILImage
 
-from imagestore.utils import get_file_path, get_model_string, load_class
-
-
+from imagestore.utils import get_file_path, get_model_string
 
 SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
 

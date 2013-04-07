@@ -4,7 +4,7 @@
 
 {% block title %}
     {% if view_user %}
-        {% trans "Albums for user" %} {{ view_user.username }}
+        {% trans "Albums for user" %} {{ view_user }}
     {% else %}
         {% trans "All albums" %}
     {% endif %}
@@ -13,7 +13,7 @@
 {% block imagestore-breadcrumb %}
     <li>
         {% if view_user %}
-            {% trans "Albums for user" %} {{ view_user.username }}
+            {% trans "Albums for user" %} {{ view_user }}
         {% else %}
             {% trans "All albums" %}
         {% endif %}
@@ -34,7 +34,7 @@
 
 {% block content %}
     <h1>{% if view_user %}
-        {% trans "Albums for user" %} {{ view_user.username }}
+        {% trans "Albums for user" %} {{ view_user }}
     {% else %}
         {% trans "All albums" %}
     {% endif %}</h1>
@@ -57,7 +57,7 @@
                     {% if not view_user and IMAGESTORE_SHOW_USER %}
                         <br>
                         <span class="album-user">
-                            {% trans "user" %}: {{ album.user.username }}
+                            {% trans "user" %}: {{ album.user }}
                         </span>
                     {% endif %}
                     </a>

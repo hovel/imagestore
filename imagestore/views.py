@@ -5,7 +5,7 @@ from imagestore.models import Album, Image
 from imagestore.models import image_applabel, image_classname
 from imagestore.models import album_applabel, album_classname
 from django.shortcuts import get_object_or_404
-from django.http import  Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
@@ -14,9 +14,16 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from tagging.models import TaggedItem
 from tagging.utils import get_tag
-from django.contrib.contenttypes.models import ContentType
 from utils import load_class
 from django.db.models import Q
+
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    username_field = User.USERNAME_FIELD
+except ImportError:
+    from django.contrib.auth.models import User
+    username_field = 'username'
 
 IMAGESTORE_IMAGES_ON_PAGE = getattr(settings, 'IMAGESTORE_IMAGES_ON_PAGE', 20)
 
@@ -24,6 +31,7 @@ IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 20)
 
 ImageForm = load_class(getattr(settings, 'IMAGESTORE_IMAGE_FORM', 'imagestore.forms.ImageForm'))
 AlbumForm = load_class(getattr(settings, 'IMAGESTORE_ALBUM_FORM', 'imagestore.forms.AlbumForm'))
+
 
 class AlbumListView(ListView):
     context_object_name = 'album_list'
@@ -35,7 +43,7 @@ class AlbumListView(ListView):
         albums = Album.objects.filter(is_public=True).select_related('head')
         self.e_context = dict()
         if 'username' in self.kwargs:
-            user = get_object_or_404(User, username=self.kwargs['username'])
+            user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
             albums = albums.filter(user=user)
             self.e_context['view_user'] = user
         return albums
@@ -56,7 +64,7 @@ def get_images_queryset(self):
         self.e_context['tag'] = tag_instance
         images = TaggedItem.objects.get_by_model(images, tag_instance)
     if 'username' in self.kwargs:
-        user = get_object_or_404(User, username=self.kwargs['username'])
+        user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
         self.e_context['view_user'] = user
         images = images.filter(user=user)
     if 'album_id' in self.kwargs:

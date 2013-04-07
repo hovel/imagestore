@@ -10,7 +10,7 @@
 
 {% block imagestore-breadcrumb %}
     {% if view_user and IMAGESTORE_SHOW_USER %}
-        <li class='scope-view-user'><a href="{% url 'imagestore:user-images' username=view_user.username %}">{% trans "User" %}: {{ view_user.username }}</a> <span class="divider">/</span></li>
+        <li class='scope-view-user'><a href="{% url 'imagestore:user-images' username=view_user %}">{% trans "User" %}: {{ view_user }}</a> <span class="divider">/</span></li>
     {% endif %}
     {% if album %}
         <li class='scope-album'><a href="{{ album.get_absolute_url }}">{% trans "Album" %}: {{ album.name }}</a> <span class="divider">/</span></li>
