@@ -9,6 +9,7 @@ env:
   - DJANGO=1.5.1
 install:
   - pip install Django==$DJANGO --use-mirrors
+  - pip install south
   - pip install -r test/testapp/requirements.txt
 script:
   - python test/testapp/manage.py test imagestore
