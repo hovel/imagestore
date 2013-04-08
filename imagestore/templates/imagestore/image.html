@@ -30,7 +30,7 @@
 {% block imagestore-info %}
     <div class='user-info'>
     {% if IMAGESTORE_SHOW_USER %}
-        {% with image.user.get_profile as profile %}
+        {% with user=image.user %}
             {% include "imagestore/user_info.html" %}
         {% endwith %}
     {% endif %}

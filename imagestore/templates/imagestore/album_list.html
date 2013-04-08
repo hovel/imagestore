@@ -22,7 +22,7 @@
 
 {% block imagestore-info %}
     {% if view_user and IMAGESTORE_SHOW_USER %}
-        {% with view_user.get_profile as profile %}
+        {% with user=view_user %}
             {% include "imagestore/user_info.html" %}
         {% endwith %}
     {% endif %}
