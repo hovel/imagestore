@@ -8,8 +8,11 @@ env:
   - DJANGO=1.4.5
   - DJANGO=1.5.1
 install:
+  - export PYTHONPATH=$PYTHONPATH:./imagestore/
   - pip install Django==$DJANGO --use-mirrors
   - pip install south
   - pip install -r test/testapp/requirements.txt
+  #debug
+  - pip freeze
 script:
   - python test/testapp/manage.py test imagestore
