@@ -10,7 +10,6 @@ env:
 install:
   - export PYTHONPATH=$PYTHONPATH:./imagestore/
   - pip install Django==$DJANGO --use-mirrors
-  - pip install south
   - pip install -r test/testapp/requirements.txt
   #debug
   - pip freeze
