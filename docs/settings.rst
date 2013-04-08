@@ -30,6 +30,9 @@ IMAGESTORE_SHOW_USER (True)
     Default template expects that profile has avatar ImageField and get_absolute_url method
     You can customize view it by overriding `imagestore/user_info.html` template
 
+    Notice, that since imagestore version 2.7.4, which supports custom user model,
+    in `imagestore/user_info.html` passes `user` variable with current logged in user.
+
 IMAGE_MODEL ("imagestore.models.Image")
     Class for storing images. See :doc:`extending imagestore <extending>` for details.
 
