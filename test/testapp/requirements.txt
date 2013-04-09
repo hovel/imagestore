@@ -1,0 +1,6 @@
+Pillow
+South
+django-fancy-autocomplete
+django-tagging
+sorl-thumbnail
+lxml

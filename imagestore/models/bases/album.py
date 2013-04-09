@@ -6,20 +6,22 @@ __author__ = 'zeus'
 
 from django.db import models
 from django.db.models import permalink
-from sorl.thumbnail.helpers import ThumbnailError
-from tagging.fields import TagField
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
-from sorl.thumbnail import ImageField, get_thumbnail
-from django.contrib.auth.models import User, Permission
-from django.db.models.signals import post_save
+from sorl.thumbnail import get_thumbnail
+
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+except ImportError:
+    from django.contrib.auth.models import User
+
 try:
     import Image as PILImage
 except ImportError:
     from PIL import Image as PILImage
 
-from imagestore.utils import get_file_path, get_model_string
-
+from imagestore.utils import get_model_string
 
 
 SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)

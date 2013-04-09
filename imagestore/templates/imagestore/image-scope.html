@@ -1,7 +1,7 @@
 {% load i18n %}
 {% if view_user %}
     {% if scope_tag %}<{{ scope_tag }} class='scope-view-user'>{% endif %}
-        {% trans "User" %}: {{ view_user.username }}
+        {% trans "User" %}: {{ view_user }}
     {% if scope_tag %}</{{ scope_tag }}>{% endif %}
 {% endif %}
 {% if album %}

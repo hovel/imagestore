@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load thumbnail %}
 {% load tagging_tags %}
+{% load url from future %}
 
 {% block title %}
     {% trans "Image" %} - {{ image.title }}
@@ -9,13 +10,13 @@
 
 {% block imagestore-breadcrumb %}
     {% if view_user and IMAGESTORE_SHOW_USER %}
-        <li class='scope-view-user'><a href="{% url imagestore:user-images username=view_user.username %}">{% trans "User" %}: {{ view_user.username }}</a> <span class="divider">/</span></li>
+        <li class='scope-view-user'><a href="{% url 'imagestore:user-images' username=view_user %}">{% trans "User" %}: {{ view_user }}</a> <span class="divider">/</span></li>
     {% endif %}
     {% if album %}
         <li class='scope-album'><a href="{{ album.get_absolute_url }}">{% trans "Album" %}: {{ album.name }}</a> <span class="divider">/</span></li>
     {% endif %}
     {% if tag %}
-        <li class='scope-tag'><a href="{% url imagestore:tag tag=tag %}">{% trans "Tag" %}: {{ tag }}</a> <span class="divider">/</span></li>
+        <li class='scope-tag'><a href="{% url 'imagestore:tag' tag=tag %}">{% trans "Tag" %}: {{ tag }}</a> <span class="divider">/</span></li>
     {% endif %}
     <li>
         {% if image.title %}
@@ -29,7 +30,7 @@
 {% block imagestore-info %}
     <div class='user-info'>
     {% if IMAGESTORE_SHOW_USER %}
-        {% with image.user.get_profile as profile %}
+        {% with user=image.user %}
             {% include "imagestore/user_info.html" %}
         {% endwith %}
     {% endif %}
@@ -65,8 +66,8 @@
 
 {% block controls %}
     {% if request.user == image.user or perms.imagestore.moderate_images %}
-        <li><a href="{% url imagestore:update-image image.id %}">{% trans "Edit info" %}</a></li>
-        <li><a href="{% url imagestore:delete-image image.id %}">{% trans "Delete image" %}</a></li>
+        <li><a href="{% url 'imagestore:update-image' image.id %}">{% trans "Edit info" %}</a></li>
+        <li><a href="{% url 'imagestore:delete-image' image.id %}">{% trans "Delete image" %}</a></li>
     {% endif %}
 {% endblock %}
 
@@ -76,7 +77,7 @@
             <h2>{% trans "Tags" %}</h2>
             {% tags_for_object image as itags %}
             {% for tag in itags %}
-                <a href="{% url imagestore:tag tag.name %}">{{ tag.name }}</a>
+                <a href="{% url 'imagestore:tag' tag.name %}">{{ tag.name }}</a>
             {% endfor %}
      </div>
      {% if image.place %}
