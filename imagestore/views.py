@@ -98,15 +98,22 @@ class ImageView(DetailView):
 
     get_queryset = get_images_queryset
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if self.object.album:
+            if (not self.object.album.is_public) and\
+               (self.request.user != self.object.album.user) and\
+               (not self.request.user.has_perm('imagestore.moderate_albums')):
+                raise PermissionDenied
+
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
+
     def get_context_data(self, **kwargs):
         context = super(ImageView, self).get_context_data(**kwargs)
         image = context['image']
-        # Check thant album is public or user have rights to see it
-        if image.album:
-            if (not image.album.is_public) and\
-               (self.request.user != image.album.user) and\
-               (not self.request.user.has_perm('imagestore.moderate_albums')):
-                raise PermissionDenied
+
         base_qs = self.get_queryset()
         count = base_qs.count()
         img_pos = base_qs.filter(
