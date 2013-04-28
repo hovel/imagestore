@@ -3,8 +3,8 @@
 {% load i18n %}
 
 {% block content %}
-    <p>{% trans "Are you sure that you would like to delete this album?" %}</p>
-    <form method="post" action="{{ request.get_full_path }}">
+    <p>{% trans "Are you sure that you would like to delete this image?" %}</p>
+    <form method="post" action=".">
         {% csrf_token %}
         <p>
             <a class='btn' href="{{ post.get_absolute_url }}">← {% trans "No, take me back" %}</a>

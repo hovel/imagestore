@@ -1,0 +1,28 @@
+{% load thumbnail %}
+<div id='examples'>
+    <ul id='carusel{{ carousel.id }}' class="{{ carousel.skin }}" >
+    {% for image in images %}
+        {% thumbnail image.image carousel.size crop="center" as im %}
+            {% thumbnail image.image carousel.full_size as full %}
+                <li><a rel='gallery{{ carousel.id }}[pp_gal]' href="{{ full.url }}">
+                        <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
+                </a></li>
+            {% endthumbnail %}
+        {% endthumbnail %}
+    {% endfor %}
+    </ul>
+
+    <script type="text/javascript">
+        $(function(){
+            $('#carusel{{ carousel.id }}').jcarousel();
+            $("a[rel^='gallery{{ carousel.id }}']").prettyPhoto({
+            allow_resize: true,
+            changepicturecallback: function() {
+                $(".pp_overlay").css("height", $(document).height());
+            }
+            });
+        })
+
+
+    </script>
+</div>

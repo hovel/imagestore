@@ -160,7 +160,7 @@ $(document).ready(function() {
             </div>
         {% endfor %}
         {% if album %}
-        <a id="backToAlbum"  href="{% url 'imagestore:user' album.user %}">{% trans "Back to album" %}</a>
+        <a id="backToAlbum"  href="{% url imagestore:user album.user %}">{% trans "Back to album" %}</a>
         {% endif %}
     </div>
     {% include "imagestore/pagination.html" %}

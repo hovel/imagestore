@@ -1,0 +1,275 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-16 11:31+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: forms.py:18 models.py:95 models/bases/image.py:40
+msgid "Description"
+msgstr "Kuvaus"
+
+#: models.py:38 models.py:102 imagestore_cms/cms_plugins.py:14
+#: imagestore_cms/models.py:13 imagestore_cms/models.py:16 models/album.py:14
+#: models/bases/image.py:47 templates/imagestore/image-scope.html:9
+#: templates/imagestore/image.html:15
+msgid "Album"
+msgstr "Albumi"
+
+#: models.py:39 models/album.py:15
+msgid "Albums"
+msgstr "Albumit"
+
+#: models.py:45 models.py:99 models/bases/album.py:36 models/bases/image.py:44
+#: templates/imagestore/image-scope.html:4 templates/imagestore/image.html:12
+#: templates/imagestore/user_info.html:5
+msgid "User"
+msgstr "Käyttäjä"
+
+#: models.py:46 models/bases/album.py:37
+msgid "Name"
+msgstr "Nimi"
+
+#: models.py:47 models.py:100 models/bases/album.py:38
+#: models/bases/image.py:45
+msgid "Created"
+msgstr "Luotu"
+
+#: models.py:48 models.py:101 models/bases/album.py:39
+#: models/bases/image.py:46
+msgid "Updated"
+msgstr "Päivitetty"
+
+#: models.py:49 models/bases/album.py:40
+msgid "Is public"
+msgstr "On julkinen"
+
+#: models.py:52 models.py:97 models/bases/album.py:43 models/bases/image.py:42
+msgid "Order"
+msgstr "Järjestys"
+
+#: models.py:79 models/bases/album.py:70
+#: templates/imagestore/album_list.html:53
+msgid "Empty album"
+msgstr "Tyhjä albumi"
+
+#: models.py:81 models/bases/album.py:72
+msgid "Head"
+msgstr "Pää"
+
+#: models.py:87 models/image.py:13 templates/imagestore/image.html:7
+msgid "Image"
+msgstr "Kuva"
+
+#: models.py:88 models/image.py:14
+msgid "Images"
+msgstr "Kuvat"
+
+#: models.py:94 models/bases/image.py:39
+msgid "Title"
+msgstr "Otsikko"
+
+#: models.py:96 models/bases/image.py:41 templates/imagestore/image.html:76
+#: templates/imagestore/tag-cloud.html:6
+msgid "Tags"
+msgstr "Tagit"
+
+#: models.py:98 models/bases/image.py:43
+msgid "File"
+msgstr "Tiedosto"
+
+#: models.py:119 models/bases/image.py:64
+msgid "Thumbnail"
+msgstr "Pikkukuva"
+
+#: models.py:123 templates/imagestore/image.html:84
+msgid "Place"
+msgstr "Paikka"
+
+#: models.py:131 models/upload.py:26
+msgid "images file (.zip)"
+msgstr "kuvatiedosto (.zip)"
+
+#: models.py:132 models/upload.py:27
+msgid "Select a .zip file of images to upload into a new Gallery."
+msgstr "Valitse .zip tiedosto, jossa kuvasi ovat ladataksesi ne uuteen galleriaan "
+
+#: models.py:135 models/upload.py:32
+msgid ""
+"Select an album to add these images to. leave this empty to create a new "
+"album from the supplied title."
+msgstr "Valitse albumi, johon lisäät kuvat. Jätä tyhjäksi, jos haluat luoda uuden albumin, annetusta otsikosta."
+
+#: models.py:137 models/upload.py:37
+msgid "New album name"
+msgstr "Uuden albumin nimi"
+
+#: models.py:138 models/upload.py:40
+msgid "tags"
+msgstr "tagit"
+
+#: models.py:141 models/upload.py:43
+msgid "Album upload"
+msgstr "Albumilataus"
+
+#: models.py:142 models/upload.py:44
+msgid "Album uploads"
+msgstr "Albumilataukset"
+
+#: views.py:55
+#, python-format
+msgid "No Tag found matching \"%s\"."
+msgstr "Mikään tagi ei vastaa \"%s\"."
+
+#: imagestore_cms/cms_app.py:11
+msgid "Imagestore App"
+msgstr "Imagestore Applikaatio"
+
+#: imagestore_cms/cms_plugins.py:25
+msgid "Album as carousel"
+msgstr "Albumi karusellina"
+
+#: imagestore_cms/models.py:17
+msgid "Skin"
+msgstr "Ulkoasu"
+
+#: imagestore_cms/models.py:18
+msgid "Image limit"
+msgstr "Kuvarajoitus"
+
+#: imagestore_cms/models.py:19
+msgid "Thumbnail size"
+msgstr "Pikkukuvan koko"
+
+#: imagestore_cms/models.py:20
+msgid "Full size view"
+msgstr "Koko koon näkymä"
+
+#: imagestore_cms/models.py:21
+msgid "Template file"
+msgstr "Template tiedosto"
+
+#: models/upload.py:38
+msgid ""
+"If not empty new album with this name will be created and images will be "
+"upload to this album"
+msgstr "Mikäli tämä ei ole tyhjä, niin uusi albumi luodaan tällä nimellä ja uudet kuvat ladataan tähä albumiin"
+
+#: templates/imagestore/album_delete.html:6
+msgid "Are you sure that you would like to delete this album?"
+msgstr "Oletko varma, että haluat poistaa tämän albumin?"
+
+#: templates/imagestore/album_delete.html:10
+#: templates/imagestore/image_confirm_delete.html:10
+#: templates/imagestore/image_delete.html:10
+msgid "No, take me back"
+msgstr "Ei, vie minut takaisin"
+
+#: templates/imagestore/album_delete.html:11
+#: templates/imagestore/image_confirm_delete.html:11
+#: templates/imagestore/image_delete.html:11
+msgid "Yes, I am sure"
+msgstr "Kyllä, olen varma."
+
+#: templates/imagestore/album_list.html:7
+#: templates/imagestore/album_list.html:16
+#: templates/imagestore/album_list.html:37
+msgid "Albums for user"
+msgstr "Käyttjän albumit"
+
+#: templates/imagestore/album_list.html:9
+#: templates/imagestore/album_list.html:18
+#: templates/imagestore/album_list.html:39
+msgid "All albums"
+msgstr "Kaikki albumit"
+
+#: templates/imagestore/album_list.html:60
+msgid "user"
+msgstr "käyttäjä"
+
+#: templates/imagestore/base.html:13
+msgid "Home"
+msgstr "Koti"
+
+#: templates/imagestore/base.html:16 templates/imagestore/tag.html:7
+msgid "Gallery"
+msgstr "Galleria"
+
+#: templates/imagestore/base.html:32
+#: templates/imagestore/forms/image_form.html:7
+#: templates/imagestore/forms/image_form.html:22
+#: templates/imagestore/forms/image_form.html:26
+msgid "Upload image"
+msgstr "Lataa kuva"
+
+#: templates/imagestore/base.html:35
+msgid "Create new album"
+msgstr "Luo uusi albumi"
+
+#: templates/imagestore/image-scope.html:14 templates/imagestore/image.html:18
+#: templates/imagestore/tag.html:7 templates/imagestore/tag.html.py:11
+#: templates/imagestore/tag.html:15
+msgid "Tag"
+msgstr "Tagi"
+
+#: templates/imagestore/image.html:55
+msgid "previous image"
+msgstr "edellinen kuva"
+
+#: templates/imagestore/image.html:58
+msgid "next image"
+msgstr "seuraava kuva"
+
+#: templates/imagestore/image.html:68
+msgid "Edit info"
+msgstr "Muokkaa infoa"
+
+#: templates/imagestore/image.html:69
+msgid "Delete image"
+msgstr "Poista kuva"
+
+#: templates/imagestore/image_confirm_delete.html:6
+#: templates/imagestore/image_delete.html:6
+msgid "Are you sure that you would like to delete this image?"
+msgstr "Oletko varma, että haluat poistaa tämän kuvan?"
+
+#: templates/imagestore/image_list.html:33
+#: templates/imagestore/forms/album_form.html:13
+#: templates/imagestore/forms/album_form.html:23
+msgid "Edit album"
+msgstr "Muokkaa albumia"
+
+#: templates/imagestore/pagination.html:8
+msgid "previous page"
+msgstr "edellien sivu"
+
+#: templates/imagestore/pagination.html:22
+msgid "next page"
+msgstr "seuraava sivu"
+
+#: templates/imagestore/forms/album_form.html:7
+#: templates/imagestore/forms/album_form.html:15
+#: templates/imagestore/forms/album_form.html:25
+msgid "Create album"
+msgstr "Luo albumi"
+
+#: templates/imagestore/forms/album_form.html:31
+msgid "Save"
+msgstr "Tallenna"
+
+#: templates/imagestore/forms/image_form.html:30
+msgid "Upload"
+msgstr "Lataa"

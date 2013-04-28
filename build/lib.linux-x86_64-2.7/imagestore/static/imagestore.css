@@ -1,0 +1,107 @@
+#category-list li{
+    font-size: 120%;
+    padding-bottom: 15px;
+}
+
+#category-list {
+    padding-bottom: 10px;
+}
+
+#controls {
+    font-size: 90%;
+}
+
+#controls .controls-group {
+    padding-top: 10px;
+}
+
+.image-description {
+    padding: 10px 0 10px 0;
+}
+
+.navigation {
+    text-align: center;
+    padding: 0 0 10px 0;
+    font-size: 110%;
+}
+
+.navigation .next-link {
+    margin-left: 100px;
+}
+
+img.current {
+    border: 1px red solid;
+}
+
+#image-view img.preview {
+    display: block;
+    margin: 0 auto 0 auto;
+}
+
+#image-view {
+    margin-right: 300px;
+}
+
+.album-list .album {
+    width: 160px;
+    height: 200px;
+    float: left;
+    padding: 5px;
+    margin: 10px;
+}
+
+.album-name {
+    width: 100%;
+    text-align: center;
+}
+
+.album-user {
+    width: 100%;
+    text-align: center;
+    font-size: 80%;
+    color: #CCC;
+}
+
+.album-head {
+    height: 150px;
+    width: 150px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+.album-head a {
+    text-align: center;
+}
+
+.user-info {
+    padding: 20px 0;
+}
+
+.image-preview {
+    float: left;
+    width: 130px;
+    padding: 5px;
+    height: 160px;
+}
+
+.image-preview .image-title {
+    font-size: 80%;
+}
+
+.extra-fields {
+    font-size: 80%;
+    margin: 10px 0;
+}
+
+.extra-fields label {
+    color: #666666;
+}
+
+.basic-fields, .extra-fields {
+    display: block;
+    float: left;
+}
+
+.pagination .disabled {
+    display: none;
+}

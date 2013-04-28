@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load thumbnail %}
+
+{# if we can't get profile then return user model itself #}
+{% with profile=user.get_profile|default_if_none:user %}
+    <div class="user-info">
+        <h2>{% trans "User" %}</h2>
+        <div class="avatar">
+            <a href="{{ profile.get_absolute_url }}">
+                {% thumbnail profile.avatar "80x80" as avatar %}
+                    <img src="{{ avatar.url }}" alt="avatar">
+                {% empty %}
+                {% endthumbnail %}
+            </a>
+        </div>
+        <div class="user-name">
+            <a href="{{ profile.get_absolute_url }}">
+                {{ user }}
+            </a>
+        </div>
+     </div>
+{% endwith %}

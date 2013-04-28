@@ -1,0 +1,21 @@
+{% extends "imagestore/base.html" %}
+
+{% load i18n %}
+{% load thumbnail %}
+
+{% block title %}
+    {% trans "Gallery" %} - {% trans "Tag" %}: {{ tag }}
+{% endblock %}
+
+{% block imagestore-breadcrumb %}
+    <li>{% trans "Tag" %}: {{ tag }}</li>
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Tag" %} - {{ tag }}</h1>
+    {% include "imagestore/image-list.html" %}
+{% endblock content %}
+
+{% block content-related %}
+    {% include "imagestore/tag-cloud.html" %}
+{% endblock %}

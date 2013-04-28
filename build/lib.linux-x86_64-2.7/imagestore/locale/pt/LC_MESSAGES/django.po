@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-14 04:56+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: forms.py:18 models.py:95 models/bases/image.py:40
+msgid "Description"
+msgstr "Descrição"
+
+#: models.py:38 models.py:102 imagestore_cms/cms_plugins.py:13
+#: imagestore_cms/models.py:12 imagestore_cms/models.py:15 models/album.py:14
+#: models/bases/image.py:47 templates/imagestore/image-scope.html:6
+#: templates/imagestore/image_lists/image_list.html:18
+msgid "Album"
+msgstr "Álbums"
+
+#: models.py:39 models/album.py:15
+msgid "Albums"
+msgstr "Álbums"
+
+#: models.py:45 models.py:99 models/bases/album.py:36 models/bases/image.py:44
+#: templates/imagestore/image-scope.html:3 templates/imagestore/user.html:8
+#: templates/imagestore/user.html.py:17 templates/imagestore/user_info.html:5
+#: templates/imagestore/image_lists/image_list.html:15
+msgid "User"
+msgstr "Utilizador"
+
+#: models.py:46 models/bases/album.py:37
+msgid "Name"
+msgstr "Nome"
+
+#: models.py:47 models.py:100 models/bases/album.py:38
+#: models/bases/image.py:45
+msgid "Created"
+msgstr "Criado"
+
+#: models.py:48 models.py:101 models/bases/album.py:39
+#: models/bases/image.py:46
+msgid "Updated"
+msgstr "Atualizado"
+
+#: models.py:49 models/bases/album.py:40
+msgid "Is public"
+msgstr "É público"
+
+#: models.py:52 models.py:97 models/bases/album.py:43 models/bases/image.py:42
+msgid "Order"
+msgstr "Ordem"
+
+#: models.py:79 models/bases/album.py:70
+#: templates/imagestore/album_list.html:50
+msgid "Empty album"
+msgstr "Album Vazio"
+
+#: models.py:81 models/bases/album.py:72
+msgid "Head"
+msgstr "Cabeçalho"
+
+#: models.py:87 models/image.py:13 templates/imagestore/image.html:7
+msgid "Image"
+msgstr "Imagem"
+
+#: models.py:88 models/image.py:14
+msgid "Images"
+msgstr "Imagens"
+
+#: models.py:94 models/bases/image.py:39
+msgid "Title"
+msgstr "Título"
+
+#: models.py:96 models/bases/image.py:41 templates/imagestore/image.html:62
+#: templates/imagestore/tag-cloud.html:6
+msgid "Tags"
+msgstr ""
+
+#: models.py:98 models/bases/image.py:43
+msgid "File"
+msgstr "Ficheiro"
+
+#: models.py:119 models/bases/image.py:64
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: models.py:123 templates/imagestore/image.html:70
+msgid "Place"
+msgstr "Lugar"
+
+#: models.py:131 models/upload.py:26
+msgid "images file (.zip)"
+msgstr "Arquivo de imagens (.zip)"
+
+#: models.py:132 models/upload.py:27
+msgid "Select a .zip file of images to upload into a new Gallery."
+msgstr ""
+
+#: models.py:135 models/upload.py:32
+msgid ""
+"Select an album to add these images to. leave this empty to create a new "
+"album from the supplied title."
+msgstr ""
+"Selecione um álbum para adicionar essas imagens. Deixe-o vazio para criar um "
+"novo"
+
+#: models.py:137 models/upload.py:37
+msgid "New album name"
+msgstr "Novo nome do Album"
+
+#: models.py:138 models/upload.py:40
+msgid "tags"
+msgstr ""
+
+#: models.py:141 models/upload.py:43
+msgid "Album upload"
+msgstr "Carregar Álbum"
+
+#: models.py:142 models/upload.py:44
+msgid "Album uploads"
+msgstr "Carregar Álbums"
+
+#: views.py:54
+#, python-format
+msgid "No Tag found matching \"%s\"."
+msgstr "Tag não encontrada de acordo com \"%s\"."
+
+#: imagestore_cms/cms_app.py:11
+msgid "Imagestore App"
+msgstr "Galleria"
+
+#: imagestore_cms/cms_plugins.py:24
+msgid "Album as carousel"
+msgstr "Álbum como carrossel"
+
+#: imagestore_cms/models.py:16
+msgid "Skin"
+msgstr "Tema"
+
+#: imagestore_cms/models.py:17
+msgid "Image limit"
+msgstr "Limite de Imagens"
+
+#: imagestore_cms/models.py:18
+msgid "Thumbnail size"
+msgstr "Tamanho da miniatura"
+
+#: imagestore_cms/models.py:19
+msgid "Full size view"
+msgstr "Tamanho original"
+
+#: models/upload.py:38
+msgid ""
+"If not empty new album with this name will be created and images will be "
+"upload to this album"
+msgstr ""
+"Se não estiver vazio um novo álbum com este nome será criado e as imagens "
+"serão carregadas automáticamente"
+
+#: templates/imagestore/album_delete.html:6
+msgid "Are you sure that you would like to delete this album?"
+msgstr "Tem certeza que gostaria de excluir este álbum?"
+
+#: templates/imagestore/album_delete.html:9
+#: templates/imagestore/image_confirm_delete.html:8
+#: templates/imagestore/image_delete.html:9
+msgid "Yes"
+msgstr "Sim"
+
+#: templates/imagestore/album_delete.html:11
+#: templates/imagestore/image_confirm_delete.html:10
+#: templates/imagestore/image_delete.html:11
+msgid "No"
+msgstr "Não"
+
+#: templates/imagestore/album_list.html:7
+#: templates/imagestore/album_list.html:34
+msgid "Albums for user"
+msgstr "Albums por utilizador"
+
+#: templates/imagestore/album_list.html:9
+#: templates/imagestore/album_list.html:36
+msgid "All albums"
+msgstr "Todos os albums"
+
+#: templates/imagestore/album_list.html:16
+#: templates/imagestore/category.html:9 templates/imagestore/category.html:16
+#: templates/imagestore/category.html:18 templates/imagestore/category.html:29
+#: templates/imagestore/image-form.html:64 templates/imagestore/image.html:12
+#: templates/imagestore/tag.html:7 templates/imagestore/tag.html.py:12
+#: templates/imagestore/user.html:8 templates/imagestore/user.html.py:12
+#: templates/imagestore/forms/album_form.html:13
+#: templates/imagestore/forms/image_form.html:23
+#: templates/imagestore/image_lists/image_list.html:7
+msgid "Gallery"
+msgstr "Galleria"
+
+#: templates/imagestore/album_list.html:58
+msgid "user"
+msgstr "utilizador"
+
+#: templates/imagestore/base.html:17 templates/imagestore/image-form.html:7
+#: templates/imagestore/image-form.html:65
+#: templates/imagestore/forms/image_form.html:7
+#: templates/imagestore/forms/image_form.html:28
+msgid "Upload image"
+msgstr "Carregar Imagem"
+
+#: templates/imagestore/base.html:20
+msgid "Create new album"
+msgstr "Criar novo álbum"
+
+#: templates/imagestore/category.html:31
+msgid "Categories"
+msgstr "Categorias"
+
+#: templates/imagestore/category.html:33
+msgid "All images:"
+msgstr "Todas as imagens"
+
+#: templates/imagestore/image-form.html:71
+#: templates/imagestore/forms/image_form.html:69
+msgid "Upload"
+msgstr "Carregar"
+
+#: templates/imagestore/image-scope.html:9 templates/imagestore/tag.html:7
+#: templates/imagestore/tag.html.py:13 templates/imagestore/tag.html:17
+msgid "Tag"
+msgstr ""
+
+#: templates/imagestore/image.html:41
+msgid "previous image"
+msgstr "Imagem Anterior"
+
+#: templates/imagestore/image.html:44
+msgid "next image"
+msgstr "Próxima imagem"
+
+#: templates/imagestore/image.html:54
+msgid "Edit info"
+msgstr "Editar informação"
+
+#: templates/imagestore/image.html:55
+msgid "Delete image"
+msgstr "Remover imagem"
+
+#: templates/imagestore/image_confirm_delete.html:6
+#: templates/imagestore/image_delete.html:6
+msgid "Are you sure that you would like to delete this image?"
+msgstr "Tem certeza que gostaria de apagar esta imagem?"
+
+#: templates/imagestore/mini-pagination.html:5
+#: templates/imagestore/pagination.html:5
+msgid "previous"
+msgstr "anterior"
+
+#: templates/imagestore/mini-pagination.html:8
+#: templates/imagestore/pagination.html:9
+msgid "next"
+msgstr "próxima"
+
+#: templates/imagestore/pagination.html:7
+msgid "of"
+msgstr "de"
+
+#: templates/imagestore/forms/album_form.html:7
+#: templates/imagestore/forms/album_form.html:17
+msgid "Create album"
+msgstr "Criar álbum"
+
+#: templates/imagestore/forms/album_form.html:21
+msgid "Save"
+msgstr "Guardar"
+
+#: templates/imagestore/image_lists/image_list.html:21
+msgid "Tag:"
+msgstr ""
+
+#: templates/imagestore/image_lists/image_list.html:43
+msgid "Change album"
+msgstr "Alterar álbum"
