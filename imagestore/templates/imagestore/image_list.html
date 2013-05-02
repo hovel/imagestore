@@ -136,6 +136,7 @@ $(document).ready(function() {
                 <a class="thumb" rel='gallery-image[ilist]' href="{{ image.image.url }}">
                     <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
                         {% score_for_object  image as score %}
+                        {% voters_for_object image as voters %}
                         <a id="upImage{{forloop.counter}}" href="/images/{{ image.id }}/up/vote/">
                             <img src="{{ STATIC_URL }}img/like.png">
                         </a>
@@ -145,6 +146,14 @@ $(document).ready(function() {
                         </a>
                         <span id="nImageScore{{forloop.counter}}">{{score.num_down_votes}}</span>
                         <a id="clearImage{{forloop.counter}}" href="/images/{{ image.id }}/clear/vote/">Clear</a>
+                        <span id="voterList{{forloop.counter}}">
+                                {% for voter in voters.voters %}
+                                <a href="{{ voter.get_absolute_url }}">
+                                    {{ voter.username }}
+                                </a>
+                                {% endfor %}
+                        </span>
+
                         {% if image.title %}
                             <br><span class='image-title'>{{ image.title }}</span>
                         {% endif %}                

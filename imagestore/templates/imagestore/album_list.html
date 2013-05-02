@@ -182,6 +182,7 @@
                             <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}">
                         {% endthumbnail %}
                         {% score_for_object album as score %}
+                        {% voters_for_object album as voters %}
                         <a id="up{{forloop.counter}}" href="/albums/{{ album.id }}/up/vote/">
                             <!--img src="{{ STATIC_URL }}img/like.png"-->Like
                         </a>
@@ -201,6 +202,13 @@
                             <span class="cover-stat cover-stat-views">
                                 <span class="stat-label be-font-inline">G</span>
                                 <span class="stat-value">{% get_hit_count for album %}</span>
+                            </span>
+                            <span id="voterList{{forloop.counter}}">
+                                {% for voter in voters.voters %}
+                                <a href="{{ voter.get_absolute_url }}">
+                                    {{ voter.username }}
+                                </a>
+                                {% endfor %}
                             </span>
                         </div><!-- .cover-stat-wrap -->
 
