@@ -125,6 +125,17 @@
     upSelector.click(upHandler); 
     //downSelector.click(handler);
     clearSelector.click(clearHandler); 
+    $('#pAlbumScore{{forloop.counter}}').click(function() {
+        var w = 700;
+        var h = 500;
+        var left = 100;
+        var top = 100;
+        var name="Friends";
+        var settings = 'height=' + h + ',width=' + w + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=yes,directories=no,status=yes';
+        var url = $(this).attr("href");
+        window.open(url, name, settings);
+        return false;
+    });
 {% endfor %}      
 });
 }); 
@@ -197,18 +208,15 @@
                         <div class="cover-stat-wrap" style="background-color:#f6f6f6;">
                             <span class="cover-stat cover-stat-appreciations">
                                 <span class="stat-label be-font-inline">F</span>
-                                <span id="pAlbumScore{{forloop.counter}}" class="stat-value">{{score.num_up_votes}}</span>
+                                <span class="stat-value">
+                                <a id="pAlbumScore{{forloop.counter}}" href="{{ voters }}">
+                                    {{score.num_up_votes}}
+                                </a>
+                                </span>
                             </span>
                             <span class="cover-stat cover-stat-views">
                                 <span class="stat-label be-font-inline">G</span>
                                 <span class="stat-value">{% get_hit_count for album %}</span>
-                            </span>
-                            <span id="voterList{{forloop.counter}}">
-                                {% for voter in voters.voters %}
-                                <a href="{{ voter.get_absolute_url }}">
-                                    {{ voter.username }}
-                                </a>
-                                {% endfor %}
                             </span>
                         </div><!-- .cover-stat-wrap -->
 

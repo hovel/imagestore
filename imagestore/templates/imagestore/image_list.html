@@ -80,6 +80,17 @@ $(document).ready(function() {
     upSelector.click(handler); 
     downSelector.click(handler);
     clearSelector.click(handler); 
+    $('#pImageScore{{forloop.counter}}').click(function() {
+        var w = 700;
+        var h = 500;
+        var left = 100;
+        var top = 100;
+        var name="Friends";
+        var settings = 'height=' + h + ',width=' + w + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=yes,directories=no,status=yes';
+        var url = $(this).attr("href");
+        window.open(url, name, settings);
+        return false;
+    });    
 {% endfor %}      
 });
 }); 
@@ -140,19 +151,16 @@ $(document).ready(function() {
                         <a id="upImage{{forloop.counter}}" href="/images/{{ image.id }}/up/vote/">
                             <img src="{{ STATIC_URL }}img/like.png">
                         </a>
-                        <span id="pImageScore{{forloop.counter}}">{{score.num_up_votes}}</span>
+                        <span>
+                            <a id="pImageScore{{forloop.counter}}" href="{{voters}}">
+                                {{score.num_up_votes}}
+                            </a>
+                        </span>
                         <a id="downImage{{forloop.counter}}" href="/images/{{ image.id }}/down/vote/">
                             <img src="{{ STATIC_URL }}img/dislike.png">
                         </a>
                         <span id="nImageScore{{forloop.counter}}">{{score.num_down_votes}}</span>
                         <a id="clearImage{{forloop.counter}}" href="/images/{{ image.id }}/clear/vote/">Clear</a>
-                        <span id="voterList{{forloop.counter}}">
-                                {% for voter in voters.voters %}
-                                <a href="{{ voter.get_absolute_url }}">
-                                    {{ voter.username }}
-                                </a>
-                                {% endfor %}
-                        </span>
 
                         {% if image.title %}
                             <br><span class='image-title'>{{ image.title }}</span>
