@@ -160,7 +160,7 @@ class CreateAlbum(CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        blog_posts = BlogPost.objects.published(for_user=self.request.user).select_related().filter(user=request.user)
+        blog_posts = BlogPost.objects.published(for_user=self.request.user).select_related().filter(user=self.request.user)
         """
             For now considering blog_posts as a list.
             Going forward we will restrict the #blogposts to be one per user therefore fetching the first element only is sufficient.
