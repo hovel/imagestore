@@ -160,14 +160,15 @@ class CreateAlbum(CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        blog_posts = BlogPost.objects.published(for_user=self.request.user).select_related()
+        blog_posts = BlogPost.objects.published(for_user=self.request.user).select_related().filter(user=request.user)
         """
             For now considering blog_posts as a list.
             Going forward we will restrict the #blogposts to be one per user therefore fetching the first element only is sufficient.
             Remove this loop then.
         """
-        blog_post = blog_posts[:1].get()
-        action.send(blog_post, verb=_('added new album'), target=self.object)
+        if blog_posts:
+            blog_post = blog_posts[0]
+            action.send(blog_post, verb=_('added new album'), target=self.object)
 
         return HttpResponseRedirect(self.get_success_url())
 
