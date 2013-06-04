@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load thumbnail %}
 {% load voting_tags %}
+{% load comment_tags %}
 {% load url from future %}
 
 {% block jqueryImage %}
@@ -174,6 +175,16 @@ $(document).ready(function() {
                     {% endif %}
                 </a>
             {% endthumbnail %}
+            </div>
+            <a href="{% comments_for_obj_url image %}" OnClick="
+                var add_link = $(this);
+                $.get(add_link.attr('href'), {}, function(data) {
+                    $('#subcomments{{forloop.counter}}').html(data);
+                });
+                return false;">comments</a>
+            <div id="subcomments{{forloop.counter}}"></div>
+            <div>
+                {% comments_for_review image %}
             </div>
         {% endfor %}
         {% if album %}

@@ -28,6 +28,7 @@ except ImportError:
     from PIL import Image as PILImage
 
 from imagestore.utils import get_file_path, get_model_string
+from mezzanine.generic.fields import CommentsField
 
 SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
 
@@ -50,6 +51,8 @@ class BaseImage(models.Model):
     updated = models.DateTimeField(_('Updated'), auto_now=True, null=True)
     album = models.ForeignKey(get_model_string('Album'), verbose_name=_('Album'), null=True, blank=True, related_name='images')
 
+    comments = CommentsField(verbose_name=_("Comments"))
+    
     @permalink
     def get_absolute_url(self):
         return 'imagestore:image', (), {'pk': self.id}
