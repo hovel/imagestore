@@ -22,6 +22,7 @@ except ImportError:
     from PIL import Image as PILImage
 
 from imagestore.utils import get_model_string
+from mezzanine.generic.fields import CommentsField
 
 
 SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
@@ -43,6 +44,8 @@ class BaseAlbum(models.Model):
     head = models.ForeignKey(get_model_string('Image'), related_name='head_of', null=True, blank=True, on_delete=models.SET_NULL)
 
     order = models.IntegerField(_('Order'), default=0)
+    
+    comments = CommentsField(verbose_name=_("Comments"))
 
     def get_head(self):
         if self.head:
