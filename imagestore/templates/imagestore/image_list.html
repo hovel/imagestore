@@ -91,7 +91,7 @@ $(document).ready(function() {
         var url = $(this).attr("href");
         window.open(url, name, settings);
         return false;
-    });    
+    });  
 {% endfor %}      
 });
 }); 
@@ -176,6 +176,7 @@ $(document).ready(function() {
                 </a>
             {% endthumbnail %}
             </div>
+            <a href="{% url 'imagestore:delete-image' image.id %}">delete image</a>
             <a href="{% comments_for_obj_url image %}" OnClick="
                 var add_link = $(this);
                 $.get(add_link.attr('href'), {}, function(data) {
@@ -186,6 +187,7 @@ $(document).ready(function() {
             <div>
                 {% comments_for_review image %}
             </div>
+
         {% endfor %}
         {% if album %}
         <a id="backToAlbum"  href="{% url 'imagestore:user' album.user %}">{% trans "Back to album" %}</a>

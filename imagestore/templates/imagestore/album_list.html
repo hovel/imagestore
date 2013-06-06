@@ -4,6 +4,7 @@
 {% load voting_tags %}
 {% load hitcount_tags %}
 {% load comment_tags %}
+{% load userProfile_tags %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/creative.css">
@@ -176,11 +177,14 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{% if view_user %}
-        {% trans "Albums for user" %} {{ view_user }}
+    <h4>
+    {% if view_user %}
+        {% get_owned_blog view_user as blog %}
+        {% trans "Uploaded Images " %} {{ blog.num_images }} {% trans "/" %} {{ max_images }}
     {% else %}
         {% trans "All albums" %}
-    {% endif %}</h1>
+    {% endif %}
+    </h4>
     {% include "imagestore/pagination.html" %}
     <div class='album-list'>
         {% for album in album_list %}

@@ -5,12 +5,13 @@ from imagestore.models import Album, Image
 from imagestore.models import image_applabel, image_classname
 from imagestore.models import album_applabel, album_classname
 from django.shortcuts import get_object_or_404
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
+from django.utils import simplejson
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from tagging.models import TaggedItem
 from tagging.utils import get_tag
@@ -48,6 +49,7 @@ class AlbumListView(ListView):
             user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
             albums = albums.filter(user=user)
             self.e_context['view_user'] = user
+            self.e_context['max_images'] = getattr(settings, 'MAX_IMAGES_PER_VENDOR', 50)
         return albums
 
     def get_context_data(self, **kwargs):
@@ -208,6 +210,10 @@ class DeleteAlbum(DeleteView):
         return super(DeleteAlbum, self).dispatch(*args, **kwargs)
 
 
+def json_error_response(error_message):
+    return HttpResponse(simplejson.dumps(dict(success=False,
+                                              error_message=error_message)))
+
 class CreateImage(CreateView):
     template_name = 'imagestore/forms/image_form.html'
     model = Image
@@ -222,13 +228,20 @@ class CreateImage(CreateView):
         return form_class(user=self.request.user, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
-        if self.object.album:
-            self.object.album.save()
-        return HttpResponseRedirect(self.get_success_url())
-
+        user = self.request.user
+        blog_posts = BlogPost.objects.published(for_user=user).select_related().filter(user=user)
+        if blog_posts and blog_posts[0]:
+            blog_post = blog_posts[0]
+            if blog_post.num_images < getattr(settings, 'MAX_IMAGES_PER_VENDOR', 10):
+                blog_post.num_images += 1
+                blog_post.save()
+                self.object = form.save(commit=False)
+                self.object.user = self.request.user
+                self.object.save()
+                if self.object.album:
+                    self.object.album.save()
+                return HttpResponseRedirect(self.get_success_url())
+        return json_error_response("'%s' has crossed maximum limit of images" % user)
 
 def get_edit_image_queryset(self):
     if self.request.user.has_perm('%s.moderate_%s' % (image_applabel, image_classname)):
@@ -264,5 +277,18 @@ class DeleteImage(DeleteView):
 
     @method_decorator(login_required)
     @method_decorator(permission_required('%s.delete_%s' % (image_applabel, image_classname)))
-    def dispatch(self, *args, **kwargs):
-        return super(DeleteImage, self).dispatch(*args, **kwargs)
+    def dispatch(self, *args, **kwargs):  
+		return super(DeleteImage, self).dispatch(*args, **kwargs) 
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        user = request.user
+        blog_posts = BlogPost.objects.published(for_user=user).select_related().filter(user=user)
+        if blog_posts and blog_posts[0]:
+            blog_post = blog_posts[0]
+            blog_post.num_images = blog_post.num_images - 1
+            blog_post.save() 
+        return HttpResponseRedirect(self.get_success_url())
+
+        
