@@ -19,7 +19,7 @@ from utils import load_class
 from django.db.models import Q
 from actstream import action
 from mezzanine.blog.models import BlogPost
-
+from sorl.thumbnail import delete
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -282,6 +282,8 @@ class DeleteImage(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.image:
+            delete(self.object.image)
         self.object.delete()
         user = request.user
         blog_posts = BlogPost.objects.published(for_user=user).select_related().filter(user=user)

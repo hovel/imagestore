@@ -10,11 +10,12 @@ from sorl.thumbnail.helpers import ThumbnailError
 from tagging.fields import TagField
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
-from sorl.thumbnail import ImageField, get_thumbnail
+from sorl.thumbnail import ImageField, get_thumbnail, delete
 from django.contrib.auth.models import Permission
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.base import ContentFile
 
 try:
     from django.contrib.auth import get_user_model
@@ -68,9 +69,21 @@ class BaseImage(models.Model):
         except ThumbnailError, ex:
             return 'ThumbnailError, %s' % ex.message
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Have to save the image (and imagefield) first
+            super(BaseImage, self).save(*args, **kwargs)
+            # obj is being created for the first time - resize
+            quality = getattr(settings, 'MAX_IMAGES_PER_VENDOR', 60)
+            resized = get_thumbnail(self.image, "1000x1000", quality=quality)
+            # Delete the original image and reassign the resized image to the image field
+            self.image.delete()
+            self.image.save(resized.name, ContentFile(resized.read()), True)
+            delete(resized)
+        super(BaseImage, self).save(*args, **kwargs)
+
     admin_thumbnail.short_description = _('Thumbnail')
     admin_thumbnail.allow_tags = True
-
 
 #noinspection PyUnusedLocal
 def setup_imagestore_permissions(instance, created, **kwargs):
