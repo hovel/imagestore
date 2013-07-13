@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
+from django.core.exceptions import ImproperlyConfigured
+from django.utils.importlib import import_module
 
 __author__ = 'zeus'
 
@@ -18,6 +20,59 @@ except ImportError:
 from imagestore.models import Album, Image
 
 TEMP_DIR = getattr(settings, 'TEMP_DIR', 'temp/')
+
+
+def process_zipfile(uploaded_album):
+    if os.path.isfile(uploaded_album.zip_file.path):
+        # TODO: implement try-except here
+        zip = zipfile.ZipFile(uploaded_album.zip_file.path)
+        bad_file = zip.testzip()
+        if bad_file:
+            raise Exception('"%s" in the .zip archive is corrupt.' % bad_file)
+
+        if not uploaded_album.album:
+            uploaded_album.album = Album.objects.create(name=uploaded_album.new_album_name)
+
+        from cStringIO import StringIO
+        for filename in sorted(zip.namelist()):
+            if filename.startswith('__'):  # do not process meta files
+                continue
+            data = zip.read(filename)
+            if len(data):
+                try:
+                    # the following is taken from django.newforms.fields.ImageField:
+                    #  load() is the only method that can spot a truncated JPEG,
+                    #  but it cannot be called sanely after verify()
+                    trial_image = PILImage.open(StringIO(data))
+                    trial_image.load()
+                    # verify() is the only method that can spot a corrupt PNG,
+                    #  but it must be called immediately after the constructor
+                    trial_image = PILImage.open(StringIO(data))
+                    trial_image.verify()
+                except Exception:
+                    # if a "bad" file is found we just skip it.
+                    continue
+                img = Image(album=uploaded_album.album)
+                img.image.save(filename, ContentFile(data))
+                img.save()
+        zip.close()
+        uploaded_album.delete()
+
+
+upload_processor_function = getattr(settings, 'IMAGESTORE_UPLOAD_ALBUM_PROCESSOR', None)
+upload_processor = process_zipfile
+if upload_processor_function:
+    i = upload_processor_function.rfind('.')
+    module, attr = upload_processor_function[:i], upload_processor_function[i+1:]
+    try:
+        mod = import_module(module)
+    except ImportError as e:
+        raise ImproperlyConfigured('Error importing request processor module %s: "%s"' % (module, e))
+    try:
+        upload_processor = getattr(mod, attr)
+    except AttributeError:
+        raise ImproperlyConfigured('Module "%s" does not define a "%s" callable request processor' % (module, attr))
+
 
 class AlbumUpload(models.Model):
     """
@@ -46,42 +101,9 @@ class AlbumUpload(models.Model):
 
     def save(self, *args, **kwargs):
         super(AlbumUpload, self).save(*args, **kwargs)
-        album = self.process_zipfile()
-        super(AlbumUpload, self).delete()
-        return album
+        upload_processor(self)
 
-    def process_zipfile(self):
-        if os.path.isfile(self.zip_file.path):
-            # TODO: implement try-except here
-            zip = zipfile.ZipFile(self.zip_file.path)
-            bad_file = zip.testzip()
-            if bad_file:
-                raise Exception('"%s" in the .zip archive is corrupt.' % bad_file)
-            count = 1
-            album = self.album
-            if not album:
-                album = Album.objects.create(name=self.new_album_name)
-            from cStringIO import StringIO
-            for filename in sorted(zip.namelist()):
-                if filename.startswith('__'): # do not process meta files
-                    continue
-                data = zip.read(filename)
-                if len(data):
-                    try:
-                        # the following is taken from django.newforms.fields.ImageField:
-                        #  load() is the only method that can spot a truncated JPEG,
-                        #  but it cannot be called sanely after verify()
-                        trial_image = PILImage.open(StringIO(data))
-                        trial_image.load()
-                        # verify() is the only method that can spot a corrupt PNG,
-                        #  but it must be called immediately after the constructor
-                        trial_image = PILImage.open(StringIO(data))
-                        trial_image.verify()
-                    except Exception:
-                        # if a "bad" file is found we just skip it.
-                        continue
-                    img = Image(album=album)
-                    img.image.save(filename, ContentFile(data))
-                    img.save()
-            zip.close()
-            return album
+    def delete(self, *args, **kwargs):
+        storage, path = self.zip_file.storage, self.zip_file.path
+        super(AlbumUpload, self).delete(*args, **kwargs)
+        storage.delete(path)

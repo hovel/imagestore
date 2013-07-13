@@ -47,3 +47,8 @@ IMAGESTORE_ALBUM_FORM ("imagestore.forms.AlbumForm")
 
 IMAGESTORE_LOAD_CSS ("True")
     Load CSS file 'static/imagestore.css' in imagestore templates. If you want to use custom theme - disable this settings.
+
+IMAGESTORE_UPLOAD_ALBUM_PROCESSOR ("imagestore.models.upload.process_zipfile")
+    Function for processing uploaded zip archives from admin interface. Function gets `AlbumUpload` model instance
+    and should process file from `zip_file` field to upload images. For example, you can override this setting
+    to provide function, which do nothing, and process file lately
