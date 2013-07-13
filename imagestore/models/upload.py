@@ -37,6 +37,7 @@ def process_zipfile(uploaded_album):
         for filename in sorted(zip.namelist()):
             if filename.startswith('__'):  # do not process meta files
                 continue
+            print filename
             data = zip.read(filename)
             if len(data):
                 try:
@@ -49,7 +50,8 @@ def process_zipfile(uploaded_album):
                     #  but it must be called immediately after the constructor
                     trial_image = PILImage.open(StringIO(data))
                     trial_image.verify()
-                except Exception:
+                except Exception, ex:
+                    print ex.message
                     # if a "bad" file is found we just skip it.
                     continue
                 img = Image(album=uploaded_album.album)
