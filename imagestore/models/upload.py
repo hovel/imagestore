@@ -7,8 +7,8 @@ __author__ = 'zeus'
 
 import os
 import zipfile
+from io import BytesIO
 from django.db import models
-from imagestore.utils import load_class, get_model_string
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -33,7 +33,6 @@ def process_zipfile(uploaded_album):
         if not uploaded_album.album:
             uploaded_album.album = Album.objects.create(name=uploaded_album.new_album_name)
 
-        from cStringIO import StringIO
         for filename in sorted(zip.namelist()):
             if filename.startswith('__'):  # do not process meta files
                 continue
@@ -41,22 +40,24 @@ def process_zipfile(uploaded_album):
             data = zip.read(filename)
             if len(data):
                 try:
-                    # the following is taken from django.newforms.fields.ImageField:
-                    #  load() is the only method that can spot a truncated JPEG,
-                    #  but it cannot be called sanely after verify()
-                    trial_image = PILImage.open(StringIO(data))
-                    trial_image.load()
-                    # verify() is the only method that can spot a corrupt PNG,
-                    #  but it must be called immediately after the constructor
-                    trial_image = PILImage.open(StringIO(data))
-                    trial_image.verify()
+                    # the following is taken from django.forms.fields.ImageField:
+                    # load() could spot a truncated JPEG, but it loads the entire
+                    # image in memory, which is a DoS vector. See #3848 and #18520.
+                    # verify() must be called immediately after the constructor.
+                    PILImage.open(BytesIO(data)).verify()
                 except Exception, ex:
-                    print ex.message
                     # if a "bad" file is found we just skip it.
+                    print('Error verify image: %s' % ex.message)
                     continue
-                img = Image(album=uploaded_album.album)
-                img.image.save(filename, ContentFile(data))
-                img.save()
+                if hasattr(data, 'seek') and callable(data.seek):
+                    print 'seeked'
+                    data.seek(0)
+                try:
+                    img = Image(album=uploaded_album.album)
+                    img.image.save(filename, ContentFile(data))
+                    img.save()
+                except Exception, ex:
+                    print('error create Image: %s' % ex.message)
         zip.close()
         uploaded_album.delete()
 
