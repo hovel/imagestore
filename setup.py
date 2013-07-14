@@ -8,7 +8,6 @@ setup(
             'django',
             'sorl-thumbnail',
             'south',
-            'pil',
             'django-fancy-autocomplete',
             'django-tagging',
             ],
