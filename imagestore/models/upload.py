@@ -7,7 +7,6 @@ __author__ = 'zeus'
 
 import os
 import zipfile
-from io import BytesIO
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -33,6 +32,7 @@ def process_zipfile(uploaded_album):
         if not uploaded_album.album:
             uploaded_album.album = Album.objects.create(name=uploaded_album.new_album_name)
 
+        from cStringIO import StringIO
         for filename in sorted(zip.namelist()):
             if filename.startswith('__'):  # do not process meta files
                 continue
@@ -44,7 +44,7 @@ def process_zipfile(uploaded_album):
                     # load() could spot a truncated JPEG, but it loads the entire
                     # image in memory, which is a DoS vector. See #3848 and #18520.
                     # verify() must be called immediately after the constructor.
-                    PILImage.open(BytesIO(data)).verify()
+                    PILImage.open(StringIO(data)).verify()
                 except Exception, ex:
                     # if a "bad" file is found we just skip it.
                     print('Error verify image: %s' % ex.message)
