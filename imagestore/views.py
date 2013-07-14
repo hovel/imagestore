@@ -20,6 +20,9 @@ from django.db.models import Q
 from actstream import action
 from mezzanine.blog.models import BlogPost
 from sorl.thumbnail import delete
+from actstream.models import Action
+from django.contrib.contenttypes.models import ContentType
+
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -162,16 +165,6 @@ class CreateAlbum(CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        blog_posts = BlogPost.objects.published(for_user=self.request.user).select_related().filter(user=self.request.user)
-        """
-            For now considering blog_posts as a list.
-            Going forward we will restrict the #blogposts to be one per user therefore fetching the first element only is sufficient.
-            Remove this loop then.
-        """
-        if blog_posts:
-            blog_post = blog_posts[0]
-            action.send(blog_post, verb=_('added new album'), target=self.object)
-
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -228,20 +221,29 @@ class CreateImage(CreateView):
         return form_class(user=self.request.user, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        user = self.request.user
-        blog_posts = BlogPost.objects.published(for_user=user).select_related().filter(user=user)
-        if blog_posts and blog_posts[0]:
-            blog_post = blog_posts[0]
-            if blog_post.num_images < getattr(settings, 'MAX_IMAGES_PER_VENDOR', 10):
-                blog_post.num_images += 1
-                blog_post.save()
-                self.object = form.save(commit=False)
-                self.object.user = self.request.user
-                self.object.save()
-                if self.object.album:
-                    self.object.album.save()
+
+		user = self.request.user
+		blog_posts = BlogPost.objects.published(for_user=user).select_related().filter(user=user)
+		if blog_posts and blog_posts[0]:
+			blog_post = blog_posts[0]
+			if blog_post.num_images < getattr(settings, 'MAX_IMAGES_PER_VENDOR', 10):
+				blog_post.num_images += 1
+				blog_post.save()
+				self.object = form.save(commit=False)
+				self.object.user = self.request.user
+				self.object.save()
+				if self.object.album:
+					self.object.album.save()
+					if self.object.album.images.all().count() == 1:
+						action.send(blog_post, verb=_('added new album'), target=self.object.album)
+					else:
+						ctype = ContentType.objects.get_for_model(blog_post)
+						target_content_type = ContentType.objects.get_for_model(self.object.album)
+						Action.objects.all().filter(actor_content_type=ctype, actor_object_id=blog_post.id, verb=u'added new images to the album', target_content_type=target_content_type, target_object_id=self.object.album.id ).delete()
+						action.send(blog_post, verb=_('added new images to the album'), target=self.object.album)
                 return HttpResponseRedirect(self.get_success_url())
-        return json_error_response("'%s' has crossed maximum limit of images" % user)
+            else:    
+                return json_error_response("'%s' has crossed maximum limit of images" % user)
 
 def get_edit_image_queryset(self):
     if self.request.user.has_perm('%s.moderate_%s' % (image_applabel, image_classname)):
