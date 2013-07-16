@@ -1,3 +1,4 @@
+import os
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
@@ -202,6 +203,27 @@ class DeleteAlbum(DeleteView):
     def dispatch(self, *args, **kwargs):
         return super(DeleteAlbum, self).dispatch(*args, **kwargs)
 
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        user = request.user
+        blog_posts = BlogPost.objects.published(for_user=user).select_related().filter(user=user)
+
+        if blog_posts and blog_posts[0]:
+            blog_post = blog_posts[0]
+            blog_post.num_images = blog_post.num_images - self.object.images.all().count()
+            blog_post.save()
+
+        for image in self.object.images.all():
+            delete(image.image)
+            image.delete()
+
+        media_root = getattr(settings, 'MEDIA_ROOT', '/')
+        album_dir = self.object.get_album_path()
+        album_abs_dir = os.path.join(media_root, album_dir)
+        os.rmdir(album_abs_dir)
+        
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
 
 def json_error_response(error_message):
     return HttpResponse(simplejson.dumps(dict(success=False,
@@ -241,9 +263,9 @@ class CreateImage(CreateView):
 						target_content_type = ContentType.objects.get_for_model(self.object.album)
 						Action.objects.all().filter(actor_content_type=ctype, actor_object_id=blog_post.id, verb=u'added new images to the album', target_content_type=target_content_type, target_object_id=self.object.album.id ).delete()
 						action.send(blog_post, verb=_('added new images to the album'), target=self.object.album)
-                return HttpResponseRedirect(self.get_success_url())
-            else:    
-                return json_error_response("'%s' has crossed maximum limit of images" % user)
+				return HttpResponseRedirect(self.get_success_url())
+			else:    
+				return json_error_response("'%s' has crossed maximum limit of images" % user)
 
 def get_edit_image_queryset(self):
     if self.request.user.has_perm('%s.moderate_%s' % (image_applabel, image_classname)):

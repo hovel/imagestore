@@ -3,7 +3,7 @@
 
 __author__ = 'zeus'
 
-
+import os
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
@@ -73,6 +73,11 @@ class BaseAlbum(models.Model):
             except IOError:
                 return 'IOError'
         return _('Empty album')
+
+    def get_album_path(self):
+        UPLOAD_TO = getattr(settings, 'IMAGESTORE_UPLOAD_TO', 'imagestore/')
+        Path = os.path.join(UPLOAD_TO, "user_%d/%s" % (self.user.id, self.name))
+        return Path
 
     admin_thumbnail.short_description = _('Head')
     admin_thumbnail.allow_tags = True
