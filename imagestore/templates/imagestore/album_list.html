@@ -10,139 +10,13 @@
 {% block extra_head %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/creative.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/navigation.css">
-<script type="text/javascript">
+    <script type="text/javascript">   
     $(document).ready(function() {
-    {% for album in album_list %}
-        {#% if album.get_head %#}
-            $('#getAlbumPhotos{{forloop.counter}}').click(function() {
-                var add_link = $(this);
-                var link = add_link.attr('href');
-                $.get(link, {}, function(data) {
-                    $('#vendorAlbum').html(data);
-                });
-                {% get_hit_count_javascript for album %} 
-                return false;
-            });
-            $('#deleteAlbum'+'{{forloop.counter}}').click(function() {
-                var add_link = $(this);
-                var link = add_link.attr('href');
-                $.get(link, {}, function(data) {
-                    $('#vendorAlbum').html(data);
-                });
-                return false;
-            });
-        {#% endif %#}
-    {% endfor %}    
+            {% for album in album_list %}
+                {% get_hit_count_javascript for album %}
+            {% endfor %}
     });
-
-       $(function() {
-            $.ajaxSetup({
-                 beforeSend: function(xhr, settings) {
-                     function getCookie(name) {
-                         var cookieValue = null;
-                         if (document.cookie && document.cookie != '') {
-                             var cookies = document.cookie.split(';');
-                             for (var i = 0; i < cookies.length; i++) {
-                                 var cookie = jQuery.trim(cookies[i]);
-                                 // Does this cookie string begin with the name we want?
-                             if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                 break;
-                             }
-                         }
-                     }
-                     return cookieValue;
-                     }
-                     if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                         // Only send the token to relative URLs i.e. locally.
-                         xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                     }
-                 }
-            });
-
- $(document).ready(function() {
-{% for album in album_list %}
-    var upSelector = $('#'+'up'+'{{ forloop.counter }}');  
-    //var downSelector =  $('#'+'down'+'{{ forloop.counter }}');
-    var clearSelector = $('#'+'clear'+'{{ forloop.counter }}');
-    {% vote_by_user request.user on album as vote %}
-
-    if("{{vote}}" == "None")
-    {
-        clearSelector.hide();
-        upSelector.show();
-    }
-    else
-    {
-        upSelector.hide();
-        clearSelector.show();
-    }
-    /*var getScores = function(){
-    var url = "/albums/{{ album.id }}/up/vote/";
-    $.get(url,{HTTP_X_REQUESTED:'XMLHttpRequest'},
-           function(data) {
-               if (data.success == true) {
-                   $('#pAlbumScore'+'{{album.id}}').text(data.score.num_up_votes);
-                   $('#nAlbumScore'+'{{album.id}}').text((data.score.num_down_votes));
-               } else {
-                   alert('ERROR: ' + data.error_message);
-               }
-           }, 'json');
-    }
-    getScores();*/
-
-    var upHandler = function() {
-        var add_link = $(this);
-    $.post(add_link.attr('href'),{HTTP_X_REQUESTED:'XMLHttpRequest'},
-           function(data) {
-               if (data.success == true) {
-                   $('#pAlbumScore'+'{{forloop.counter}}').text(data.score.num_up_votes);
-                   //$('#nAlbumScore'+'{{forloop.counter}}').text((data.score.num_down_votes));
-                    var upSelector = $('#'+'up'+'{{ forloop.counter }}');  
-                    var clearSelector = $('#'+'clear'+'{{ forloop.counter }}');
-                    upSelector.hide();
-                    clearSelector.show();
-               } else {
-                   alert('ERROR: ' + data.error_message);
-               }
-           }, 'json');
-    return false;    
-    }
-    var clearHandler = function() {
-        var add_link = $(this);
-    $.post(add_link.attr('href'),{HTTP_X_REQUESTED:'XMLHttpRequest'},
-           function(data) {
-               if (data.success == true) {
-                   $('#pAlbumScore'+'{{forloop.counter}}').text(data.score.num_up_votes);
-                    var upSelector = $('#'+'up'+'{{ forloop.counter }}');  
-                    var clearSelector = $('#'+'clear'+'{{ forloop.counter }}');
-                   upSelector.show();
-                   clearSelector.hide();
-               } else {
-                   alert('ERROR: ' + data.error_message);
-               }
-           }, 'json');
-    return false;    
-    }
-    upSelector.click(upHandler); 
-    //downSelector.click(handler);
-    clearSelector.click(clearHandler); 
-    $('#pAlbumScore{{forloop.counter}}').click(function() {
-        var w = 700;
-        var h = 500;
-        var left = 100;
-        var top = 100;
-        var name="Friends";
-        var settings = 'height=' + h + ',width=' + w + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=yes,directories=no,status=yes';
-        var url = $(this).attr("href");
-        window.open(url, name, settings);
-        return false;
-    });
-{% endfor %}      
-});
-}); 
-
-</script>
+    </script>
 {% endblock %}
 
 
@@ -191,7 +65,7 @@
         {% for album in album_list %}
             <div class='album' style="border: groove #D1D1D1 2px">
                 <div class='album-head'>
-                    <a id="getAlbumPhotos{{forloop.counter}}" href="{{ album.get_absolute_url }}">
+                    <a class="album_photos" href="{{ album.get_absolute_url }}">
                         <span class="album-name">{{ album.name }}</span>
                     {% if album.get_head %}
                         {% thumbnail album.get_head.image "150x150" crop='center' as album_head %}
@@ -199,26 +73,9 @@
                         {% endthumbnail %}
                         {% score_for_object album as score %}
                         {% voters_for_object album as voters %}
-                        <a id="up{{forloop.counter}}" href="/albums/{{ album.id }}/up/vote/">
-                            <!--img src="{{ STATIC_URL }}img/like.png"-->Like
-                        </a>
-                        <!--span id="pAlbumScore{{forloop.counter}}">{{score.num_up_votes}}</span>
-                        <a id="down{{forloop.counter}}" href="/albums/{{ album.id }}/down/vote/">
-                            <img src="{{ STATIC_URL }}img/dislike.png">Dislike
-                        </a>
-                        <span id="nAlbumScore{{forloop.counter}}">{{score.num_down_votes}}</span-->
-                        <a id="clear{{forloop.counter}}" href="/albums/{{ album.id }}/clear/vote/">Unlike</a>
-                        <!--img src="{{ STATIC_URL }}img/profileViews.png"> <p></p-->
+                        {% include 'imagestore/render_voting.html' with object=album %}
 
                         <div class="cover-stat-wrap" style="background-color:#f6f6f6;">
-                            <span class="cover-stat cover-stat-appreciations">
-                                <span class="stat-label be-font-inline">F</span>
-                                <span class="stat-value">
-                                <a id="pAlbumScore{{forloop.counter}}" href="{{ voters }}">
-                                    {{score.num_up_votes}}
-                                </a>
-                                </span>
-                            </span>
                             <span class="cover-stat cover-stat-views">
                                 <span class="stat-label be-font-inline">G</span>
                                 <span class="stat-value">{% get_hit_count for album %}</span>
@@ -239,7 +96,7 @@
                     {% endif %}
                     </a></br>
                     {% if album.user == request.user and request.user.is_authenticated %}
-                    <a id="deleteAlbum{{forloop.counter}}" href="{% url imagestore:delete-album album.id %}">{% trans "Delete Album" %}</a>
+                    <a class="delete_album" href="{% url imagestore:delete-album album.id %}">{% trans "Delete Album" %}</a>
                     {% endif %}
                 </div>
             </div>

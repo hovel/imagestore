@@ -6,102 +6,6 @@
 {% load url from future %}
 {% load inbox %}
 
-{% block jqueryImage %}
-<script type="text/javascript">
-$(document).ready(function() {
-    $('a.thumb{{random}}').lightBox();
-    $('#backToAlbum').click(function() {
-            var add_link = $(this);
-            $('#vendorAlbum').html("");
-            var link = add_link.attr('href');
-            $.get(link, {}, function(data) {
-                $('#vendorAlbum').html(data);
-            });
-            return false;
-    });
-});
-
-       $(function() {
-            $.ajaxSetup({
-                 beforeSend: function(xhr, settings) {
-                     function getCookie(name) {
-                         var cookieValue = null;
-                         if (document.cookie && document.cookie != '') {
-                             var cookies = document.cookie.split(';');
-                             for (var i = 0; i < cookies.length; i++) {
-                                 var cookie = jQuery.trim(cookies[i]);
-                                 // Does this cookie string begin with the name we want?
-                             if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                 break;
-                             }
-                         }
-                     }
-                     return cookieValue;
-                     }
-                     if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                         // Only send the token to relative URLs i.e. locally.
-                         xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                     }
-                 }
-            });
-
- $(document).ready(function() {
-{% for image in image_list %}
-    var upSelector = $('#'+'upImage'+'{{ forloop.counter }}');  
-    var downSelector =  $('#'+'downImage'+'{{ forloop.counter }}');
-    var clearSelector = $('#'+'clearImage'+'{{ forloop.counter }}');
-    /*var getScores = function(){
-
-    var url = "/images/{{ image.id }}/up/vote/";
-    $.get(url,{HTTP_X_REQUESTED:'XMLHttpRequest'},
-           function(data) {
-               if (data.success == true) {
-                   $('#pImageScore'+'{{image.id}}').text(data.score.num_up_votes);
-                   $('#nImageScore'+'{{image.id}}').text((data.score.num_down_votes));
-               } else {
-                   alert('ERROR: ' + data.error_message);
-               }
-           }, 'json');
-    }
-    getScores();*/
-
-    var handler = function() {
-        var add_link = $(this);
-    $.post(add_link.attr('href'),{HTTP_X_REQUESTED:'XMLHttpRequest'},
-           function(data) {
-               if (data.success == true) {
-                   $('#pImageScore'+'{{forloop.counter}}').text(data.score.num_up_votes);
-                   $('#nImageScore'+'{{forloop.counter}}').text((data.score.num_down_votes));
-               } else {
-                   alert('ERROR: ' + data.error_message);
-               }
-           }, 'json');
-    return false;    
-    }
-    upSelector.click(handler); 
-    downSelector.click(handler);
-    clearSelector.click(handler); 
-    $('#pImageScore{{forloop.counter}}').click(function() {
-        var w = 700;
-        var h = 500;
-        var left = 100;
-        var top = 100;
-        var name="Friends";
-        var settings = 'height=' + h + ',width=' + w + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=yes,directories=no,status=yes';
-        var url = $(this).attr("href");
-        window.open(url, name, settings);
-        return false;
-    });  
-{% endfor %}      
-});
-}); 
-
-
-
-</script>
-
-{% endblock %}
 {% block imagestore-breadcrumb %}
     {% with "li" as scope_tag %}
         {% include "imagestore/image-scope.html" %}
@@ -150,19 +54,7 @@ $(document).ready(function() {
                     <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
                         {% score_for_object  image as score %}
                         {% voters_for_object image as voters %}
-                        <a id="upImage{{forloop.counter}}" href="/images/{{ image.id }}/up/vote/">
-                            <img src="{{ STATIC_URL }}img/like.png">
-                        </a>
-                        <span>
-                            <a id="pImageScore{{forloop.counter}}" href="{{voters}}">
-                                {{score.num_up_votes}}
-                            </a>
-                        </span>
-                        <a id="downImage{{forloop.counter}}" href="/images/{{ image.id }}/down/vote/">
-                            <img src="{{ STATIC_URL }}img/dislike.png">
-                        </a>
-                        <span id="nImageScore{{forloop.counter}}">{{score.num_down_votes}}</span>
-                        <a id="clearImage{{forloop.counter}}" href="/images/{{ image.id }}/clear/vote/">Clear</a>
+                        {% include 'imagestore/render_voting.html' with object=image %}
 
                         {% if image.title %}
                             <br><span class='image-title'>{{ image.title }}</span>
@@ -204,7 +96,7 @@ $(document).ready(function() {
 
         {% endfor %}
         {% if album %}
-        <a id="backToAlbum"  href="{% url 'imagestore:user' album.user %}">{% trans "Back to album" %}</a>
+        <a class="back_to_album"  href="{% url 'imagestore:user' album.user %}">{% trans "Back to album" %}</a>
         {% endif %}
     </div>
     {% include "imagestore/pagination.html" %}
