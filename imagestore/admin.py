@@ -1,6 +1,6 @@
 from django.contrib import admin
 from imagestore.models import Image, Album, AlbumUpload
-from sorl.thumbnail.admin import AdminImageMixin, AdminInlineImageMixin
+from sorl.thumbnail.admin import AdminInlineImageMixin
 from django.conf import settings
 
 class InlineImageAdmin(AdminInlineImageMixin, admin.TabularInline):
@@ -11,7 +11,7 @@ class InlineImageAdmin(AdminInlineImageMixin, admin.TabularInline):
 
 class AlbumAdmin(admin.ModelAdmin):
     fieldsets = ((None, {'fields': ['name', 'user', 'is_public', 'order']}),)
-    list_display = ('name', 'admin_thumbnail','user', 'created', 'updated', 'is_public', 'order')
+    list_display = ('name', 'admin_thumbnail', 'user', 'created', 'updated', 'is_public', 'order')
     list_editable = ('order', )
     inlines = [InlineImageAdmin]
 
