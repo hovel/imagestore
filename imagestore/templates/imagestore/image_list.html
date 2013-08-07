@@ -5,6 +5,7 @@
 {% load comment_tags %}
 {% load url from future %}
 {% load inbox %}
+{% load static %}
 
 {% block imagestore-breadcrumb %}
     {% with "li" as scope_tag %}
@@ -56,9 +57,9 @@
                         {% voters_for_object image as voters %}
                         {% include 'imagestore/render_voting.html' with object=image %}
 
-                        {% if image.title %}
-                            <br><span class='image-title'>{{ image.title }}</span>
-                        {% endif %}                
+                        {#% if image.title %#}
+                            <!--br><span class='image-title'>{{ image.title }}</span-->
+                        {#% endif %#}                
 				</a>
                 <a href="{% include "imagestore/image-href.html" %}">
                     {% if image.title %}
@@ -68,35 +69,21 @@
                     {% endif %}
                 </a>
             {% endthumbnail %}
-            </div>
-            <a href="{% url 'imagestore:delete-image' image.id %}">delete image</a>
-
-            {% if image.user != request.user %}
-            <div id="reportSpam">
-            <a href="{% report_spam_url image %}" onclick="var add_link = $(this);
-                        var link = add_link.attr('href');
-                        $.get(link, {}, function(data) {
-                            if(data == 'ok')
-                              alert('Reported');
-                        });
-                        return false;"><img title="Flag as spam" src="{{STATIC_URL}}img/flag_blue.ico"></a>
-            </div>
-            {% endif %}
-
-            <a href="{% comments_for_obj_url image %}" OnClick="
-                var add_link = $(this);
-                $.get(add_link.attr('href'), {}, function(data) {
-                    $('#subcomments{{forloop.counter}}').html(data);
-                });
-                return false;">comments</a>
-            <div id="subcomments{{forloop.counter}}"></div>
             <div>
-                {% comments_for_review image %}
+            <a href="{% url 'imagestore:delete-image' image.id %}"><img src="{% static "img/delete.png" %}"></img></a>
+            {% if image.user != request.user %}
+                {% include 'actstream/render_spam_report.html' with object=image %}
+            {% endif %}
+            {% include 'actstream/render_subcomments.html' with object=image %}
+            </div>
             </div>
 
         {% endfor %}
         {% if album %}
-        <a class="back_to_album"  href="{% url 'imagestore:user' album.user %}">{% trans "Back to album" %}</a>
+        <div>
+            {% include 'actstream/render_subcomments.html' with object=album %}
+            <a class="back_to_album"  href="{% url 'imagestore:user' album.user %}">{% trans "Back to album" %}</a>
+        </div>
         {% endif %}
     </div>
     {% include "imagestore/pagination.html" %}

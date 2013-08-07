@@ -8,27 +8,6 @@
     {% if IMAGESTORE_LOAD_CSS %}
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}imagestore.css" media="screen" />
     {% endif %}
-    <script type="text/javascript">
-    $(document).ready(function() {
-        $('#uploadAlbum').click(function() {
-            var add_link = $(this);
-            var link = add_link.attr('href');
-            $.get(link, {}, function(data) {
-                $('#uploadOrCreate').html(data);
-            });
-            return false;
-        });
-
-        $('#createNewAlbum').click(function() {
-            var add_link = $(this);
-            var link = add_link.attr('href');
-            $.get(link, {}, function(data) {
-                $('#uploadOrCreate').html(data);
-            });
-            return false;
-        });
-    });
-</script>
 {% block extra_head %}
 {% endblock %}
 {% block jqueryImage %}
@@ -60,12 +39,12 @@
         <div id="controls">
             <ul>
                 {% if request.user.is_authenticated and request.user == view_user %}
-                    <li><a id="uploadAlbum" href="{% url 'imagestore:upload' %}">{% trans "Upload image" %}
+                    <li><a class="upload_album" href="{% url 'imagestore:upload' %}">{% trans "Upload image" %}
                         </a>
                     </li>
                 {#% endif %#}
                 {#% if imagestore_perms.add_album or request.user.is_superuser %#}
-                    <li><a id="createNewAlbum" href="{% url 'imagestore:create-album' %}">{% trans "Create new album" %}</a></li>
+                    <li><a class="create_album" href="{% url 'imagestore:create-album' %}">{% trans "Create new album" %}</a></li>
                 {% endif %}
                 {% block controls %}
                 {% endblock controls %}
