@@ -257,12 +257,12 @@ class CreateImage(CreateView):
 				if self.object.album:
 					self.object.album.save()
 					if self.object.album.images.all().count() == 1:
-						action.send(blog_post, verb=_('added new album'), target=self.object.album)
+						action.send(blog_post, verb=settings.ALBUM_ADD_VERB, target=self.object.album)
 					else:
 						ctype = ContentType.objects.get_for_model(blog_post)
 						target_content_type = ContentType.objects.get_for_model(self.object.album)
-						Action.objects.all().filter(actor_content_type=ctype, actor_object_id=blog_post.id, verb=u'added new images to the album', target_content_type=target_content_type, target_object_id=self.object.album.id ).delete()
-						action.send(blog_post, verb=_('added new images to the album'), target=self.object.album)
+						Action.objects.all().filter(actor_content_type=ctype, actor_object_id=blog_post.id, verb=settings.ALBUM_ADD_IMAGE_VERB, target_content_type=target_content_type, target_object_id=self.object.album.id ).delete()
+						action.send(blog_post, verb=settings.ALBUM_ADD_IMAGE_VERB, target=self.object.album)
 				return HttpResponseRedirect(self.get_success_url())
 			else:    
 				return json_error_response("'%s' has crossed maximum limit of images" % user)
