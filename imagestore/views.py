@@ -99,6 +99,19 @@ class ImageListView(ListView):
         context.update(self.e_context)
         return context
 
+class ImageListTemplateView(ListView):
+    context_object_name = 'image_list'
+    template_name = 'imagestore/render_image_list.html'
+    paginate_by = getattr(settings, 'IMAGESTORE_IMAGES_ON_PAGE', 20)
+    allow_empty = True
+
+    get_queryset = get_images_queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(ImageListTemplateView, self).get_context_data(**kwargs)
+        context.update(self.e_context)
+        return context
+
 
 class ImageView(DetailView):
     context_object_name = 'image'

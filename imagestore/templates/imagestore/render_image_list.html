@@ -1,4 +1,4 @@
-{% extends "imagestore/base.html" %}
+{% extends "base.html" %}
 {% load i18n %}
 {% load thumbnail %}
 {% load voting_tags %}
@@ -7,36 +7,14 @@
 {% load inbox %}
 {% load static %}
 
-{% block imagestore-breadcrumb %}
-    {% with "li" as scope_tag %}
-        {% include "imagestore/image-scope.html" %}
-    {% endwith %}
-{% endblock %}
 
-{% block title %}
-    {% include "imagestore/image-scope.html" %}
-{% endblock %}
-
-{% block imagestore-info %}
-    {% if view_user and IMAGESTORE_SHOW_USER %}
-        {% with user=view_user %}
-            {% include "imagestore/user_info.html" %}
-        {% endwith %}
-    {% endif %}
-    {% if album and IMAGESTORE_SHOW_USER %}
-        {% with user=album.user %}
-            {% include "imagestore/user_info.html" %}
-        {% endwith %}
-    {% endif %}
-
-{% endblock %}
-
+{% block main %}
 
 {% block controls %}
     {% if album %}
         {% if request.user == album.user or perms.imagestore.moderate_albums %}
         {% if request.user.is_authenticacted  %}
-            <li><a href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit album" %}</a></li>
+           <a href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit album" %}</a>
         {% endif %}
 		{% endif %}
     {% endif %}
@@ -47,9 +25,9 @@
         {% include "imagestore/image-scope.html" %}
     </h1>
     {% include "imagestore/pagination.html" %}
-    <div id="image-thumbnails">
+    <div id="image-thumbnails" class="span9">
         {% for image in image_list %}
-            <div class='image-preview'>
+            <div class='image-preview' style="float:left;">
             {% thumbnail image.image "120x120" crop="center" as im %}
                 <a class="thumb" rel='gallery-image[ilist]' href="{{ image.image.url }}">
                     <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
@@ -77,14 +55,13 @@
             </div>
 
         {% endfor %}
-        {% if album %}
-        <div>
-            {% include 'actstream/render_subcomments.html' with object=album %}
-            <a class="back_to_album"  href="{% url 'imagestore:user' album.user %}">{% trans "Back to album" %}</a>
-        </div>
-        {% endif %}
     </div>
+        {% if album %}
+            <div class="span3 row">
+                {% include 'actstream/render_subcomments.html' with object=album %}
+            </div>
+        {% endif %}
     {% include "imagestore/pagination.html" %}
 {% endblock %}
-
+{% endblock %}
 

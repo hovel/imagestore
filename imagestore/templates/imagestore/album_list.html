@@ -65,14 +65,14 @@
         {% for album in album_list %}
             <div class='album' style="border: groove #D1D1D1 2px">
                 <div class='album-head'>
-                    <a class="album_photos" href="{{ album.get_absolute_url }}">
+                    <!--a class="album_photos" href="{{ album.get_absolute_url }}"-->
+                    <a class="album_photos" href="{% url imagestore:render_album album.id %}">
                         <span class="album-name">{{ album.name }}</span>
                     {% if album.get_head %}
                         {% thumbnail album.get_head.image "150x150" crop='center' as album_head %}
                             <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}">
                         {% endthumbnail %}
-                        {% score_for_object album as score %}
-                        {% voters_for_object album as voters %}
+
                         {% include 'imagestore/render_voting.html' with object=album %}
 
                         <div class="cover-stat-wrap" style="background-color:#f6f6f6;">
