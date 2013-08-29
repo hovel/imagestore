@@ -7,6 +7,14 @@
 {% load inbox %}
 {% load static %}
 
+{% block extra_js %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('a.thumb{{album.id}}').lightBox();
+    });
+</script>
+{% endblock %} 
+
 
 {% block main %}
 
@@ -29,7 +37,7 @@
         {% for image in image_list %}
             <div class='image-preview' style="float:left;">
             {% thumbnail image.image "120x120" crop="center" as im %}
-                <a class="thumb" rel='gallery-image[ilist]' href="{{ image.image.url }}">
+                <a class="thumb thumb{{album.id}}" rel='gallery-image[ilist]' href="{{ image.image.url }}">
                     <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
                         {% include 'imagestore/render_voting.html' with object=image %}
 
