@@ -66,7 +66,7 @@
             <div class='album' style="border: groove #D1D1D1 2px">
                 <div class='album-head'>
                     <!--a class="album_photos" href="{{ album.get_absolute_url }}"-->
-                    <a class="album_photos" href="{% url imagestore:render_album album.id %}">
+                    <a class="album_photos album_photos_ex" href="{% url imagestore:render_album album.id %}">
                         <span class="album-name">{{ album.name }}</span>
                     {% if album.get_head %}
                         {% thumbnail album.get_head.image "150x150" crop='center' as album_head %}
