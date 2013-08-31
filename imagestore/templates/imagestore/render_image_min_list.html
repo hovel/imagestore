@@ -1,0 +1,16 @@
+{% load i18n %}
+{% load thumbnail %}
+{% load url from future %}
+{% load static %}
+
+{% block content %}
+        {% for image in image_list %}
+            {% if forloop.counter > offset %}
+                {% thumbnail image.image "120x120" crop="center" as im %}
+                    <a class="album_in_feed" rel='gallery-image[ilist]' href="{{ image.image.url }}"></a>
+                {% endthumbnail %}
+            {% endif %}
+        {% endfor %}
+{% endblock %}
+
+

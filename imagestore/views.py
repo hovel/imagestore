@@ -112,6 +112,42 @@ class ImageListTemplateView(ListView):
         context.update(self.e_context)
         return context
 
+class ImageListMinView(ListView):
+    context_object_name = 'image_list'
+    template_name = 'imagestore/render_image_min_list.html'
+    #paginate_by = getattr(settings, 'IMAGESTORE_IMAGES_ON_PAGE', 20)
+    allow_empty = True
+
+    #get_queryset = get_images_queryset
+    def get_queryset(self):
+        images = Image.objects.all().order_by('-created')
+        self.e_context = dict()
+        if 'tag' in self.kwargs:
+            tag_instance = get_tag(self.kwargs['tag'])
+            if tag_instance is None:
+                raise Http404(_('No Tag found matching "%s".') % self.kwargs['tag'])
+            self.e_context['tag'] = tag_instance
+            images = TaggedItem.objects.get_by_model(images, tag_instance)
+        if 'username' in self.kwargs:
+            user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
+            self.e_context['view_user'] = user
+            images = images.filter(user=user)
+        if 'album_id' in self.kwargs:
+            album = get_object_or_404(Album, id=self.kwargs['album_id'])
+            self.e_context['album'] = album
+            images = images.filter(album=album)
+            if (not album.is_public) and\
+               (self.request.user != album.user) and\
+               (not self.request.user.has_perm('imagestore.moderate_albums')):
+                raise PermissionDenied
+        return images
+                
+    def get_context_data(self, **kwargs):
+        context = super(ImageListMinView, self).get_context_data(**kwargs)
+        offset= self.kwargs.get('offset', -1)
+        context.update(self.e_context)
+        context["offset"] = int(offset)
+        return context
 
 class ImageView(DetailView):
     context_object_name = 'image'
