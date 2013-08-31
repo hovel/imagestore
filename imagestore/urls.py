@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 from tagging.models import Tag
-from views import AlbumListView, ImageListView, ImageListTemplateView, ImageListMinView, UpdateImage, UpdateAlbum, CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView
+from views import AlbumListView, ImageListView, ImageListTemplateView, ImageListMinView, ImageListExView, UpdateImage, UpdateAlbum, CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView
 
 from fancy_autocomplete.views import AutocompleteSite
 autocomletes = AutocompleteSite()
@@ -21,7 +21,8 @@ urlpatterns = patterns('imagestore.views',
                        url(r'^album/add/$', CreateAlbum.as_view(), name='create-album'),
                        url(r'^album/(?P<album_id>\d+)/$', ImageListView.as_view(), name='album'),
                        url(r'^post/album/(?P<album_id>\d+)/$', ImageListTemplateView.as_view(), name='render_album'),
-                       url(r'^min/album/(?P<album_id>\d+)/(?P<offset>\d+)/$', ImageListMinView.as_view(), name='render_min_album'),
+                       url(r'^render/album/(?P<album_id>\d+)/(?P<offset>\d+)/$', ImageListMinView.as_view(), name='render_min_album'),
+                       url(r'^renderex/album/(?P<album_id>\d+)/(?P<exclude>\d+)/$', ImageListExView.as_view(), name='render_album_ex'),
                        url(r'^album/(?P<pk>\d+)/edit/$', UpdateAlbum.as_view(), name='update-album'),
                        url(r'^album/(?P<pk>\d+)/delete/$', DeleteAlbum.as_view(), name='delete-album'),
 

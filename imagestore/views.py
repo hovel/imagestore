@@ -141,12 +141,27 @@ class ImageListMinView(ListView):
                (not self.request.user.has_perm('imagestore.moderate_albums')):
                 raise PermissionDenied
         return images
-                
+
     def get_context_data(self, **kwargs):
         context = super(ImageListMinView, self).get_context_data(**kwargs)
         offset= self.kwargs.get('offset', -1)
         context.update(self.e_context)
         context["offset"] = int(offset)
+        return context
+
+class ImageListExView(ListView):
+    context_object_name = 'image_list'
+    template_name = 'imagestore/render_image_ex_list.html'
+    #paginate_by = getattr(settings, 'IMAGESTORE_IMAGES_ON_PAGE', 20)
+    allow_empty = True
+
+    get_queryset = get_images_queryset
+                
+    def get_context_data(self, **kwargs):
+        context = super(ImageListExView, self).get_context_data(**kwargs)
+        exclude_id= self.kwargs.get('exclude', -1)
+        context.update(self.e_context)
+        context["exclude_id"] = int(exclude_id)
         return context
 
 class ImageView(DetailView):
