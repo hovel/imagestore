@@ -5,6 +5,7 @@
 {% load comment_tags %}
 {% load url from future %}
 {% load inbox %}
+{% load userProfile_tags %}
 {% load static %}
 
 {% block extra_js %}
@@ -36,8 +37,9 @@
     <div id="image-thumbnails" class="span9">
         {% for image in image_list %}
             <div class='image-preview' style="float:left;">
+            {% get_reldata_url image as rel_data_url %}
             {% thumbnail image.image "120x120" crop="center" as im %}
-                <a class="thumb thumb{{album.id}}" rel='gallery-image[ilist]' href="{{ image.image.url }}">
+                <a class="thumb thumb{{album.id}}" rel='gallery-image[ilist]' href="{{ image.image.url }}" data-reldata-url="{{rel_data_url}}">
                     <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
                         {% include 'imagestore/render_voting.html' with object=image %}
 
