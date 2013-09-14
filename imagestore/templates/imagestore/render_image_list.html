@@ -11,7 +11,12 @@
 {% block extra_js %}
 <script type="text/javascript">
     $(document).ready(function() {
-        $('a.thumb{{album.id}}').lightBox();
+        $('a.thumb{{album.id}}').fancybox({
+                        scrolling: 'yes',
+                        minWidth:800,
+                        minHeight:600,
+                        autoSize: true
+                      });
     });
 </script>
 {% endblock %} 

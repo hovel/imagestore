@@ -2,12 +2,14 @@
 {% load thumbnail %}
 {% load url from future %}
 {% load static %}
+{% load userProfile_tags %}
 
 {% block content %}
         {% for image in image_list %}
+        	{% get_reldata_url image as rel_data_url %} 
             {% if image.id != exclude_id %}
                 {% thumbnail image.image "120x120" crop="center" as im %}
-                    <a class="album_in_feed" rel='gallery-image[ilist]' href="{{ image.image.url }}"></a>
+                    <a class="album_in_feed" rel='gallery-image[ilist]' href="{{ image.image.url }}" data-reldata-url="{{rel_data_url}}"></a>
                 {% endthumbnail %}
             {% endif %}
         {% endfor %}
