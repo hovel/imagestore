@@ -1,5 +1,5 @@
-Avaiable settings
-=================
+Available settings
+==================
 
 IMAGESTORE_UPLOAD_TO ("imagestore/")
     Path for uploading images
