@@ -8,7 +8,7 @@ setup(
             'django',
             'sorl-thumbnail',
             'south',
-            'django-fancy-autocomplete',
+            'django-autocomplete-light',
             'django-tagging',
             ],
         author = 'Pavel Zhukov',

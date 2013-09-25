@@ -7,17 +7,6 @@
     {% trans "Upload image" %}
 {% endblock %}
 
-{% block head %}
-    {{ block.super }}
-    <script src="{{ STATIC_URL }}autocomplete.js"></script>
-    <script>
-        $(function(){
-            completeField('#id_tags', '{% url "imagestore:autocomplete" "tag" %}');
-            completeField('#id_place_text', '{% url "imagestore:autocomplete" "place" %}');
-        })
-    </script>
-{% endblock %}
-
 {% block imagestore-breadcrumb %}
     <li>{% trans "Upload image" %}</li>
 {% endblock %}

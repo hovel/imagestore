@@ -114,6 +114,7 @@ INSTALLED_APPS = (
     'imagestore',
     'sorl.thumbnail',
     'tagging',
+    'autocomplete_light',
     'south'
 )
 

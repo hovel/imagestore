@@ -1,17 +1,9 @@
-from django.conf.urls.defaults import *
-from tagging.models import Tag
-from views import AlbumListView, ImageListView, UpdateImage, UpdateAlbum, CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView
-
-from fancy_autocomplete.views import AutocompleteSite
-autocomletes = AutocompleteSite()
-
-autocomletes.register(
-    'tag',
-    queryset=Tag.objects.all(),
-    search_fields=('name',),
-    limit=10,
-    lookup='istartswith',
-)
+try:
+    from django.conf.urls import patterns, url
+except ImportError:
+    from django.conf.urls.defaults import patterns, url
+from views import (AlbumListView, ImageListView, UpdateImage, UpdateAlbum, CreateImage, CreateAlbum, DeleteImage, \
+                   DeleteAlbum, ImageView)
 
 
 urlpatterns = patterns('imagestore.views',
@@ -35,8 +27,6 @@ urlpatterns = patterns('imagestore.views',
                        url(r'^tag/(?P<tag>[^/]+)/image/(?P<pk>\d+)/$', ImageView.as_view(), name='image-tag'),
                        url(r'^image/(?P<pk>\d+)/delete/$', DeleteImage.as_view(), name='delete-image'),
                        url(r'^image/(?P<pk>\d+)/update/$', UpdateImage.as_view(), name='update-image'),
-
-                       url(r'^autocomplete/(.*)/$', autocomletes, name='autocomplete')
                        )
 
 

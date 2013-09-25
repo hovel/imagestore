@@ -11,10 +11,11 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" type='text/css'>
 
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/i18n/jquery-ui-i18n.min.js"></script>
     <script src="http://yandex.st/json2/2011-01-18/json2.min.js"></script>
+    {% include 'autocomplete_light/static.html' %}
     <script src="{{ STATIC_URL }}csrf.js"></script>
     <title>{% block title %}{% endblock %}</title>
 

@@ -1,6 +1,6 @@
 Pillow
 South
-django-fancy-autocomplete
+django-autocomplete-light
 django-tagging
 sorl-thumbnail
 lxml

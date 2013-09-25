@@ -1,13 +1,17 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
+try:
+    import autocomplete_light
+    AUTOCOMPLETE_LIGHT_INSTALLED = True
+except ImportError:
+    AUTOCOMPLETE_LIGHT_INSTALLED = False
 
 __author__ = 'zeus'
 
 from django import forms
 from models import Image, Album
 from django.utils.translation import ugettext_lazy as _
-from utils import load_class
-from django.conf import settings
+
 
 class ImageForm(forms.ModelForm):
     class Meta(object):
@@ -21,6 +25,8 @@ class ImageForm(forms.ModelForm):
         super(ImageForm, self).__init__(*args, **kwargs)
         self.fields['album'].queryset = Album.objects.filter(user=user)
         self.fields['album'].required = True
+        if AUTOCOMPLETE_LIGHT_INSTALLED:
+            self.fields['tags'].widget = autocomplete_light.TextWidget('TagAutocomplete')
 
 
 class AlbumForm(forms.ModelForm):

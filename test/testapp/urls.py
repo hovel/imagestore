@@ -1,4 +1,8 @@
-from django.conf.urls.defaults import patterns, include, url
+import autocomplete_light
+try:
+    from django.conf.urls import patterns, include, url
+except ImportError:
+    from django.conf.urls.defaults import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -7,18 +11,13 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.core.exceptions import ImproperlyConfigured
 from django.views.generic import TemplateView
 
+autocomplete_light.autodiscover()
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'testapp.views.home', name='home'),
-    (r'^$', TemplateView.as_view(template_name='main.html')),
-    (r'^gallery/', include('imagestore.urls', namespace='imagestore')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
+    url(r'^$', TemplateView.as_view(template_name='main.html')),
+    url(r'^gallery/', include('imagestore.urls', namespace='imagestore')),
+    url(r'^autocomplete/', include('autocomplete_light.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
 
