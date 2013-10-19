@@ -46,8 +46,8 @@ img.current {
     width: 160px;
     height: 200px;
     float: left;
-    padding: 5px;
     margin: 10px;
+    padding: 5px;
 }
 
 .album-name {

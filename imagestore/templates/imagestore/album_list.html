@@ -6,10 +6,9 @@
 {% load comment_tags %}
 {% load userProfile_tags %}
 {% load inbox %}
+{% load static %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/creative.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}css/navigation.css">
     <script type="text/javascript">   
     $(document).ready(function() {
             {% for album in album_list %}
@@ -52,58 +51,41 @@
 {% endblock %}
 
 {% block content %}
-    <h4>
-    {% if view_user %}
+    <h6 class="halfGutter">
+    {% if view_user == user %}
         {% get_owned_blog view_user as blog %}
         {% trans "Uploaded Images " %} {{ blog.num_images }} {% trans "/" %} {{ max_images }}
     {% else %}
-        {% trans "All albums" %}
     {% endif %}
-    </h4>
+    </h6>
     {% include "imagestore/pagination.html" %}
     <div class='album-list'>
         {% for album in album_list %}
-            <div class='album' style="border: groove #D1D1D1 2px">
+            <div class='album pagination-centered bottomHalfGutter'>
                 <div class='album-head'>
                     <!--a class="album_photos" href="{{ album.get_absolute_url }}"-->
-                    <a class="album_photos album_photos_ex" href="{% url imagestore:render_album album.id %}">
-                        <span class="album-name">{{ album.name }}</span>
                     {% if album.get_head %}
-                        {% thumbnail album.get_head.image "150x150" crop='center' as album_head %}
-                            <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}">
-                        {% endthumbnail %}
+                        <a class="album_photos album_photos_ex" href="{% url imagestore:render_album album.id %}">
+                            {% thumbnail album.get_head.image "100x100" crop='center' as album_head %}
+                                <img {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}">
+                            {% endthumbnail %}
+                            <div class="album-name colorBlack fontTitillium1 fontSize13 topHalfGutter">{{ album.name }}</div>
+                        </a>
+                        {% include 'generic/includes/render_voting.html' with object=album %}
 
-                        {% include 'imagestore/render_voting.html' with object=album %}
-
-                        <div class="cover-stat-wrap" style="background-color:#f6f6f6;">
-                            <span class="cover-stat cover-stat-views">
-                                <span class="stat-label be-font-inline">G</span>
-                                <span class="stat-value">{% get_hit_count for album %}</span>
-                            </span>
-                        </div><!-- .cover-stat-wrap -->
+                        <span>{% trans "Views&nbsp;" %}({% get_hit_count for album %})</span>
 
                     {% else %}
-                        <img style="height:150px;width:150px;" src="{{ STATIC_URL }}img/emptyAlbum.png">
-                         {#[{% trans "Empty album" %}]#}
+                        <a class="album_photos album_photos_ex" href="{% url imagestore:render_album album.id %}">
+                            <img src="{% static 'img/emptyAlbum.png' %}">
+                            <div class="album-name colorBlack fontTitillium1 fontSize13 topHalfGutter">{{ album.name }}</div>
+                        </a>
                     {% endif %}
-                    <br>
-                    <span class="album-name">{{ album.name }}</span>
-                    {% if not view_user and IMAGESTORE_SHOW_USER %}
-                        <br>
-                        <span class="album-user">
-                            {% trans "user" %}: {{ album.user }}
-                        </span>
-                    {% endif %}
-                    </a></br>
                     {% if album.user == request.user and request.user.is_authenticated %}
-                    <a class="delete_album" href="{% url imagestore:delete-album album.id %}">{% trans "Delete Album" %}</a>
+                        <a class="delete_album" href="{% url imagestore:delete-album album.id %}">{% trans "Delete Album" %}</a>
                     {% endif %}
                 </div>
-                {% if album.user != request.user %}
-                    {% include 'actstream/render_spam_report.html' with object=album %}
-                {% endif %}
             </div>
-
         {% endfor %}
     </div>
     {% include "imagestore/pagination.html" %}
