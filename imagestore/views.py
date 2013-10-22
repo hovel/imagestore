@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
+from django.utils.simplejson import dumps
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from tagging.models import TaggedItem
 from tagging.utils import get_tag
@@ -23,6 +24,7 @@ from mezzanine.blog.models import BlogPost
 from sorl.thumbnail import delete
 from actstream.models import Action
 from django.contrib.contenttypes.models import ContentType
+import json
 
 try:
     from django.contrib.auth import get_user_model
@@ -39,6 +41,36 @@ IMAGESTORE_ON_PAGE = getattr(settings, 'IMAGESTORE_ON_PAGE', 20)
 ImageForm = load_class(getattr(settings, 'IMAGESTORE_IMAGE_FORM', 'imagestore.forms.ImageForm'))
 AlbumForm = load_class(getattr(settings, 'IMAGESTORE_ALBUM_FORM', 'imagestore.forms.AlbumForm'))
 
+
+class AjaxableResponseMixin(object):
+    """
+    Mixin to add AJAX support to a form.
+    Must be used with an object-based FormView (e.g. CreateView)
+    """
+    def render_to_json_response(self, context, **response_kwargs):
+        data = json.dumps(context)
+        response_kwargs['content_type'] = 'application/json'
+        return HttpResponse(data, **response_kwargs)
+
+    def form_invalid(self, form):
+        response = super(AjaxableResponseMixin, self).form_invalid(form)
+        if self.request.is_ajax():
+            return self.render_to_json_response(form.errors, status=400)
+        else:
+            return response
+
+    def form_valid(self, form):
+        # We make sure to call the parent's form_valid() method because
+        # it might do some processing (in the case of CreateView, it will
+        # call form.save() for example).
+        response = super(AjaxableResponseMixin, self).form_valid(form)
+        if self.request.is_ajax():
+            data = {
+                'url': self.object.pk,
+            }
+            return self.render_to_json_response(data)
+        else:
+            return response
 
 class AlbumListView(ListView):
     context_object_name = 'album_list'
@@ -216,7 +248,7 @@ class ImageView(DetailView):
         return context
 
 
-class CreateAlbum(CreateView):
+class CreateAlbum(AjaxableResponseMixin, CreateView):
     template_name = 'imagestore/forms/album_form.html'
     model = Album
     form_class = AlbumForm
@@ -230,6 +262,11 @@ class CreateAlbum(CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
+        if self.request.is_ajax():
+            data = {
+                'url': self.get_success_url(),
+            }
+            return HttpResponse(json.dumps(data))
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -306,6 +343,9 @@ class CreateImage(CreateView):
     def get_form(self, form_class):
         return form_class(user=self.request.user, **self.get_form_kwargs())
 
+    def form_invalid(self, form):
+        return HttpResponse(dumps({"errors": form.errors}))
+
     def form_valid(self, form):
 
 		user = self.request.user
@@ -380,5 +420,3 @@ class DeleteImage(DeleteView):
             blog_post.num_images = blog_post.num_images - 1
             blog_post.save() 
         return HttpResponseRedirect(self.get_success_url())
-
-        

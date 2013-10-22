@@ -60,7 +60,8 @@ class BaseAlbum(models.Model):
 
     @permalink
     def get_absolute_url(self):
-        return 'imagestore:album', (), {'album_id': self.id}
+        return 'imagestore:render_album', (), {'album_id': self.id}
+        #return 'imagestore:album', (), {'album_id': self.id}
 
     def __unicode__(self):
         return self.name

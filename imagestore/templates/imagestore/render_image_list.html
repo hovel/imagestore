@@ -7,16 +7,26 @@
 {% load inbox %}
 {% load userProfile_tags %}
 {% load static %}
+{% load imagestore_tags %}
 
 {% block extra_js %}
 <script type="text/javascript">
     $(document).ready(function() {
         $('a.album-image').fancybox({
                         scrolling: 'yes',
-                        minWidth:800,
-                        minHeight:600,
-                        autoSize: true
+                        minWidth:500,
+                        minHeight:450,
+                        autoSize: true,
+                        helpers : { overlay : { locked : false } }
                       });
+        $('.upload_album').on('click', function(event){
+            $('#id_image').click();
+            return false;
+        });
+       $("#id_image").change(function() {
+            $('.upload-image').submit();
+            return false;
+        });
     });
 </script>
 {% endblock %} 
@@ -46,30 +56,34 @@
             {% thumbnail image.image "120x120" crop="center" as im %}
                 <a class="album-image" rel='gallery-image[ilist]' href="{{ image.image.url }}" data-reldata-url="{{rel_data_url}}">
                     <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
-                        {% include 'imagestore/render_voting.html' with object=image %}
+                        {#% include 'imagestore/render_voting.html' with object=image %#}
 
                         {#% if image.title %#}
                             <!--br><span class='image-title'>{{ image.title }}</span-->
                         {#% endif %#}                
 				</a>
-                <a href="{% include "imagestore/image-href.html" %}">
-                    {% if image.title %}
+<!--                 <a href="{#% include "imagestore/image-href.html" %#}">
+                    {3% if image.title %#}
                         <br><span class='image-title'>{{ image.title }}</span>
-                    {% else %}
-                        {% trans 'Info' %}
-                    {% endif %}
-                </a>
+                    {#% else %#}
+                        {#% trans 'Info' %#}
+                    {#% endif %#}
+                </a> -->
             {% endthumbnail %}
             <div>
-            <a href="{% url 'imagestore:delete-image' image.id %}"><img src="{% static "img/delete.png" %}"></img></a>
-            {% if image.user != request.user %}
-                {% include 'actstream/render_spam_report.html' with object=image %}
-            {% endif %}
-            {% include 'actstream/render_subcomments.html' with object=image %}
+            <!-- <a href="{#% url 'imagestore:delete-image' image.id %#}"><img src="{#% static "img/delete.png" %#}"></img></a> -->
+            {#% if image.user != request.user %#}
+                {#% include 'actstream/render_spam_report.html' with object=image %#}
+            {#% endif %#}
+            {#% include 'actstream/render_subcomments.html' with object=image %#}
             </div>
             </div>
 
         {% endfor %}
+            {% if request.user.is_authenticated and request.user == album.user %}
+                <a class="upload_album" href="#">{% trans "Upload image" %}</a>
+                {% render_minimal_image_upload_form album.id %}
+            {% endif %}
     </div>
         {% if album %}
             <div class="span3 row">

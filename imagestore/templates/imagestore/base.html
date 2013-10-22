@@ -36,9 +36,6 @@
         <div id="controls">
             <ul>
                 {% if request.user.is_authenticated and request.user == view_user %}
-                    <li><a class="upload_album" href="{% url 'imagestore:upload' %}">{% trans "Upload image" %}
-                        </a>
-                    </li>
                 {#% endif %#}
                 {#% if imagestore_perms.add_album or request.user.is_superuser %#}
                     <li><a class="create_album" href="{% url 'imagestore:create-album' %}">{% trans "Create new album" %}</a></li>

@@ -65,5 +65,5 @@ def get_model_string(model_name):
 def get_file_path(instance, filename):
     ext = filename.split('.')[-1]
     filename = "%s.%s" % (uuid.uuid4(), ext)
-    Path = os.path.join(UPLOAD_TO, "user_%d/%s" % (instance.user.id, instance.album.name))
+    Path = os.path.join(UPLOAD_TO, "user_%d/%s_%d" % (instance.user.id, instance.album.name, instance.album.id))
     return os.path.join(Path, filename)
