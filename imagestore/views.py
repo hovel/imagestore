@@ -277,7 +277,7 @@ def filter_album_queryset(self):
         return Album.objects.filter(user=self.request.user)
 
 
-class UpdateAlbum(UpdateView):
+class UpdateAlbum(AjaxableResponseMixin, UpdateView):
     template_name = 'imagestore/forms/album_form.html'
     model = Album
     form_class = AlbumForm
@@ -289,6 +289,15 @@ class UpdateAlbum(UpdateView):
     def dispatch(self, *args, **kwargs):
         return super(UpdateAlbum, self).dispatch(*args, **kwargs)
 
+    def form_valid(self, form):
+        super(UpdateAlbum, self).form_valid(form)
+        if self.request.is_ajax():
+            data = {
+                'name': form.cleaned_data['name']
+            }
+            return HttpResponse(json.dumps(data))
+        else:
+            return HttpResponseRedirect(self.get_success_url())
 
 class DeleteAlbum(DeleteView):
     template_name = 'imagestore/album_delete.html'

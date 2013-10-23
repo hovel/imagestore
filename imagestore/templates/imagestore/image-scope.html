@@ -6,7 +6,7 @@
 {% endif %}
 {% if album %}
     {% if scope_tag %}<{{ scope_tag }} class='scope-album'>{% endif %}
-        {% trans "Album" %}: {{ album.name }}
+        {% trans "Album" %}: <span class="album_name"> {{ album.name }}</span> <!-- class album_name = 'album_' + Field Name -->
     {% if scope_tag %}</{{ scope_tag }}>{% endif %}
 {% endif %}
 {% if tag %}

@@ -1,4 +1,4 @@
-from imagestore.forms import ImageForm
+from imagestore.forms import ImageForm, AlbumForm
 from imagestore.models import Album
 from django import forms
 from mezzanine import template
@@ -33,5 +33,26 @@ def render_minimal_image_upload_form(context, album_id):
 
     context.update({
         "form": form,
+    })
+    return context
+
+@register.inclusion_tag("imagestore/forms/min_album_form.html", takes_context=True)
+def render_minimal_album_update_form(context, album_id):
+    album = Album.objects.get(id=album_id)
+
+    initial_data = {
+                        "name"         : album.name,
+                        "is_public"    : album.is_public,
+                        "order"        : album.order      
+                    }
+    form = AlbumForm(initial=initial_data)
+    form.fields['head'].widget.attrs['style'] = 'display:none'
+    form.fields['head'].label = ''
+    form.fields['order'].widget.attrs['style'] = 'display:none'
+    form.fields['order'].label = ''
+
+    context.update({
+        "form": form,
+        "album":album
     })
     return context
