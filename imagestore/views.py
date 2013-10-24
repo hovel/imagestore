@@ -365,6 +365,7 @@ class CreateImage(CreateView):
 				blog_post.num_images += 1
 				blog_post.save()
 				self.object = form.save(commit=False)
+				self.object.order = self.object.album.images.all().count()
 				self.object.user = self.request.user
 				self.object.save()
 				if self.object.album:
@@ -429,3 +430,28 @@ class DeleteImage(DeleteView):
             blog_post.num_images = blog_post.num_images - 1
             blog_post.save() 
         return HttpResponseRedirect(self.get_success_url())
+
+def updateAlbumOrder(request, image_id, new_order):
+    try:
+        imageObj = Image.objects.get(id=image_id)
+        prev_order = imageObj.order
+        if new_order > prev_order:
+            image_queryset = imageObj.album.images.filter(Q(order__gt=prev_order) &  Q(order__lte=new_order))
+            for image in image_queryset:
+                image.order = image.order - 1
+                image.save()
+
+        elif new_order < prev_order:
+            image_queryset = imageObj.album.images.filter(Q(order__lt=prev_order) &  Q(order__gte=new_order))
+            for image in image_queryset:
+                image.order = image.order + 1
+                image.save()
+
+        imageObj.order = new_order
+        imageObj.save()
+        return HttpResponse(json.dumps({'success':True}))
+    except:
+        pass
+
+    return HttpResponse(json.dumps({'success':False}))
+

@@ -10,6 +10,7 @@
 {% load imagestore_tags %}
 
 {% block extra_js %}
+<script src="{% static "js/jquery.sortable.js" %}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('a.album-image').fancybox({
@@ -32,9 +33,62 @@
             $('.upload-image').submit();
             return false;
         });
+        {% if request.user == album.user or perms.imagestore.moderate_albums %}
+        {% if request.user.is_authenticated  %}
+        $('.sortable').sortable().bind('sortupdate', function(event, data) {
+                var $element_dragged = data.item;
+                var prev_order = $element_dragged.data("order");
+                var new_order = $element_dragged.index();
+                var image_id = $element_dragged.data("id");
+                var link =     "{% url 'imagestore:update-album-order' 0 0  %}" ;
+                var linksplit = link.split("/");
+                linksplit[linksplit.length-2] = new_order;
+                linksplit[linksplit.length-3] = image_id;
+                link = linksplit.join('/');
+                $.get(link, {}, function(data) {
+                    var ret_data = JSON.parse(data);
+                    if(ret_data.success)
+                        console.log("Album is rearranged successfully!!");
+                    else
+                        console.log("Album rearrangement Failed!!");
+                });
 
+        });
+        {% endif %}
+        {% endif %}
     });
 </script>
+<style>
+
+
+        .sortable.grid {
+            overflow: hidden;
+        }
+        .sortable li {
+            list-style: none;
+            color: #1C94C4;
+            margin: 5px;
+            padding: 5px;
+            float:left;
+            height:120px;
+            width:120px;
+        }
+
+        .handle {
+            cursor: move;
+        }
+
+        li.highlight {
+            background: #FEE25F;
+        }
+        li.sortable-placeholder {
+            border: 1px dashed #CCC;
+            background: none;
+            margin: 5px;
+            padding: 0px;
+        }
+
+</style>
 {% endblock %} 
 
 
@@ -58,9 +112,9 @@
         {% include "imagestore/image-scope.html" %}
     </h1>
     {% include "imagestore/pagination.html" %}
-    <div id="image-thumbnails" class="span9">
+    <ul id="image-thumbnails" class="span9 sortable">
         {% for image in image_list %}
-            <div class='image-preview' style="float:left;">
+            <li class='image-preview' data-id="{{image.id}}" data-order="{{image.order}}">
             {% get_reldata_url image as rel_data_url %}
             {% thumbnail image.image "120x120" crop="center" as im %}
                 <a class="album-image" rel='gallery-image[ilist]' href="{{ image.image.url }}" data-reldata-url="{{rel_data_url}}">
@@ -72,28 +126,27 @@
                         {#% endif %#}                
 				</a>
 <!--                 <a href="{#% include "imagestore/image-href.html" %#}">
-                    {3% if image.title %#}
+                    {#% if image.title %#}
                         <br><span class='image-title'>{{ image.title }}</span>
                     {#% else %#}
                         {#% trans 'Info' %#}
                     {#% endif %#}
                 </a> -->
             {% endthumbnail %}
-            <div>
+            </li>
             <!-- <a href="{#% url 'imagestore:delete-image' image.id %#}"><img src="{#% static "img/delete.png" %#}"></img></a> -->
             {#% if image.user != request.user %#}
                 {#% include 'actstream/render_spam_report.html' with object=image %#}
             {#% endif %#}
             {#% include 'actstream/render_subcomments.html' with object=image %#}
-            </div>
-            </div>
-
         {% endfor %}
+    </ul>
             {% if request.user.is_authenticated and request.user == album.user %}
+                <div style="float:left;">
                 <a class="upload_album" href="#">{% trans "Upload image" %}</a>
                 {% render_minimal_image_upload_form album.id %}
+                </div>
             {% endif %}
-    </div>
         {% if album %}
             <div class="span3 row">
                 {% include 'actstream/render_subcomments.html' with object=album %}
