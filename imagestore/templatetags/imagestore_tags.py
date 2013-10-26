@@ -20,14 +20,24 @@ def render_minimal_image_upload_form(context, album_id):
     form.fields['album'].empty_label = None
     form.fields['album'].queryset = Album.objects.filter(id=album_id)
     form.fields['album'].initial = album.name
+
+    form.fields['tagged_categories'].widget.attrs['style'] = 'display:none'
+    form.fields['tagged_categories'].queryset = Album.objects.none()
+    form.fields['tagged_categories'].label = ''
+    form.fields['tagged_categories'].help_text = ''
+
     form.fields['title'].widget.attrs['style'] = 'display:none'
     form.fields['title'].label = ''
+
     form.fields['description'].widget.attrs['style'] = 'display:none'
     form.fields['description'].label = ''
+
     form.fields['album'].widget.attrs['style'] = 'display:none'
     form.fields['album'].label = ''
+
     form.fields['tags'].widget.attrs['style'] = 'display:none'
     form.fields['tags'].label = ''
+    
     form.fields['image'].widget.attrs['style'] = 'display:none'
     form.fields['image'].label = ''
 
