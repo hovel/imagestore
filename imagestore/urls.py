@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 from tagging.models import Tag
-from views import updateAlbumOrder, AlbumListView, ImageListView, ImageListTemplateView, ImageListMinView, ImageListExView, UpdateImage, UpdateAlbum, CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView
+from views import editImage, updateAlbumOrder, AlbumListView, ImageListView, ImageListTemplateView, ImageListMinView, ImageListExView, UpdateImage, UpdateAlbum, CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView
 
 from fancy_autocomplete.views import AutocompleteSite
 autocomletes = AutocompleteSite()
@@ -39,6 +39,7 @@ urlpatterns = patterns('imagestore.views',
                        url(r'^tag/(?P<tag>[^/]+)/image/(?P<pk>\d+)/$', ImageView.as_view(), name='image-tag'),
                        url(r'^image/(?P<pk>\d+)/delete/$', DeleteImage.as_view(), name='delete-image'),
                        url(r'^image/(?P<pk>\d+)/update/$', UpdateImage.as_view(), name='update-image'),
+                       url(r'^image/(?P<image_id>\d+)/edit/$', editImage, name='edit-image'),
 
                        url(r'^autocomplete/(.*)/$', autocomletes, name='autocomplete')
                        )

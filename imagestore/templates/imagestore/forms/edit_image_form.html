@@ -1,0 +1,12 @@
+{% extends "imagestore/base.html" %}
+{% load i18n %}
+{% load thumbnail %}
+{% load url from future %}
+
+{% block content %}
+    <form action="{{action_url}}" method="post" enctype="multipart/form-data" class='edit-image'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="{% trans "Update" %}" class='btn success'>
+    </form>
+{% endblock content %}

@@ -1,4 +1,5 @@
 import os
+from django import forms
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
@@ -15,6 +16,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
 from django.utils.simplejson import dumps
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.template import RequestContext
+
+from mezzanine.utils.views import render
+
 from tagging.models import TaggedItem
 from tagging.utils import get_tag
 from utils import load_class
@@ -454,4 +459,57 @@ def updateAlbumOrder(request, image_id, new_order):
         pass
 
     return HttpResponse(json.dumps({'success':False}))
+
+def editImage(request, image_id, template='imagestore/forms/edit_image_form.html'):
+    response = None
+
+    if not image_id :
+        if request.is_ajax():
+            return HttpResponse(json.dumps({'success':False}), status=400, content_type='application/json')
+        else:
+            raise Http404()
+
+    try:
+        image = Image.objects.get(id=image_id)
+    except:
+        if request.is_ajax():
+            return HttpResponse(json.dumps({'success':False}), status=400, content_type='application/json')
+        else:
+            raise Http404()
+
+    if image and image.album.user != request.user:
+        if request.is_ajax():
+            return HttpResponse(json.dumps({'success':False}), status=400, content_type='application/json')
+        else:
+            raise Http404()
+    
+    if request.method == 'POST':
+        form = ImageForm(request.user, request.POST, instance=image)
+        if form.is_valid():
+            form.save()
+            if request.is_ajax():
+                response =  HttpResponse(json.dumps({'success':True}), content_type='application/json')
+            else:
+                success_url = image.album.get_absolute_url()
+                response =  HttpResponseRedirect(success_url)
+        else:
+            response = HttpResponse(json.dumps({"errors": form.errors, 'success':False}), content_type='application/json')
+
+    else:
+        form = ImageForm(request.user, instance=image, auto_id=False)
+
+        form.fields['album'].widget = forms.HiddenInput()
+        form.fields['tags'].widget = forms.HiddenInput()
+        form.fields['image'].widget = forms.HiddenInput()
+
+        action_url = reverse("imagestore:edit-image", kwargs={'image_id':image.id})
+        context = {
+                    "form": form,
+                    "action_url":action_url
+                  }
+        response =  render(request, template, context)
+
+    return response
+
+
 

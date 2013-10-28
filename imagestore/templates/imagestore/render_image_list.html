@@ -54,6 +54,50 @@
                 });
 
         });
+		var edit_image_submit_handler = function(){
+		        var $form = $(this);
+		        $.ajax({
+		            type: $form.attr('method'),
+		            url: $form.attr('action'),
+		            data: $form.serialize(),
+		            success: function (data) {
+		                var ret_data = data;
+		                if(ret_data.success) {
+		                	alert("updated successfully!!");
+		                	$('#pop_up').bPopup().close();
+                    		$('#pop_up').remove();
+		                } else {
+			                var errors = ret_data.errors;
+		                    $('#pop_up').find('.error').removeClass('error');
+		                    $.each( errors, function( key, value ) {
+		                        $('#pop_up').find('[name="' + key + '"]').addClass('error');
+		                    });
+		                }
+
+		            },
+		            error: function(data) {
+		            	console.log(data);
+		            }
+		        });
+		    return false;
+		};
+        $('.editImage').click(function(event){
+
+		    $("<div id='pop_up'><span class='button b-close'><span>X</span></span></div>").appendTo("body").addClass('popup');
+		    $('#pop_up').bPopup({
+		        content:'ajax',
+		        loadUrl:$(this).attr("href"),
+		        zIndex: 2,
+		        onClose: function(){ $('#pop_up').remove(); },
+		        scrollBar:'true',
+		        loadCallback: function(){
+            		$('.edit-image').submit(edit_image_submit_handler);
+        		}
+		    });
+		    event.stopPropagation();
+		    event.preventDefault();
+		    return false;
+        });
         {% endif %}
         {% endif %}
     });
@@ -114,6 +158,7 @@
     {% include "imagestore/pagination.html" %}
     <ul id="image-thumbnails" class="span9 sortable">
         {% for image in image_list %}
+            <div><a href="{% url 'imagestore:edit-image' image.id  %}" class="editImage">Edit</a></div>
             <li class='image-preview' data-id="{{image.id}}" data-order="{{image.order}}">
             {% get_reldata_url image as rel_data_url %}
             {% thumbnail image.image "120x120" crop="center" as im %}
