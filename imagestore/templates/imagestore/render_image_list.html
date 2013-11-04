@@ -64,13 +64,12 @@
 		                var ret_data = data;
 		                if(ret_data.success) {
 		                	alert("updated successfully!!");
-		                	$('#pop_up').bPopup().close();
-                    		$('#pop_up').remove();
+		                	$.fancybox.close();
 		                } else {
 			                var errors = ret_data.errors;
-		                    $('#pop_up').find('.error').removeClass('error');
+		                    $('.fancybox-inner').find('.error').removeClass('error');
 		                    $.each( errors, function( key, value ) {
-		                        $('#pop_up').find('[name="' + key + '"]').addClass('error');
+		                        $('.fancybox-inner').find('[name="' + key + '"]').addClass('error');
 		                    });
 		                }
 
@@ -82,18 +81,14 @@
 		    return false;
 		};
         $('.editImage').click(function(event){
+            var $url = $(this).attr("href");
+            var afterShowCallback = function() {
+                                        var $editImageFormContainer = $('.fancybox-inner').find('.edit-image');
+                                        $editImageFormContainer.submit(edit_image_submit_handler);
+                                    };
 
-		    $("<div id='pop_up'><span class='button b-close'><span>X</span></span></div>").appendTo("body").addClass('popup');
-		    $('#pop_up').bPopup({
-		        content:'ajax',
-		        loadUrl:$(this).attr("href"),
-		        zIndex: 2,
-		        onClose: function(){ $('#pop_up').remove(); },
-		        scrollBar:'true',
-		        loadCallback: function(){
-            		$('.edit-image').submit(edit_image_submit_handler);
-        		}
-		    });
+            doOpenUrlWithAjaxFancyBox($url, afterShowCallback);
+
 		    event.stopPropagation();
 		    event.preventDefault();
 		    return false;
