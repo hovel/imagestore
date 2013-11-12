@@ -9,6 +9,10 @@
 {% load static %}
 {% load imagestore_tags %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static "css/albumpage.css" %}"/>
+{% endblock %}
+
 {% block extra_js %}
 <script src="{% static "js/jquery.sortable.js" %}"></script>
 <script type="text/javascript">
@@ -137,10 +141,12 @@
     {% if album %}
         {% if request.user == album.user or perms.imagestore.moderate_albums %}
         {% if request.user.is_authenticated  %}
-           <a class="edit_album" href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit album" %}</a>
-           <div class="edit_album_form" style="display:none">
-           		{% render_minimal_album_update_form album.id %}
-           </div>
+            <a class="upload_album albumManage fontTitillium1 fontSize13 colorWhite" href="#">{% trans "Add image" %}</a>
+            <a class="edit_album albumManage fontTitillium1 fontSize13 colorWhite" href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit album" %}</a>
+            {% render_minimal_image_upload_form album.id %}
+            <div class="edit_album_form" style="display:none">
+                {% render_minimal_album_update_form album.id %}
+            </div>
         {% endif %}
 		{% endif %}
     {% endif %}
@@ -153,10 +159,17 @@
     {% include "imagestore/pagination.html" %}
     <ul id="image-thumbnails" class="span9 sortable">
         {% for image in image_list %}
-            <div><a href="{% url 'imagestore:edit-image' image.id  %}" class="editImage">Edit</a></div>
             <li class='image-preview' data-id="{{image.id}}" data-order="{{image.order}}">
             {% get_reldata_url image as rel_data_url %}
             {% thumbnail image.image "120x120" crop="center" as im %}
+                {% if request.user == album.user or perms.imagestore.moderate_albums %}
+                {% if request.user.is_authenticated  %}
+                <span class="pull-right" style="position:relative;top:25px;left:-5px">
+                    <a href="{% url 'imagestore:edit-image' image.id  %}" class="editImage halfGutter"><img class="noBoxShadow" width="15px" height="15px" src="/static/img/edit.png"></a>
+                    <a href="javascript:void(0)"><img class="noBoxShadow" width="15px" height="15px" src="/static/img/cross_button.png"></a>
+                </span>
+                {% endif %}
+                {% endif %}
                 <a class="album-image" rel='gallery-image[ilist]' href="{{ image.image.url }}" data-reldata-url="{{rel_data_url}}">
                     <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
                         {#% include 'imagestore/render_voting.html' with object=image %#}
@@ -181,12 +194,6 @@
             {#% include 'actstream/render_subcomments.html' with object=image %#}
         {% endfor %}
     </ul>
-            {% if request.user.is_authenticated and request.user == album.user %}
-                <div style="float:left;">
-                <a class="upload_album" href="#">{% trans "Upload image" %}</a>
-                {% render_minimal_image_upload_form album.id %}
-                </div>
-            {% endif %}
         {% if album %}
             <div class="span3 row">
                 {% include 'actstream/render_subcomments.html' with object=album %}
