@@ -3,6 +3,7 @@ from imagestore.models import Album
 from django import forms
 from mezzanine import template
 from django.forms.widgets import TextInput
+from django.db.models import Min
 
 register = template.Library()
 
@@ -66,3 +67,9 @@ def render_minimal_album_update_form(context, album_id):
         "album":album
     })
     return context
+
+@register.filter
+def min_image_order(album):
+    if album:
+        return album.images.all().aggregate(Min('order'))['order__min']
+    return ''

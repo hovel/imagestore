@@ -17,7 +17,13 @@
 <script src="{% static "js/jquery.sortable.js" %}"></script>
 <script src="{% static "js/comment.handlers.js" %}"></script>
 <script type="text/javascript">
+    var image_order_array = [];
+    var startIndex = 0;
     $(document).ready(function() {
+        var $children = $('#image-thumbnails').children();
+        $children.each(function(idx, itm) {
+            image_order_array.push($(itm).attr('data-order'));
+        });
         $('a.album-image').fancybox({
                         scrolling: 'yes',
                         minWidth:500,
@@ -41,24 +47,42 @@
         install_comment_on_object_handler();
         {% if request.user == album.user or perms.imagestore.moderate_albums %}
         {% if request.user.is_authenticated  %}
-            $('.sortable').sortable().bind('sortupdate', function(event, data) {
-                    var $element_dragged = data.item;
+
+        $('.sortable').sortable().bind('dragstart.h5s', function(event){
+            startIndex = $(event.target).parents('.image-preview').index();
+        }).bind('sortupdate', function(event, data) {
+                var $element_dragged = data.item;
+                if($element_dragged) {
                     var prev_order = $element_dragged.data("order");
-                    var new_order = $element_dragged.index();
-                    var image_id = $element_dragged.data("id");
-                    var link =     "{% url 'imagestore:update-album-order' 0 0  %}" ;
-                    var linksplit = link.split("/");
-                    linksplit[linksplit.length-2] = new_order;
-                    linksplit[linksplit.length-3] = image_id;
-                    link = linksplit.join('/');
+                    var new_order;
+
+                    if($element_dragged.index() > startIndex) {
+                        new_order = $element_dragged.prev().attr('data-order');
+                    } else {
+                        new_order = $element_dragged.next().attr('data-order');
+                    }
+
+                    var image_id    = $element_dragged.data("id");
+                    var link        = "{% url 'imagestore:update-album-order' 0 0  %}" ;
+
+                    var linksplit                   = link.split("/");
+                    linksplit[linksplit.length-2]   = new_order;
+                    linksplit[linksplit.length-3]   = image_id;
+                    link                            = linksplit.join('/');
+                    
                     $.get(link, {}, function(data) {
                         var ret_data = JSON.parse(data);
-                        if(ret_data.success)
+                        if(ret_data.success) {
+                            var $children = $element_dragged.parent().children();
+                            $children.each(function(idx, itm) {
+                                $(itm).attr('data-order', image_order_array[idx]);
+                            });
                             console.log("Album is rearranged successfully!!");
+                        }
                         else
                             console.log("Album rearrangement Failed!!");
                     });
-
+                }
             });
     		var edit_image_submit_handler = function(){
     		        var $form = $(this);
@@ -103,6 +127,37 @@
         {% endif %}
     });
 </script>
+<style>
+
+
+        .sortable.grid {
+            overflow: hidden;
+        }
+        .sortable li {
+            list-style: none;
+            color: #1C94C4;
+            margin: 5px;
+            padding: 5px;
+            float:left;
+            height:120px;
+            width:120px;
+        }
+
+        .handle {
+            cursor: move;
+        }
+
+        li.highlight {
+            background: #FEE25F;
+        }
+        li.sortable-placeholder {
+            border: 1px dashed #CCC;
+            background: none;
+            margin: 5px;
+            padding: 0px;
+        }
+
+</style>
 {% endblock %} 
 
 
