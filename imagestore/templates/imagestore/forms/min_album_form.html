@@ -6,7 +6,12 @@
 {% block content %}
     <form action="{% url 'imagestore:update-album' pk=album.pk %}" method="post" enctype="multipart/form-data" class='update-album'>
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+    	<div class="albumFormField">
+    		{{field.label_tag}}
+    		{{field}}
+    	</div>
+    {% endfor %}
     <input type="submit" value="{% trans "Update" %}" class='btn success'>
     </form>
 {% endblock content %}

@@ -6,7 +6,19 @@
 {% block content %}
     <form action="{{action_url}}" method="post" enctype="multipart/form-data" class='edit-image'>
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="{% trans "Update" %}" class='btn success'>
+    {% for field in form %}
+    	<div class="albumFormField">
+    		{% if not field.is_hidden %}
+    		   	{{field.label_tag}}
+    		{% endif %}
+    		{{field}}
+    	</div>
+    	{% if not field.is_hidden %}
+    		{{field.help_text}}
+    	{% endif %}
+    {% endfor %}
+    <div class="topHalfGutter">
+    	<input type="submit" value="{% trans "Update" %}" class='btn success'>
+	</div>
     </form>
 {% endblock content %}

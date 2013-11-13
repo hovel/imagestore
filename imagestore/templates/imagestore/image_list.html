@@ -7,6 +7,12 @@
 {% load inbox %}
 {% load static %}
 
+
+{% block main %}
+<div class="row topHalfGutter">
+    <div class="span7">
+        <div class="row">
+            
 {% block imagestore-breadcrumb %}
     {% with "li" as scope_tag %}
         {% include "imagestore/image-scope.html" %}
@@ -87,4 +93,4 @@
     {% include "imagestore/pagination.html" %}
 {% endblock %}
 
-
+{% endblock %}
