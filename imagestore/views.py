@@ -371,7 +371,10 @@ class CreateImage(CreateView):
 				blog_post.num_images += 1
 				blog_post.save()
 				self.object = form.save(commit=False)
-				self.object.order = self.object.album.images.all().aggregate(Max('order'))['order__max'] + 1 #self.object.album.images.all().count()
+				if self.object.album.images.exists():
+					self.object.order = self.object.album.images.all().aggregate(Max('order'))['order__max'] + 1 #self.object.album.images.all().count()
+				else:
+					self.object.order = 0
 				self.object.user = self.request.user
 				self.object.save()
 				if self.object.album:
@@ -422,7 +425,14 @@ class DeleteImage(DeleteView):
 	@method_decorator(login_required)
 	@method_decorator(permission_required('%s.delete_%s' % (image_applabel, image_classname)))
 	def dispatch(self, *args, **kwargs):  
-		return super(DeleteImage, self).dispatch(*args, **kwargs) 
+		resp =  super(DeleteImage, self).dispatch(*args, **kwargs) 
+		if self.request.is_ajax():
+			response_data = {"success": True}
+			return HttpResponse(json.dumps(response_data),
+				content_type="application/json")
+		else:
+			# POST request (not ajax) will do a redirect to success_url
+			return resp
 
 	def delete(self, request, *args, **kwargs):
 		self.object = self.get_object()

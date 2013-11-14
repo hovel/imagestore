@@ -123,6 +123,27 @@
     		    event.preventDefault();
     		    return false;
             });
+            
+	        var onDelete = function(){
+	        	var $element = $(this);
+				$.ajax({
+				  type: "POST",
+				  url: $(this).attr('href'),
+				  success: function(data){
+				        if(data.success === true) {
+				        	var $container = $element.parents('.image-preview');
+				        	$container.remove();
+				        }
+				  },
+				  error: function(XMLHttpRequest, textStatus, errorThrown) {
+				     console.log("error during image deletion");
+				  }
+				});
+				return false;
+	        }
+
+	        $(".deleteImage").click(onDelete);
+
         {% endif %}
         {% endif %}
     });
@@ -204,7 +225,7 @@
                         {% if request.user.is_authenticated  %}
                         <span class="pull-right">
                             <a href="{% url 'imagestore:edit-image' image.id  %}" class="editImage"><img class="noBoxShadow" width="10px" height="10px" src="{% static "img/edit.png" %}"></a>
-                            <a href="{% url 'imagestore:delete-image' image.id %}"><img class="noBoxShadow" width="10px" height="10px" src="{% static "img/cross_button.png" %}"></a>
+                            <a href="{% url 'imagestore:delete-image' image.id %}" class="deleteImage"><img class="noBoxShadow" width="10px" height="10px" src="{% static "img/cross_button.png" %}"></a>
                         </span>
                         {% endif %}
                         {% endif %}
