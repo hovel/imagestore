@@ -168,7 +168,7 @@
     <div class="row">
         <div class="span7">
             <h6>
-                {{blog}} | {% include "imagestore/image-scope.html" %}
+                <a href="{{ blog.get_absolute_url  }}">{{blog}}</a> | {% include "imagestore/image-scope.html" %}
             </h6>
         </div>
     </div>
