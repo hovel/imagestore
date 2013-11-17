@@ -16,6 +16,7 @@
 {% block extra_js %}
 <script src="{% static "js/jquery.sortable.js" %}"></script>
 <script src="{% static "js/comment.handlers.js" %}"></script>
+
 <script type="text/javascript">
     var image_order_array = [];
     var startIndex = 0;
@@ -123,22 +124,30 @@
     		    event.preventDefault();
     		    return false;
             });
-            
+
 	        var onDelete = function(){
 	        	var $element = $(this);
-				$.ajax({
-				  type: "POST",
-				  url: $(this).attr('href'),
-				  success: function(data){
-				        if(data.success === true) {
-				        	var $container = $element.parents('.image-preview');
-				        	$container.remove();
-				        }
-				  },
-				  error: function(XMLHttpRequest, textStatus, errorThrown) {
-				     console.log("error during image deletion");
-				  }
-				});
+                $.confirm({
+                    text: "Are you sure you want to delete this photo?",
+                    confirm: function(button) {
+                    $.ajax({
+                      type: "POST",
+                      url: $element.attr('href'),
+                      success: function(data){
+                            if(data.success === true) {
+                                var $container = $element.parents('.image-preview');
+                                $container.remove();
+                            }
+                      },
+                      error: function(XMLHttpRequest, textStatus, errorThrown) {
+                         console.log("error during image deletion");
+                      }
+                    });
+                    },
+                    cancel: function(button) {
+                        // do something
+                    }
+                });
 				return false;
 	        }
 
