@@ -77,7 +77,7 @@ class BaseAlbum(models.Model):
 
     def get_album_path(self):
         UPLOAD_TO = getattr(settings, 'IMAGESTORE_UPLOAD_TO', 'imagestore/')
-        Path = os.path.join(UPLOAD_TO, "user_%d/%s" % (self.user.id, self.name))
+        Path = os.path.join(UPLOAD_TO, "user_%d/%s_%s" % (self.user.id, self.name, self.id))
         return Path
 
     admin_thumbnail.short_description = _('Head')

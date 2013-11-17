@@ -317,8 +317,16 @@ class DeleteAlbum(DeleteView):
 	@method_decorator(login_required)
 	@method_decorator(permission_required('%s.change_%s' % (album_applabel, album_classname)))
 	def dispatch(self, *args, **kwargs):
-		return super(DeleteAlbum, self).dispatch(*args, **kwargs)
+		resp = super(DeleteAlbum, self).dispatch(*args, **kwargs)
 
+		if self.request.is_ajax():
+			response_data = {"success": True}
+			return HttpResponse(json.dumps(response_data),
+				content_type="application/json")
+		else:
+			# POST request (not ajax) will do a redirect to success_url
+			return resp
+			
 	def delete(self, request, *args, **kwargs):
 		self.object = self.get_object()
 		user = request.user
