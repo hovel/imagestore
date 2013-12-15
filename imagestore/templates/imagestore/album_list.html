@@ -52,14 +52,14 @@
 
 {% block content %}
     {% get_owned_blog view_user as blog %}
-    <h6 class="halfGutter">
+    <h6 class="noGutter">
     {% if view_user == user %}
         {% trans "Uploaded Images " %} {{ blog.num_images }} {% trans "/" %} {{ max_images }}
     {% else %}
     {% endif %}
     </h6>
     {% if album_list|length == 0%}
-        <h6 class="halfGutter">
+        <h6 class="noGutter">
         {% if view_user == user %}
         {% get_owned_blog view_user as blog %}
             {% trans "Upload Photos to showcase you collection to potential customers." %}
@@ -71,7 +71,7 @@
         {% include "imagestore/pagination.html" %}
         <div class='album-list'>
             {% for album in album_list %}
-                <div class='album pagination-centered bottomHalfGutter'>
+                <div class='album pagination-centered bottomHalfGutter {% if not forloop.first %}halfGutter{% endif %}'>
                     <div class='album-head'>
                         <!--a class="album_photos" href="{{ album.get_absolute_url }}"-->
                         {% if album.get_head %}
