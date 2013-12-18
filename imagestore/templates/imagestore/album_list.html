@@ -64,7 +64,7 @@
         {% get_owned_blog view_user as blog %}
             {% trans "Upload Photos to showcase you collection to potential customers." %}
         {% else %}
-            {{blog.title}} {% trans "has not uploaded any Photos." %}
+            {{blog.title|title}} {% trans "has not uploaded any Photos." %}
         {% endif %}
         </h6>
     {% else %}
