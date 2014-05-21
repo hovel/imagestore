@@ -36,7 +36,7 @@ def process_zipfile(uploaded_album):
         for filename in sorted(zip.namelist()):
             if filename.startswith('__'):  # do not process meta files
                 continue
-            print filename
+            print filename.encode('ascii', errors='replace')
             data = zip.read(filename)
             if len(data):
                 try:
