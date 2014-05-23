@@ -17,7 +17,7 @@ setup(
         long_description = open('README.rst').read(),
         license = 'GPL',
         keywords = 'django gallery',
-        url = 'http://bitbucket.org/zeus/imagestore/',
+        url = 'https://github.com/hovel/imagestore',
         include_package_data = True
      )
  
