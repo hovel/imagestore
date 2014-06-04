@@ -15,6 +15,10 @@ from django.contrib.auth.models import Permission
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 try:
     from django.contrib.auth import get_user_model
@@ -61,6 +65,7 @@ class BaseImage(models.Model):
         try:
             return '<img src="%s">' % get_thumbnail(self.image, '100x100', crop='center').url
         except IOError:
+            logger.exception('IOError for image %s', self.image)
             return 'IOError'
         except ThumbnailError, ex:
             return 'ThumbnailError, %s' % ex.message
