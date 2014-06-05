@@ -9,6 +9,9 @@ from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from sorl.thumbnail import get_thumbnail
+import logging
+
+logger = logging.getLogger(__name__)
 
 try:
     from django.contrib.auth import get_user_model
@@ -68,6 +71,7 @@ class BaseAlbum(models.Model):
             try:
                 return '<img src="%s">' % get_thumbnail(img.image, '100x100', crop='center').url
             except IOError:
+                logger.exception('IOError for album %s', img.image)
                 return 'IOError'
         return _('Empty album')
 
