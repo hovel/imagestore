@@ -1,4 +1,10 @@
 {% load thumbnail %}
+{% load sekizai_tags %}
+
+{% addtoblock "css" %}
+<link rel="stylesheet" href="//cdn.jsdelivr.net/prettyphoto/3.1.5/css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
+{% endaddtoblock %}
+
 <div id='gallery'>
     {% for image in album.images.all %}
         {% thumbnail image.image "120x120" crop="center" as im %}
@@ -10,8 +16,10 @@
         {% endthumbnail %}
     {% endfor %}
 
+    {% addtoblock "js" %}
+    <script type="application/javascript" src="http://cdn.jsdelivr.net/prettyphoto/3.1.5/js/jquery.prettyPhoto.js"></script>
     <script type="text/javascript" charset="utf-8">
-    $(function() {
+    CMS.$(function() {
         $("a[rel^='gallery']").prettyPhoto({
             allow_resize: true,
             changepicturecallback: function() {
@@ -20,4 +28,5 @@
         });
     });
     </script>
+    {% endaddtoblock %}
 </div>
