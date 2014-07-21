@@ -3,7 +3,7 @@ ImageStore
 
 An image gallery, created for easy integration for an exiting django project.
 
-`Documentation aviable on ReadTheDocs <http://readthedocs.org/projects/imagestore/>`_
+`Documentation available on ReadTheDocs <http://readthedocs.org/projects/imagestore/>`_
 
 Gallery for site
 ----------------
