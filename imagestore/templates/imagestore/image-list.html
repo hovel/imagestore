@@ -1,11 +1,12 @@
 {% load i18n %}
 {% load thumbnail %}
+{% load imagestore_tags %}
 
 <div id="image-thumbnails">
     {% for image in image_list %}
         {% thumbnail image.image "120x120" crop="center" as im %}
             <a class="thumb" rel='gallery-image[ilist]' href="{{ image.image.url }}">
-                <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
+                <img class="preview" {% imagestore_alt image forloop.counter %} src="{{ im.url }}">
             </a>
             <a href="{% url '{{ image.get_absolute_url }}' %}">
                 {% if image.title %}

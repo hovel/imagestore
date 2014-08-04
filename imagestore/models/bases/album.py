@@ -40,6 +40,7 @@ class BaseAlbum(models.Model):
 
     user = models.ForeignKey(User, verbose_name=_('User'), null=True, blank=True, related_name='albums')
     name = models.CharField(_('Name'), max_length=100, blank=False, null=False)
+    brief = models.CharField(_('Brief'), max_length=255, blank=True, default='', help_text=_('Short description'))
     created = models.DateTimeField(_('Created'), auto_now_add=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True)
     is_public = models.BooleanField(_('Is public'), default=True)

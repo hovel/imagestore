@@ -8,8 +8,10 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from models import *
 import os
+import random
 from django.contrib.auth.models import User
 from django.db import models
+from imagestore.templatetags.imagestore_tags import imagestore_alt
 
 try:
     from lxml import html
@@ -176,3 +178,31 @@ class ImagestoreTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['object_list'][0].name, 'a1')
         self.assertEqual(response.context['object_list'][1].name, 'b2')
+
+    def test_imagestore_alt(self):
+        self._upload_test_image()
+        image = Image.objects.all()[0]
+        image.album = None
+        image.title = ''
+        image.save()
+
+        result = imagestore_alt(image)
+        self.assertEqual(result, '')
+
+        album = Album.objects.all()[0]
+        album.brief = 'album brief'
+        album.save()
+        image.album = album
+        counter = random.randint(0, 111)
+
+        result = imagestore_alt(image)
+        self.assertIn(album.brief, result)
+        self.assertNotIn(str(counter), result)  # insure next assertIn from mistake
+        self.assertEqual(result.count('\'') % 2, 0)
+        self.assertEqual(result.count('\"') % 2, 0)
+
+        result = imagestore_alt(image, counter)
+        self.assertIn(album.brief, result)
+        self.assertIn(str(counter), result)
+        self.assertEqual(result.count('\'') % 2, 0)
+        self.assertEqual(result.count('\"') % 2, 0)

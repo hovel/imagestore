@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load thumbnail %}
 {% load url from future %}
+{% load imagestore_tags %}
 
 {% block imagestore-breadcrumb %}
     {% with "li" as scope_tag %}
@@ -46,7 +47,7 @@
             <div class='image-preview'>
             {% thumbnail image.image "120x120" crop="center" as im %}
                 <a class="thumb" rel='gallery-image[ilist]' href="{{ image.image.url }}">
-                    <img class="preview" {% if image.title %} alt="{{ image.title }}" {% endif %} src="{{ im.url }}">
+                    <img class="preview" {% imagestore_alt image forloop.counter %} src="{{ im.url }}">
                 </a>
                 <a href="{% include "imagestore/image-href.html" %}">
                     {% if image.title %}
