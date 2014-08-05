@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from django import template
 from django.conf import settings
+from django.utils.encoding import force_text
 
 register = template.Library()
+
 
 @register.simple_tag
 def imagestore_alt(image, counter=None):
@@ -12,7 +15,7 @@ def imagestore_alt(image, counter=None):
         data = image.title
     elif hasattr(image.album, 'brief'):
         if image.album.brief and counter is not None:
-            tpl = unicode(
+            tpl = force_text(
                 getattr(settings, 'IMAGESTORE_BRIEF_TO_ALT_TEMPLATE', '{0}_{1}')
             )
             try:
