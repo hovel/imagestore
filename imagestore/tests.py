@@ -186,6 +186,7 @@ class ImagestoreTest(TestCase):
         image.title = ''
         image.save()
 
+        # empty title, empty brief = empty result
         result = imagestore_alt(image)
         self.assertEqual(result, '')
 
@@ -193,16 +194,58 @@ class ImagestoreTest(TestCase):
         album.brief = 'album brief'
         album.save()
         image.album = album
+        image.save()
         counter = random.randint(0, 111)
 
+        # empty title, not empty brief = brief in result
         result = imagestore_alt(image)
         self.assertIn(album.brief, result)
         self.assertNotIn(str(counter), result)  # insure next assertIn from mistake
-        self.assertEqual(result.count('\'') % 2, 0)
-        self.assertEqual(result.count('\"') % 2, 0)
+        self.assertIn(result.count('\''), (0, 2))
+        self.assertIn(result.count('\"'), (0, 2))
 
+        # same behaviour plus counter
         result = imagestore_alt(image, counter)
         self.assertIn(album.brief, result)
         self.assertIn(str(counter), result)
-        self.assertEqual(result.count('\'') % 2, 0)
-        self.assertEqual(result.count('\"') % 2, 0)
+        self.assertIn(result.count('\''), (0, 2))
+        self.assertIn(result.count('\"'), (0, 2))
+
+        # IMAGESTORE_BRIEF_TO_ALT_TEMPLATE affects on result format
+        with self.settings(IMAGESTORE_BRIEF_TO_ALT_TEMPLATE = '{1}_{0}'):
+            result = imagestore_alt(image, counter)
+            self.assertIn('{1}_{0}'.format(album.brief, counter), result)
+
+        # but does not affect on single and double quotes
+        with self.settings(IMAGESTORE_BRIEF_TO_ALT_TEMPLATE = '{1}_\'_\"_{0}'):
+            result = imagestore_alt(image, counter)
+            self.assertIn(result.count('\''), (0, 2))
+            self.assertIn(result.count('\"'), (0, 2))
+
+        # quotes shall not pass
+        album.brief = 'album \' \" brief'
+        album.save()
+        result = imagestore_alt(image, counter)
+        self.assertIn(result.count('\''), (0, 2))
+        self.assertIn(result.count('\"'), (0, 2))
+        counter = '1 \'\" 2'
+        result = imagestore_alt(image, counter)
+        self.assertIn(result.count('\''), (0, 2))
+        self.assertIn(result.count('\"'), (0, 2))
+
+        # not empty title = title in result (only)
+        image.title = 'image title'
+        image.save()
+        result = imagestore_alt(image, counter)
+        self.assertIn(image.title, result)
+        self.assertNotIn(album.brief, result)
+        self.assertNotIn(str(counter), result)
+        self.assertIn(result.count('\''), (0, 2))
+        self.assertIn(result.count('\"'), (0, 2))
+
+        # quotes escaped again
+        image.title = 'image \' \" title'
+        image.save()
+        result = imagestore_alt(image, counter)
+        self.assertIn(result.count('\''), (0, 2))
+        self.assertIn(result.count('\"'), (0, 2))

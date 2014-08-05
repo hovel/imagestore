@@ -12,12 +12,23 @@ def imagestore_alt(image, counter=None):
         data = image.title
     elif hasattr(image.album, 'brief'):
         if image.album.brief and counter is not None:
-            tpl = unicode(getattr(settings, 'BRIEF_TO_ALT_WITH_COUNTER', '{0}_{1}'))
-            data = tpl.format(image.album.brief, counter)
+            tpl = unicode(
+                getattr(settings, 'IMAGESTORE_BRIEF_TO_ALT_TEMPLATE', '{0}_{1}')
+            )
+            try:
+                if '{' not in tpl:
+                    raise ValueError
+                data = tpl.format(image.album.brief, counter)
+            except (ValueError, IndexError):
+                message = 'IMAGESTORE_BRIEF_TO_ALT_TEMPLATE has wrong format'
+                print(message)
+                if settings.DEBUG:
+                    data = message
         elif image.album.brief:
             data = image.album.brief
 
     if data:
+        data = data.replace('\'', '&#39;').replace('\"', '&#34;')
         return 'alt="{0}"'.format(data)
     else:
         return ''
