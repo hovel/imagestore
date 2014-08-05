@@ -52,3 +52,9 @@ IMAGESTORE_UPLOAD_ALBUM_PROCESSOR ("imagestore.models.upload.process_zipfile")
     Function for processing uploaded zip archives from admin interface. Function gets `AlbumUpload` model instance
     and should process file from `zip_file` field to upload images. For example, you can override this setting
     to provide function, which do nothing, and process file lately
+
+IMAGESTORE_BRIEF_TO_ALT_TEMPLATE ("{0}_{1}")
+    There is template tag `imagestore_alt` which automaticly generates images
+    alt attribute based on image title or, if title is empty, on album brief
+    field and (optional) loop counter. Setting determines alt attribute format
+    when brief ({0}) and counter ({1}) are used.
