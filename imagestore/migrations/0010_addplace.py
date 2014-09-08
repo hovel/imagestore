@@ -3,23 +3,15 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
-try:
-    from places.models import GeoPlace
-except:
-    GeoPlace = None
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        if GeoPlace:
-            # Adding field 'Image.place'
-            db.add_column('imagestore_image', 'place', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='images', null=True, to=orm['places.GeoPlace']), keep_default=False)
+        pass
 
 
     def backwards(self, orm):
-        
-        # Deleting field 'Image.place'
-        db.delete_column('imagestore_image', 'place_id')
+        pass
 
 
     models = {
@@ -77,44 +69,10 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('sorl.thumbnail.fields.ImageField', [], {'max_length': '100'}),
             'order': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'place': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'images'", 'null': 'True', 'to': "orm['places.GeoPlace']"}),
             'tags': ('tagging.fields.TagField', [], {}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'images'", 'null': 'True', 'to': "orm['auth.User']"})
-        },
-        'places.geoplace': {
-            'Meta': {'object_name': 'GeoPlace'},
-            'addional_info': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'address': ('django.db.models.fields.CharField', [], {'db_index': 'True', 'max_length': '255', 'blank': 'True'}),
-            'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'imagestore_tag': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'latitude': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'longtitude': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'metro': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'minuses': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'near_objects': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'near_objects_rel_+'", 'null': 'True', 'to': "orm['places.GeoPlace']"}),
-            'near_text': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'path_to': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'phone': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'pluses': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'tags': ('tagging.fields.TagField', [], {}),
-            'topic': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['pybb.Topic']", 'null': 'True', 'blank': 'True'}),
-            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['places.PlaceType']", 'null': 'None', 'blank': 'None'}),
-            'work_time': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
-        },
-        'places.placetype': {
-            'Meta': {'object_name': 'PlaceType'},
-            'forum': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['pybb.Forum']", 'null': 'True', 'blank': 'True'}),
-            'forum_user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'blank': 'True'}),
-            'icon_style': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'name_plural': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'path_to_image': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'})
         },
         'pybb.category': {
             'Meta': {'ordering': "['position']", 'object_name': 'Category'},

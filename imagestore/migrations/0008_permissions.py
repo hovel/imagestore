@@ -1,28 +1,29 @@
 # encoding: utf-8
 import datetime
+from django.contrib.contenttypes.models import ContentType
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
 from django.contrib.auth.management import create_permissions
 from django.contrib.auth.models import User, Permission
-from django.db.models import get_app
+from django.db.models.loading import get_app
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
         app = get_app('imagestore')
         create_permissions(app, (), 2)
-        add_image_permission = Permission.objects.get_by_natural_key('add_image', 'imagestore', 'image')
-        add_album_permission = Permission.objects.get_by_natural_key('add_album', 'imagestore', 'album')
-        change_image_permission = Permission.objects.get_by_natural_key('change_image', 'imagestore', 'image')
-        change_album_permission = Permission.objects.get_by_natural_key('change_album', 'imagestore', 'album')
-        delete_image_permission = Permission.objects.get_by_natural_key('delete_image', 'imagestore','image')
-        delete_album_permission = Permission.objects.get_by_natural_key('delete_album', 'imagestore', 'album')
+        existing_perms = []
+        for perm_args in (('add_image', 'imagestore', 'image'), ('add_album', 'imagestore', 'album'),
+                          ('change_image', 'imagestore', 'image'), ('change_album', 'imagestore', 'album'),
+                          ('delete_image', 'imagestore', 'image'), ('delete_album', 'imagestore', 'album')):
+            try:
+                perm_instance = Permission.objects.get_by_natural_key(*perm_args)
+                existing_perms.append(perm_instance)
+            except (Permission.DoesNotExist, ContentType.DoesNotExist):
+                pass
         for user in User.objects.all():
-            user.user_permissions.add(add_image_permission, add_album_permission,)
-            user.user_permissions.add(change_image_permission, change_album_permission,)
-            user.user_permissions.add(delete_image_permission, delete_album_permission,)
-            user.save()
+            user.user_permissions.add(*existing_perms)
 
     def backwards(self, orm):
         "Write your backwards methods here."
