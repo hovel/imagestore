@@ -1,15 +1,71 @@
-language:
-  python
+language: python
 python:
-  - "2.6"
   - "2.7"
+  - "3.2"
+  - "3.3"
+  - "3.4"
 env:
-  - DJANGO=1.3.7
-  - DJANGO=1.4.5
-  - DJANGO=1.5.1
+  - DJANGO="Django>=1.4,<1.5" DB=sqlite
+  - DJANGO="Django>=1.4,<1.5" DB=postgres
+  - DJANGO="Django>=1.4,<1.5" DB=mysql
+  - DJANGO="Django>=1.5,<1.6" DB=sqlite
+  - DJANGO="Django>=1.5,<1.6" DB=postgres
+  - DJANGO="Django>=1.5,<1.6" DB=mysql
+  - DJANGO="Django>=1.6,<1.7" DB=sqlite
+  - DJANGO="Django>=1.6,<1.7" DB=postgres
+  - DJANGO="Django>=1.6,<1.7" DB=mysql
+  - DJANGO="Django>=1.7,<1.8" DB=sqlite
+  - DJANGO="Django>=1.7,<1.8" DB=postgres
+  - DJANGO="Django>=1.7,<1.8" DB=mysql
+matrix:
+  exclude:
+    - python: "3.2"
+      env: DJANGO="Django>=1.4,<1.5" DB=sqlite
+    - python: "3.2"
+      env: DJANGO="Django>=1.4,<1.5" DB=postgres
+    - python: "3.2"
+      env: DJANGO="Django>=1.4,<1.5" DB=mysql
+    - python: "3.3"
+      env: DJANGO="Django>=1.4,<1.5" DB=sqlite
+    - python: "3.3"
+      env: DJANGO="Django>=1.4,<1.5" DB=postgres
+    - python: "3.3"
+      env: DJANGO="Django>=1.4,<1.5" DB=mysql
+    - python: "3.4"
+      env: DJANGO="Django>=1.4,<1.5" DB=sqlite
+    - python: "3.4"
+      env: DJANGO="Django>=1.4,<1.5" DB=postgres
+    - python: "3.4"
+      env: DJANGO="Django>=1.4,<1.5" DB=mysql
+
+    - python: "3.2"
+      env: DJANGO="Django>=1.5,<1.6" DB=mysql
+    - python: "3.3"
+      env: DJANGO="Django>=1.5,<1.6" DB=mysql
+    - python: "3.4"
+      env: DJANGO="Django>=1.5,<1.6" DB=mysql
+
+    - python: "3.2"
+      env: DJANGO="Django>=1.6,<1.7" DB=mysql
+    - python: "3.3"
+      env: DJANGO="Django>=1.6,<1.7" DB=mysql
+    - python: "3.4"
+      env: DJANGO="Django>=1.6,<1.7" DB=mysql
+
+    - python: "3.2"
+      env: DJANGO="Django>=1.7,<1.8" DB=mysql
+    - python: "3.3"
+      env: DJANGO="Django>=1.7,<1.8" DB=mysql
+    - python: "3.4"
+      env: DJANGO="Django>=1.7,<1.8" DB=mysql
+before_script:
+  - mysql -e 'create database pybbm;'
+  - psql -c 'create database pybbm;' -U postgres
 install:
+  - if [[ $DB == mysql ]]; then pip install -qU mysql-python; fi
+  - if [[ $DB == postgres ]]; then pip install -qU psycopg2; fi
   - export PYTHONPATH=$PYTHONPATH:./imagestore/
-  - pip install Django==$DJANGO --use-mirrors
-  - pip install -r test/testapp/requirements.txt
+  - pip install $DJANGO
+  - pip install -r test/testproject/requirements.txt
 script:
-  - python test/testapp/manage.py test imagestore
+  - python test/testproject/manage.py test imagestore

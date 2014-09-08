@@ -89,10 +89,6 @@ TEMPLATE_CONTEXT_PROCESSORS =(
     "imagestore.context_processors.imagestore_processor"
 )
 
-import django
-if django.VERSION[0] < 1 or django.VERSION[1] <3:
-    MIDDLEWARE_CLASSES.append('cbv.middleware.DeferredRenderingMiddleware')
-
 ROOT_URLCONF = 'testapp.urls'
 
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
@@ -106,10 +102,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    'django.contrib.admindocs',
     'django.contrib.staticfiles',
     'imagestore',
     'sorl.thumbnail',
@@ -119,7 +112,7 @@ INSTALLED_APPS = (
 )
 
 STATICFILES_DIRS = (
-    'static',
+    'test/testproject/static',
 )
 
 try:

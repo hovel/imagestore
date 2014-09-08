@@ -11,6 +11,7 @@ from django.conf import settings
 
 UPLOAD_TO = getattr(settings, 'IMAGESTORE_UPLOAD_TO', 'imagestore/')
 
+
 def load_class(class_path, setting_name=None):
     """
     Loads a class given a class_path.

@@ -2,7 +2,8 @@
 # vim:fileencoding=utf-8
 
 __author__ = 'zeus'
-from imagestore.utils import load_class, get_model_string
+
+from imagestore.utils import load_class
 from django.conf import settings
 
 Album = load_class(getattr(settings, 'IMAGESTORE_ALBUM_MODEL', 'imagestore.models.album.Album'))
