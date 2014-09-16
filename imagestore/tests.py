@@ -11,6 +11,8 @@ import os
 from django.contrib.auth.models import User
 from django.db import models
 
+a = 0
+
 try:
     from lxml import html
 except:
