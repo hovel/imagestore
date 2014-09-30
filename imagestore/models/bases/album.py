@@ -44,7 +44,7 @@ class BaseAlbum(models.Model):
     created = models.DateTimeField(_('Created'), auto_now_add=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True)
     is_public = models.BooleanField(_('Is public'), default=True)
-    head = models.ForeignKey(get_model_string('Image'), related_name='head_of', null=True, blank=True, on_delete=models.SET_NULL)
+    head = models.ForeignKey(get_model_string('Image'), verbose_name=_('Head'), related_name='head_of', null=True, blank=True, on_delete=models.SET_NULL)
 
     order = models.IntegerField(_('Order'), default=0)
 
