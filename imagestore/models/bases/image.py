@@ -21,12 +21,6 @@ logger = logging.getLogger(__name__)
 
 
 try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    from django.contrib.auth.models import User
-
-try:
     import Image as PILImage
 except ImportError:
     from PIL import Image as PILImage
@@ -49,7 +43,7 @@ class BaseImage(models.Model):
     tags = TagField(_('Tags'), blank=True)
     order = models.IntegerField(_('Order'), default=0)
     image = ImageField(verbose_name = _('File'), upload_to=get_file_path)
-    user = models.ForeignKey(User, verbose_name=_('User'), null=True, blank=True, related_name='images')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True, related_name='images')
     created = models.DateTimeField(_('Created'), auto_now_add=True, null=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True, null=True)
     album = models.ForeignKey(get_model_string('Album'), verbose_name=_('Album'), null=True, blank=True, related_name='images')
@@ -106,4 +100,4 @@ def setup_imagestore_permissions(instance, created, **kwargs):
 
 
 if SELF_MANAGE:
-    post_save.connect(setup_imagestore_permissions, User)
+    post_save.connect(setup_imagestore_permissions, settings.AUTH_USER_MODEL)
