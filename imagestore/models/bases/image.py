@@ -4,6 +4,7 @@
 __author__ = 'zeus'
 
 
+import django
 from django.db import models
 from django.db.models import permalink
 from sorl.thumbnail.helpers import ThumbnailError
@@ -19,6 +20,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+if django.VERSION[0] == 1 and django.VERSION[1] <= 7:
+    User = settings.AUTH_USER_MODEL
+else:
+    try:
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+    except ImportError:
+        from django.contrib.auth.models import User
 
 try:
     import Image as PILImage
@@ -100,4 +109,4 @@ def setup_imagestore_permissions(instance, created, **kwargs):
 
 
 if SELF_MANAGE:
-    post_save.connect(setup_imagestore_permissions, settings.AUTH_USER_MODEL)
+    post_save.connect(setup_imagestore_permissions, User)
