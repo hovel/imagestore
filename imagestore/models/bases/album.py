@@ -14,12 +14,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    from django.contrib.auth.models import User
-
-try:
     import Image as PILImage
 except ImportError:
     from PIL import Image as PILImage
@@ -38,7 +32,7 @@ class BaseAlbum(models.Model):
             ('moderate_albums', 'View, update and delete any album'),
         )
 
-    user = models.ForeignKey(User, verbose_name=_('User'), null=True, blank=True, related_name='albums')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True, related_name='albums')
     name = models.CharField(_('Name'), max_length=100, blank=False, null=False)
     brief = models.CharField(_('Brief'), max_length=255, blank=True, default='', help_text=_('Short description'))
     created = models.DateTimeField(_('Created'), auto_now_add=True)
