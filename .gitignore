@@ -8,4 +8,4 @@ test/testapp/cache/
 test/testapp/temp
 test/testapp/imagestore
 test/testapp/test.sqlite
-
+.tox
