@@ -30,7 +30,7 @@ def load_class(class_path, setting_name=None):
 
     try:
         mod = import_module(class_module)
-    except ImportError, e:
+    except ImportError as e:
         if setting_name:
             txt = 'Error importing backend %s: "%s". Check your %s setting' % (class_module, e, setting_name)
         else:
@@ -39,7 +39,7 @@ def load_class(class_path, setting_name=None):
 
     try:
         clazz = getattr(mod, class_name)
-    except AttributeError, e:
+    except AttributeError as e:
         if setting_name:
             txt = 'Backend module "%s" does not define a "%s" class. Check your %s setting. (%s)' % (class_module, class_name, setting_name)
         else:

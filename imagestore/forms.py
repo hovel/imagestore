@@ -9,7 +9,7 @@ except ImportError:
 __author__ = 'zeus'
 
 from django import forms
-from models import Image, Album
+from .models import Image, Album
 from django.utils.translation import ugettext_lazy as _
 
 

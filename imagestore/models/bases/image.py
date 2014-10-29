@@ -70,7 +70,7 @@ class BaseImage(models.Model):
         except IOError:
             logger.exception('IOError for image %s', self.image)
             return 'IOError'
-        except ThumbnailError, ex:
+        except ThumbnailError as ex:
             return 'ThumbnailError, %s' % ex.message
 
     admin_thumbnail.short_description = _('Thumbnail')

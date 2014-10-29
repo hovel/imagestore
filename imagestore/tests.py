@@ -6,7 +6,7 @@ __author__ = 'zeus'
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-from models import *
+from .models import *
 import os
 import random
 from django.contrib.auth.models import Permission, User
@@ -20,7 +20,7 @@ except:
 
 class ImagestoreTest(TestCase):
     def setUp(self):
-        self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'))
+        self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'), 'rb')
         self.user = User.objects.create_user('zeus', 'zeus@example.com', 'zeus')
         self.user.user_permissions.add(*Permission.objects.filter(content_type__app_label='imagestore'))
         self.client = Client()
@@ -29,7 +29,7 @@ class ImagestoreTest(TestCase):
 
     def _upload_test_image(self, username='zeus', password='zeus'):
         self.client.login(username=username, password=password)
-        self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'))
+        self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'), 'rb')
         response = self.client.get(reverse('imagestore:upload'))
         self.assertEqual(response.status_code, 200)
         tree = html.fromstring(response.content)

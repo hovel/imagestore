@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from tagging.models import TaggedItem
 from tagging.utils import get_tag
-from utils import load_class
+from .utils import load_class
 from django.db.models import Q
 
 try:
