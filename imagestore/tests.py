@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from models import *
 import os
 import random
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, User
 from django.db import models
 from imagestore.templatetags.imagestore_tags import imagestore_alt
 
@@ -22,6 +22,7 @@ class ImagestoreTest(TestCase):
     def setUp(self):
         self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'))
         self.user = User.objects.create_user('zeus', 'zeus@example.com', 'zeus')
+        self.user.user_permissions.add(*Permission.objects.filter(content_type__app_label='imagestore'))
         self.client = Client()
         self.album = Album(name='test album', user=self.user)
         self.album.save()
