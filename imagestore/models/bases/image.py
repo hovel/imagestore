@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-if django.VERSION[0] == 1 and django.VERSION[1] <= 7:
+if django.VERSION[:2] >= (1, 7):
     User = settings.AUTH_USER_MODEL
 else:
     try:
