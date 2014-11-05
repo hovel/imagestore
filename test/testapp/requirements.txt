@@ -1,5 +1,4 @@
 Pillow
-South
 django-autocomplete-light==2.0.0a18
 django-tagging
 sorl-thumbnail==11.12.1b

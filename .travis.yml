@@ -1,14 +1,19 @@
 language:
   python
 python:
-  - "2.6"
-  - "2.7"
-  - "3.4"
+  - 2.6
+  - 2.7
+  - 3.4
 env:
   - DJANGO=1.5.11
+  - DJANGO=1.6.8
+  - DJANGO=1.7.1
+matrix:
+  exclude:
+    - python: 2.6
+      env: DJANGO=1.7.1
 install:
-  - export PYTHONPATH=$PYTHONPATH:./imagestore/
   - pip install Django==$DJANGO --use-mirrors
   - pip install -r test/testapp/requirements.txt
 script:
-  - python test/testapp/manage.py test imagestore
+  - cd test/testapp/ && python manage.py test imagestore
