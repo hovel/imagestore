@@ -47,11 +47,11 @@ class BaseImage(models.Model):
             ('moderate_images', 'View, update and delete any image'),
         )
 
-    title = models.CharField(_('Title'), max_length=100, blank=True, null=True)
+    title = models.CharField(_('Title'), max_length=255, blank=True, null=True)
     description = models.TextField(_('Description'), blank=True, null=True)
     tags = TagField(_('Tags'), blank=True)
     order = models.IntegerField(_('Order'), default=0)
-    image = ImageField(verbose_name = _('File'), upload_to=get_file_path)
+    image = ImageField(verbose_name=_('File'), max_length=255, upload_to=get_file_path)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True, related_name='images')
     created = models.DateTimeField(_('Created'), auto_now_add=True, null=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True, null=True)
