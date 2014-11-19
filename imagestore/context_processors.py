@@ -2,7 +2,7 @@
 # vim:fileencoding=utf-8
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.conf import settings
-from utils import get_model_string
+from .utils import get_model_string
 from imagestore.models import image_applabel, image_classname
 from imagestore.models import album_applabel, album_classname
 

@@ -22,6 +22,9 @@ DATABASES = {
     }
 }
 
+# This setting will be removed in Django 1.8, so another way to run tests will need to be figured out.
+TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner'
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -108,7 +111,6 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'tagging',
     'autocomplete_light',
-    'south'
 )
 
 STATICFILES_DIRS = (

@@ -3,7 +3,7 @@
 
 __author__ = 'zeus'
 
-from bases.album import BaseAlbum
+from .bases.album import BaseAlbum
 from django.utils.translation import ugettext_lazy as _
 
 

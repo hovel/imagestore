@@ -4,8 +4,8 @@ local_path.py
 settings_local.py
 dist
 *.egg-info
-test/testproject/cache/
-test/testproject/temp
-test/testproject/imagestore
-test/testproject/test.sqlite
-
+test/testapp/cache/
+test/testapp/temp
+test/testapp/imagestore
+test/testapp/test.sqlite
+.tox

@@ -64,8 +64,7 @@ before_script:
 install:
   - if [[ $DB == mysql ]]; then pip install -qU mysql-python; fi
   - if [[ $DB == postgres ]]; then pip install -qU psycopg2; fi
-  - export PYTHONPATH=$PYTHONPATH:./imagestore/
   - pip install $DJANGO
   - pip install -r test/testproject/requirements.txt
 script:
-  - python test/testproject/manage.py test imagestore
+  - cd test/testapp/ && python manage.py test imagestore

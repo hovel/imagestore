@@ -2,6 +2,7 @@
 # vim:fileencoding=utf-8
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.importlib import import_module
+import collections
 
 __author__ = 'zeus'
 
@@ -12,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from django.utils import six
 try:
     import Image as PILImage
 except ImportError:
@@ -33,11 +35,10 @@ def process_zipfile(uploaded_album):
         if not uploaded_album.album:
             uploaded_album.album = Album.objects.create(name=uploaded_album.new_album_name)
 
-        from cStringIO import StringIO
         for filename in sorted(zip.namelist()):
             if filename.startswith('__'):  # do not process meta files
                 continue
-            print filename.encode('ascii', errors='replace')
+            print(filename.encode('ascii', errors='replace'))
             data = zip.read(filename)
             if len(data):
                 try:
@@ -45,20 +46,20 @@ def process_zipfile(uploaded_album):
                     # load() could spot a truncated JPEG, but it loads the entire
                     # image in memory, which is a DoS vector. See #3848 and #18520.
                     # verify() must be called immediately after the constructor.
-                    PILImage.open(StringIO(data)).verify()
-                except Exception, ex:
+                    PILImage.open(six.cStringIO(data)).verify()
+                except Exception as ex:
                     # if a "bad" file is found we just skip it.
-                    print('Error verify image: %s' % ex.message)
+                    print(('Error verify image: %s' % ex.message))
                     continue
-                if hasattr(data, 'seek') and callable(data.seek):
-                    print 'seeked'
+                if hasattr(data, 'seek') and isinstance(data.seek, collections.Callable):
+                    print('seeked')
                     data.seek(0)
                 try:
                     img = Image(album=uploaded_album.album)
                     img.image.save(filename, ContentFile(data))
                     img.save()
-                except Exception, ex:
-                    print('error create Image: %s' % ex.message)
+                except Exception as ex:
+                    print(('error create Image: %s' % ex.message))
         zip.close()
         uploaded_album.delete()
 
