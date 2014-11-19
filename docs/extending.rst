@@ -1,6 +1,8 @@
 Extending Imagestore
 ====================
 
+**Extending imagestore models didn'd tested with django 1.7. Use it with caution.**
+
 You can extend imagestore by customizing Image and Album classes
 as well as forms for their creation. Basic abstract classes that
 I require to extend exists in `models.bases.image` and `models.bases.album`.
