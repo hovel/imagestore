@@ -4,6 +4,7 @@
 __author__ = 'zeus'
 
 
+import django
 from django.db import models
 from django.db.models import permalink
 from sorl.thumbnail.helpers import ThumbnailError
@@ -19,12 +20,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    from django.contrib.auth.models import User
+if django.VERSION[:2] >= (1, 7):
+    User = settings.AUTH_USER_MODEL
+else:
+    try:
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+    except ImportError:
+        from django.contrib.auth.models import User
 
 try:
     import Image as PILImage
@@ -44,12 +47,12 @@ class BaseImage(models.Model):
             ('moderate_images', 'View, update and delete any image'),
         )
 
-    title = models.CharField(_('Title'), max_length=100, blank=True, null=True)
+    title = models.CharField(_('Title'), max_length=255, blank=True, null=True)
     description = models.TextField(_('Description'), blank=True, null=True)
     tags = TagField(_('Tags'), blank=True)
     order = models.IntegerField(_('Order'), default=0)
-    image = ImageField(verbose_name = _('File'), upload_to=get_file_path)
-    user = models.ForeignKey(User, verbose_name=_('User'), null=True, blank=True, related_name='images')
+    image = ImageField(verbose_name=_('File'), max_length=255, upload_to=get_file_path)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True, related_name='images')
     created = models.DateTimeField(_('Created'), auto_now_add=True, null=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True, null=True)
     album = models.ForeignKey(get_model_string('Album'), verbose_name=_('Album'), null=True, blank=True, related_name='images')

@@ -4,10 +4,10 @@
 __author__ = 'zeus'
 
 try:
-    from django.conf.urls import patterns, url
+    from django.conf.urls import patterns, url, include
 except ImportError:
-    from django.conf.urls.defaults import patterns, url
-    
+    from django.conf.urls.defaults import patterns, url, include
+
 from imagestore.views import AlbumListView
 
 urlpatterns = patterns('',
