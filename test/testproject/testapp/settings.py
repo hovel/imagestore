@@ -94,7 +94,7 @@ TEMPLATE_CONTEXT_PROCESSORS =(
 
 ROOT_URLCONF = 'testapp.urls'
 
-TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
+TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, '../templates'),)
 
 IMAGESTORE_SHOW_USER = False
 IMAGESTORE_LOAD_CSS = False
@@ -119,5 +119,5 @@ STATICFILES_DIRS = (
 
 try:
     from settings_local import *
-except:
+except ImportError:
     pass

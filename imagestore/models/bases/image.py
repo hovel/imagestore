@@ -1,12 +1,9 @@
-#!/usr/bin/env python
-# vim:fileencoding=utf-8
-
-__author__ = 'zeus'
-
-
+# coding=utf-8
+from __future__ import unicode_literals
 import django
 from django.db import models
 from django.db.models import permalink
+from django.utils.encoding import python_2_unicode_compatible
 from sorl.thumbnail.helpers import ThumbnailError
 from tagging.fields import TagField
 from django.utils.translation import ugettext_lazy as _
@@ -20,25 +17,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-if django.VERSION[:2] >= (1, 7):
-    User = settings.AUTH_USER_MODEL
-else:
-    try:
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
-    except ImportError:
-        from django.contrib.auth.models import User
-
-try:
-    import Image as PILImage
-except ImportError:
-    from PIL import Image as PILImage
-
 from imagestore.utils import get_file_path, get_model_string
+from imagestore.compat import get_user_model_name, get_user_model
 
 SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
 
 
+@python_2_unicode_compatible
 class BaseImage(models.Model):
     class Meta(object):
         abstract = True
@@ -52,7 +37,7 @@ class BaseImage(models.Model):
     tags = TagField(_('Tags'), blank=True)
     order = models.IntegerField(_('Order'), default=0)
     image = ImageField(verbose_name=_('File'), max_length=255, upload_to=get_file_path)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True, related_name='images')
+    user = models.ForeignKey(get_user_model_name(), verbose_name=_('User'), null=True, blank=True, related_name='images')
     created = models.DateTimeField(_('Created'), auto_now_add=True, null=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True, null=True)
     album = models.ForeignKey(get_model_string('Album'), verbose_name=_('Album'), null=True, blank=True, related_name='images')
@@ -61,7 +46,7 @@ class BaseImage(models.Model):
     def get_absolute_url(self):
         return 'imagestore:image', (), {'pk': self.id}
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s'% self.id
 
     def admin_thumbnail(self):
@@ -79,34 +64,37 @@ class BaseImage(models.Model):
 
 #noinspection PyUnusedLocal
 def setup_imagestore_permissions(instance, created, **kwargs):
-        if not created:
-            return
-        try:
-            from imagestore.models import Album, Image
-            album_type = ContentType.objects.get(
-                #app_label=load_class('imagestore.models.Album')._meta.app_label,
-                app_label = Album._meta.app_label,
-                name='Album'
-            )
-            image_type = ContentType.objects.get(
-                #app_label=load_class('imagestore.models.Image')._meta.app_label,
-                app_label = Image._meta.app_label,
-                name='Image'
-            )
-            add_image_permission = Permission.objects.get(codename='add_image', content_type=image_type)
-            add_album_permission = Permission.objects.get(codename='add_album', content_type=album_type)
-            change_image_permission = Permission.objects.get(codename='change_image', content_type=image_type)
-            change_album_permission = Permission.objects.get(codename='change_album', content_type=album_type)
-            delete_image_permission = Permission.objects.get(codename='delete_image', content_type=image_type)
-            delete_album_permission = Permission.objects.get(codename='delete_album', content_type=album_type)
-            instance.user_permissions.add(add_image_permission, add_album_permission,)
-            instance.user_permissions.add(change_image_permission, change_album_permission,)
-            instance.user_permissions.add(delete_image_permission, delete_album_permission,)
-        except ObjectDoesNotExist:
-            # Permissions are not yet installed or conten does not created yet
-            # probaly this is first
-            pass
+    if not created:
+        return
+    try:
+        from imagestore.models import Album, Image
+        album_type = ContentType.objects.get(
+            #app_label=load_class('imagestore.models.Album')._meta.app_label,
+            app_label = Album._meta.app_label,
+            name='Album'
+        )
+        image_type = ContentType.objects.get(
+            #app_label=load_class('imagestore.models.Image')._meta.app_label,
+            app_label = Image._meta.app_label,
+            name='Image'
+        )
+        add_image_permission = Permission.objects.get(codename='add_image', content_type=image_type)
+        add_album_permission = Permission.objects.get(codename='add_album', content_type=album_type)
+        change_image_permission = Permission.objects.get(codename='change_image', content_type=image_type)
+        change_album_permission = Permission.objects.get(codename='change_album', content_type=album_type)
+        delete_image_permission = Permission.objects.get(codename='delete_image', content_type=image_type)
+        delete_album_permission = Permission.objects.get(codename='delete_album', content_type=album_type)
+        instance.user_permissions.add(add_image_permission, add_album_permission,)
+        instance.user_permissions.add(change_image_permission, change_album_permission,)
+        instance.user_permissions.add(delete_image_permission, delete_album_permission,)
+    except ObjectDoesNotExist:
+        # Permissions are not yet installed or conten does not created yet
+        # probaly this is first
+        pass
 
 
 if SELF_MANAGE:
-    post_save.connect(setup_imagestore_permissions, User)
+    if django.VERSION[:2] >= (1, 7):
+        post_save.connect(setup_imagestore_permissions, get_user_model_name())
+    else:
+        post_save.connect(setup_imagestore_permissions, get_user_model())
