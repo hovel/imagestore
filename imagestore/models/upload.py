@@ -46,7 +46,7 @@ def process_zipfile(uploaded_album):
                     # load() could spot a truncated JPEG, but it loads the entire
                     # image in memory, which is a DoS vector. See #3848 and #18520.
                     # verify() must be called immediately after the constructor.
-                    PILImage.open(six.cStringIO(data)).verify()
+                    PILImage.open(six.moves.cStringIO(data)).verify()
                 except Exception as ex:
                     # if a "bad" file is found we just skip it.
                     print(('Error verify image: %s' % ex.message))
