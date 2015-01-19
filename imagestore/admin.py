@@ -1,7 +1,11 @@
+from __future__ import unicode_literals
 from django.contrib import admin
-from imagestore.models import Image, Album, AlbumUpload
+import swapper
+from imagestore.models.album import Album
+from imagestore.models.image import Image
+from imagestore.models.upload import AlbumUpload
 from sorl.thumbnail.admin import AdminInlineImageMixin
-from django.conf import settings
+
 
 class InlineImageAdmin(AdminInlineImageMixin, admin.TabularInline):
     model = Image
@@ -9,13 +13,13 @@ class InlineImageAdmin(AdminInlineImageMixin, admin.TabularInline):
     raw_id_fields = ('user', )
     extra = 0
 
+
 class AlbumAdmin(admin.ModelAdmin):
     fieldsets = ((None, {'fields': ['name', 'brief', 'user', 'is_public', 'order']}),)
     list_display = ('name', 'admin_thumbnail', 'user', 'created', 'updated', 'is_public', 'order')
     list_editable = ('order', )
     inlines = [InlineImageAdmin]
 
-admin.site.register(Album, AlbumAdmin)
 
 class ImageAdmin(admin.ModelAdmin):
     fieldsets = ((None, {'fields': ['user', 'title', 'image', 'description', 'order', 'tags', 'album']}),)
@@ -23,14 +27,14 @@ class ImageAdmin(admin.ModelAdmin):
     raw_id_fields = ('user', )
     list_filter = ('album', )
 
+
 class AlbumUploadAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
 
-IMAGE_MODEL = getattr(settings, 'IMAGESTORE_IMAGE_MODEL', None)
-if not IMAGE_MODEL:
+if not swapper.is_swapped('imagestore', 'Image'):
     admin.site.register(Image, ImageAdmin)
 
-ALBUM_MODEL = getattr(settings, 'IMAGESTORE_ALBUM_MODEL', None)
-if not ALBUM_MODEL:
+if not swapper.is_swapped('imagestore', 'Album'):
+    admin.site.register(Album, AlbumAdmin)
     admin.site.register(AlbumUpload, AlbumUploadAdmin)

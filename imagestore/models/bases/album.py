@@ -1,4 +1,4 @@
-#coding=utf-8
+# coding=utf-8
 from __future__ import unicode_literals
 from django.db import models
 from django.db.models import permalink
@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from sorl.thumbnail import get_thumbnail
 import logging
+import swapper
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +16,6 @@ try:
 except ImportError:
     from PIL import Image as PILImage
 
-from imagestore.utils import get_model_string
 from imagestore.compat import get_user_model_name
 
 SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
@@ -30,13 +30,15 @@ class BaseAlbum(models.Model):
             ('moderate_albums', 'View, update and delete any album'),
         )
 
-    user = models.ForeignKey(get_user_model_name(), verbose_name=_('User'), null=True, blank=True, related_name='albums')
+    user = models.ForeignKey(get_user_model_name(), verbose_name=_('User'), null=True, blank=True,
+                             related_name='albums')
     name = models.CharField(_('Name'), max_length=100, blank=False, null=False)
     brief = models.CharField(_('Brief'), max_length=255, blank=True, default='', help_text=_('Short description'))
     created = models.DateTimeField(_('Created'), auto_now_add=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True)
     is_public = models.BooleanField(_('Is public'), default=True)
-    head = models.ForeignKey(get_model_string('Image'), verbose_name=_('Head'), related_name='head_of', null=True, blank=True, on_delete=models.SET_NULL)
+    head = models.ForeignKey(swapper.get_model_name('imagestore', 'Image'), verbose_name=_('Head'),
+                             related_name='head_of', null=True, blank=True, on_delete=models.SET_NULL)
 
     order = models.IntegerField(_('Order'), default=0)
 
@@ -44,7 +46,7 @@ class BaseAlbum(models.Model):
         if self.head:
             return self.head
         else:
-            if self.images.all().count()>0:
+            if self.images.all().count() > 0:
                 self.head = self.images.all()[0]
                 self.save()
                 return self.head

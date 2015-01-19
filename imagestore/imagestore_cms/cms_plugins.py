@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
-
-__author__ = 'zeus'
-
+from __future__ import unicode_literals
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from .models import ImagestoreAlbumPtr, ImagestoreAlbumCarousel

@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
+from __future__ import unicode_literals
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.importlib import import_module
 import collections
-
-__author__ = 'zeus'
-
-import os
+import swapper
 import zipfile
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -19,12 +17,14 @@ try:
 except ImportError:
     from PIL import Image as PILImage
 
-from imagestore.models import Album, Image
 
 TEMP_DIR = getattr(settings, 'TEMP_DIR', 'temp/')
 
 
 def process_zipfile(uploaded_album):
+    Image = swapper.load_model('imagestore', 'Image')
+    Album = swapper.load_model('imagestore', 'Album')
+
     if default_storage.exists(uploaded_album.zip_file.name):
         # TODO: implement try-except here
         zip = zipfile.ZipFile(uploaded_album.zip_file)
@@ -49,7 +49,7 @@ def process_zipfile(uploaded_album):
                     PILImage.open(six.moves.cStringIO(data)).verify()
                 except Exception as ex:
                     # if a "bad" file is found we just skip it.
-                    print(('Error verify image: %s' % ex.message))
+                    print('Error verify image: %s' % ex.message)
                     continue
                 if hasattr(data, 'seek') and isinstance(data.seek, collections.Callable):
                     print('seeked')
@@ -59,7 +59,7 @@ def process_zipfile(uploaded_album):
                     img.image.save(filename, ContentFile(data))
                     img.save()
                 except Exception as ex:
-                    print(('error create Image: %s' % ex.message))
+                    print('error create Image: %s' % ex.message)
         zip.close()
         uploaded_album.delete()
 
@@ -86,7 +86,7 @@ class AlbumUpload(models.Model):
     zip_file = models.FileField(_('images file (.zip)'), upload_to=TEMP_DIR,
                                 help_text=_('Select a .zip file of images to upload into a new Gallery.'))
     album = models.ForeignKey(
-        Album,
+        swapper.get_model_name('imagestore', 'Album'),
         null=True,
         blank=True,
         help_text=_('Select an album to add these images to. leave this empty to create a new album from the supplied title.')
@@ -100,9 +100,9 @@ class AlbumUpload(models.Model):
     tags = models.CharField(max_length=255, blank=True, verbose_name=_('tags'))
 
     class Meta(object):
+        app_label = 'imagestore'
         verbose_name = _('Album upload')
         verbose_name_plural = _('Album uploads')
-        app_label = 'imagestore'
 
     def save(self, *args, **kwargs):
         super(AlbumUpload, self).save(*args, **kwargs)

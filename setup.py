@@ -2,14 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='imagestore',
-    version='2.8.0',
+    version='2.9.0',
     packages=find_packages(),
     install_requires=[
         'django',
         'sorl-thumbnail',
-        'south',
         'django-autocomplete-light',
         'django-tagging',
+        'swapper'
     ],
     author='Pavel Zhukov',
     author_email='gelios@gmail.com',

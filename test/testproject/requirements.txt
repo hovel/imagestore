@@ -1,5 +1,7 @@
 Pillow
-django-autocomplete-light==2.0.0a18
+django-autocomplete-light
 django-tagging
-sorl-thumbnail==11.12.1b
+sorl-thumbnail
 lxml
+swapper
+django-cms

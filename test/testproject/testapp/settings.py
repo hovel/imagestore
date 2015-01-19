@@ -1,5 +1,6 @@
 # Django settings for example project.
 import os
+import django
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -22,8 +23,11 @@ DATABASES = {
     }
 }
 
-# This setting will be removed in Django 1.8, so another way to run tests will need to be figured out.
-TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner'
+if django.VERSION[:2] < (1, 6):
+    TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner'
+else:
+    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -36,7 +40,7 @@ TIME_ZONE = 'Europe/Moscow'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 SITE_ID = 1
 
@@ -50,7 +54,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, '../media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -99,6 +103,8 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, '../templates'),)
 IMAGESTORE_SHOW_USER = False
 IMAGESTORE_LOAD_CSS = False
 
+IMAGESTORE_IMAGE_MODEL = 'mystore.MyImage'
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -107,15 +113,27 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.staticfiles',
-    'imagestore',
+
     'sorl.thumbnail',
     'tagging',
     'autocomplete_light',
+    'mptt',
+    'cms',
+
+    'imagestore',
+    'imagestore.imagestore_cms',
+
+    'mystore',
 )
 
 STATICFILES_DIRS = (
     'test/testproject/static',
 )
+
+MIGRATION_MODULES = {
+    'cms': 'cms.migrations_django',
+    'menus': 'menus.migrations_django',
+}
 
 try:
     from settings_local import *
