@@ -5,6 +5,10 @@ Installation
 
     pip install imagestore
 
+* If you use django before version 1.7 we recomment to install south for smooth migrations::
+
+    pip install south
+
 * Symlink or copy `imagestore/static/imagestore.css` to your `MEDIA_ROOT`, or write youre own style (staticfiles supported as well).
 * Add `imagestore`, `django-tagging` and `sorl.thumbnail` to your `INSTALLED_APPS`.
   your `INSTALLED_APPS` should look like::
@@ -14,7 +18,7 @@ Installation
         'imagestore',
         'sorl.thumbnail',
         'tagging',
-        'south' # Optionally but recommended
+        'south' # before django 1.7
     )
 
 * Add `imagestore.urls` to your urls with `namespace='imagestore'`::

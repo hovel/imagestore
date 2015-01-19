@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
-
-__author__ = 'zeus'
-
+from __future__ import unicode_literals
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-from .models import *
+import swapper
+Image = swapper.load_model('imagestore', 'Image')
+Album = swapper.load_model('imagestore', 'Album')
 import os
 import random
 from django.contrib.auth.models import Permission, User
-from django.db import models
 from imagestore.templatetags.imagestore_tags import imagestore_alt
 
 try:
     from lxml import html
 except:
     raise ImportError('Imagestore require lxml for self-testing')
+
 
 class ImagestoreTest(TestCase):
     def setUp(self):
@@ -36,6 +36,7 @@ class ImagestoreTest(TestCase):
         values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
         values['image'] = self.image_file
         values['album'] = Album.objects.filter(user=self.user)[0].id
+        values['some_int'] = random.randint(1, 100)
         response = self.client.post(reverse('imagestore:upload'), values, follow=True)
         return response
 
@@ -93,15 +94,16 @@ class ImagestoreTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(Album.objects.filter(id=album_id)) == 0)
 
-
     def test_image_upload(self):
         response = self._create_test_album()
         response = self._upload_test_image()
         self.assertEqual(response.status_code, 200)
-        img_url = Image.objects.get(user__username='zeus').get_absolute_url()
+        img = Image.objects.get(user__username='zeus')
+        img_url = img.get_absolute_url()
         response = self.client.get(img_url)
         self.assertEqual(response.status_code, 200)
         self.test_user()
+        self.assertIsNotNone(img.some_int)
 
     def test_tagging(self):
         response = self._create_test_album()
@@ -112,6 +114,7 @@ class ImagestoreTest(TestCase):
         values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
         values['image'] = self.image_file
         values['tags'] = 'one, tow, three'
+        values['some_int'] = random.randint(1, 100)
         values['album'] = Album.objects.filter(user=self.user)[0].id
         self.client.post(reverse('imagestore:upload'), values, follow=True)
         self.assertEqual(response.status_code, 200)

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
+from __future__ import unicode_literals
 try:
     import autocomplete_light
     AUTOCOMPLETE_LIGHT_INSTALLED = True
 except ImportError:
     AUTOCOMPLETE_LIGHT_INSTALLED = False
-
-__author__ = 'zeus'
-
 from django import forms
-from .models import Image, Album
+import swapper
+Image = swapper.load_model('imagestore', 'Image')
+Album = swapper.load_model('imagestore', 'Album')
 from django.utils.translation import ugettext_lazy as _
 
 

@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
 
-__author__ = 'zeus'
-
+from __future__ import unicode_literals
 import os
 import uuid
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.importlib import import_module
-from django.conf import settings
-
-UPLOAD_TO = getattr(settings, 'IMAGESTORE_UPLOAD_TO', 'imagestore/')
 
 
 def load_class(class_path, setting_name=None):
@@ -48,22 +44,26 @@ def load_class(class_path, setting_name=None):
         raise ImproperlyConfigured(txt)
     return clazz
 
-def get_model_string(model_name):
-    """
-    Returns the model string notation Django uses for lazily loaded ForeignKeys
-    (eg 'auth.User') to prevent circular imports.
-    This is needed to allow our crazy custom model usage.
 
-    Taken from https://github.com/divio/django-shop/blob/master/shop/util/loader.py
+class FilePathGenerator(object):
     """
-    class_path = getattr(settings, 'IMAGESTORE_%s_MODEL' % model_name.upper().replace('_', ''), None)
-    if not class_path:
-        return 'imagestore.%s' % model_name
-    else:
-        klass = load_class(class_path)
-        return '%s.%s' % (klass._meta.app_label, klass.__name__)
+    Special class for generating random filenames
+    Can be deconstructed for correct migration
+    """
 
-def get_file_path(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join(UPLOAD_TO, filename)
+    def __init__(self, to, *args, **kwargs):
+        self.to = to
+
+    def deconstruct(self, *args, **kwargs):
+        return 'imagestore.utils.FilePathGenerator', [], {'to': self.to}
+
+    def __call__(self, instance, filename):
+        """
+        This function generate filename with uuid4
+        it's useful if:
+        - you don't want to allow others to see original uploaded filenames
+        - users can upload images with unicode in filenames wich can confuse browsers and filesystem
+        """
+        ext = filename.split('.')[-1]
+        filename = "%s.%s" % (uuid.uuid4(), ext)
+        return os.path.join(self.to, filename)
