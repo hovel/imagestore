@@ -72,21 +72,16 @@ def setup_imagestore_permissions(instance, created, **kwargs):
         Album = swapper.load_model('imagestore', 'Album')
         Image = swapper.load_model('imagestore', 'Image')
 
-        image_applabel, image_classname = Image._meta.app_label, Image.__name__.lower()
-        album_applabel, album_classname = Album._meta.app_label, Album.__name__.lower()
+        perms = []
 
-        image_ctype = ContentType.objects.get(app_label=image_applabel, model=image_classname)
-        album_ctype = ContentType.objects.get(app_label=album_applabel, model=album_classname)
+        for model_class in [Album, Image]:
+            for perm_name in ['add', 'change', 'delete']:
+                app_label, model_name = model_class._meta.app_label, model_class.__name__.lower()
+                perm = Permission.objects.get_by_natural_key('%s_%s' % (perm_name, model_name), app_label, model_name)
+                perms.append(perm)
 
-        add_image_permission = Permission.objects.get(codename='add_%s' % image_classname, content_type=image_ctype)
-        add_album_permission = Permission.objects.get(codename='add_%s' % album_classname, content_type=album_ctype)
-        change_image_permission = Permission.objects.get(codename='change_%s' % image_classname, content_type=image_ctype)
-        change_album_permission = Permission.objects.get(codename='change_%s' % album_classname, content_type=album_ctype)
-        delete_image_permission = Permission.objects.get(codename='delete_%s' % image_classname, content_type=image_ctype)
-        delete_album_permission = Permission.objects.get(codename='delete_%s' % album_classname, content_type=album_ctype)
-        instance.user_permissions.add(add_image_permission, add_album_permission,)
-        instance.user_permissions.add(change_image_permission, change_album_permission,)
-        instance.user_permissions.add(delete_image_permission, delete_album_permission,)
+        instance.user_permissions.add(*perms)
+
     except ObjectDoesNotExist:
         # Permissions are not yet installed or content does not created yet
         # probaly this is first
