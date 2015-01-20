@@ -29,7 +29,6 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(auto_now=True, verbose_name='Updated')),
                 ('is_public', models.BooleanField(default=True, verbose_name='Is public')),
                 ('order', models.IntegerField(default=0, verbose_name='Order')),
-                ('head', models.ForeignKey(related_name='head_of', on_delete=django.db.models.deletion.SET_NULL, verbose_name='Head', blank=True, to=swapper.get_model_name('imagestore', 'Image'), null=True)),
                 ('user', models.ForeignKey(related_name='albums', verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
@@ -81,5 +80,11 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Album uploads',
             },
             bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='album',
+            name='head',
+            field=models.ForeignKey(related_name='head_of', on_delete=django.db.models.deletion.SET_NULL, verbose_name='Head', blank=True, to=swapper.get_model_name('imagestore', 'Image'), null=True),
+            preserve_default=True,
         ),
     ]
