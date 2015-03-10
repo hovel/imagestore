@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.importlib import import_module
+import chardet
 import collections
 import swapper
 import zipfile
@@ -36,9 +37,14 @@ def process_zipfile(uploaded_album):
             uploaded_album.album = Album.objects.create(name=uploaded_album.new_album_name)
 
         for filename in sorted(zip.namelist()):
-            if filename.startswith('__'):  # do not process meta files
+            try:
+                encoding = chardet.detect(filename)['encoding']
+                unicode_filename = filename.decode(encoding)
+            except ValueError:  # if detect takes u'string'
+                unicode_filename = filename
+            if unicode_filename.startswith('__'):  # do not process meta files
                 continue
-            print(filename.encode('ascii', errors='replace'))
+            print(unicode_filename.encode('ascii', errors='replace'))
             data = zip.read(filename)
             if len(data):
                 try:
@@ -56,7 +62,7 @@ def process_zipfile(uploaded_album):
                     data.seek(0)
                 try:
                     img = Image(album=uploaded_album.album)
-                    img.image.save(filename, ContentFile(data))
+                    img.image.save(unicode_filename, ContentFile(data))
                     img.save()
                 except Exception as ex:
                     print('error create Image: %s' % ex.message)

@@ -9,7 +9,8 @@ setup(
         'sorl-thumbnail',
         'django-autocomplete-light',
         'django-tagging',
-        'swapper'
+        'swapper',
+        'chardet',
     ],
     author='Pavel Zhukov',
     author_email='gelios@gmail.com',
