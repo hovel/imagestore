@@ -5,3 +5,4 @@ sorl-thumbnail
 lxml
 swapper
 django-cms
+chardet
