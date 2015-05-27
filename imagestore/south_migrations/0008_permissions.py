@@ -4,9 +4,14 @@ from django.contrib.contenttypes.models import ContentType
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.contrib.auth.management import create_permissions
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import Permission
 from django.db.models.loading import get_app
+
+
+User = get_user_model()
+
 
 class Migration(DataMigration):
 
