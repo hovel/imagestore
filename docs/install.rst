@@ -1,7 +1,7 @@
 Installation
 ============
 
-* Install with pip or easy install (All dependencies will be installed automatically, however if you use Python 3 you may need to install specific versions of ``sorl-thunbmail`` and ``django-autocomplete-light``)::
+* Install with pip or easy install (All dependencies will be installed automatically, however if you use Python 3 you may need to install specific versions of ``sorl-thunbmail`` and ``django-autocomplete-light``, and if you use Django < 1.7, you will need to lock django-tagging at 0.3.4)::
 
     pip install imagestore
 
