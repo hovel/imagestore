@@ -4,4 +4,4 @@ django-tagging
 sorl-thumbnail
 lxml
 swapper
-django-cms
+django-cms<3.1
