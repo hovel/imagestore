@@ -5,17 +5,17 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 import swapper
-Image = swapper.load_model('imagestore', 'Image')
-Album = swapper.load_model('imagestore', 'Album')
 import os
 import random
 from django.contrib.auth.models import Permission, User
 from imagestore.templatetags.imagestore_tags import imagestore_alt
-
 try:
     from lxml import html
 except:
     raise ImportError('Imagestore require lxml for self-testing')
+
+Image = swapper.load_model('imagestore', 'Image')
+Album = swapper.load_model('imagestore', 'Album')
 
 
 class ImagestoreTest(TestCase):
@@ -192,7 +192,7 @@ class ImagestoreTest(TestCase):
 
         # empty title, empty brief = empty result
         result = imagestore_alt(image)
-        self.assertEqual(result, '')
+        self.assertEqual(result, 'alt=""')
 
         album = Album.objects.all()[0]
         album.brief = 'album brief'
@@ -216,12 +216,12 @@ class ImagestoreTest(TestCase):
         self.assertIn(result.count('\"'), (0, 2))
 
         # IMAGESTORE_BRIEF_TO_ALT_TEMPLATE affects on result format
-        with self.settings(IMAGESTORE_BRIEF_TO_ALT_TEMPLATE = '{1}_{0}'):
+        with self.settings(IMAGESTORE_BRIEF_TO_ALT_TEMPLATE='{1}_{0}'):
             result = imagestore_alt(image, counter)
             self.assertIn('{1}_{0}'.format(album.brief, counter), result)
 
         # but does not affect on single and double quotes
-        with self.settings(IMAGESTORE_BRIEF_TO_ALT_TEMPLATE = '{1}_\'_\"_{0}'):
+        with self.settings(IMAGESTORE_BRIEF_TO_ALT_TEMPLATE='{1}_\'_\"_{0}'):
             result = imagestore_alt(image, counter)
             self.assertIn(result.count('\''), (0, 2))
             self.assertIn(result.count('\"'), (0, 2))

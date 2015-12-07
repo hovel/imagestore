@@ -21,7 +21,7 @@ Installation:
 * Symlink or copy imagestore/media/imagestore.css to your MEDIA_ROOT (or write youre own style)
 * Add imagestore to your INSTALLED_APPS
 * Add imagestore.urls to your urls
-* Run ./manage.py syncdb or ./manage.py migrate
+* Run ./manage.py migrate
 * Add jquery and jqueryui load to your template to use tagging autocomplete and/or prettyphoto
 * If you want to use prettyPhoto put `prettyPhoto <http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/>`__ to your media directory and include imagestore/prettyphoto.html to your template
 

@@ -30,5 +30,3 @@ def imagestore_processor(request):
         'add_album': request.user.has_perm('%s.add_%s' % (album_applabel, album_classname)),
     }
     return ret
-
-  

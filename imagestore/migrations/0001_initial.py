@@ -52,7 +52,6 @@ class Migration(migrations.Migration):
                 ('image', sorl.thumbnail.fields.ImageField(upload_to=imagestore.utils.FilePathGenerator(to='imagestore/'), max_length=255, verbose_name='File')),
                 ('created', models.DateTimeField(auto_now_add=True, verbose_name='Created', null=True)),
                 ('updated', models.DateTimeField(auto_now=True, verbose_name='Updated', null=True)),
-                ('album', models.ForeignKey(related_name='images', verbose_name='Album', blank=True, to=swapper.get_model_name('imagestore', 'Album'), null=True)),
                 ('user', models.ForeignKey(related_name='images', verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
@@ -85,6 +84,12 @@ class Migration(migrations.Migration):
             model_name='album',
             name='head',
             field=models.ForeignKey(related_name='head_of', on_delete=django.db.models.deletion.SET_NULL, verbose_name='Head', blank=True, to=swapper.get_model_name('imagestore', 'Image'), null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='image',
+            name='album',
+            field=models.ForeignKey(related_name='images', verbose_name='Album', blank=True, to=swapper.get_model_name('imagestore', 'Album'), null=True),
             preserve_default=True,
         ),
     ]

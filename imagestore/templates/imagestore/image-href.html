@@ -1,4 +1,3 @@
-{% load url from future %}
 {% if album %}
     {% url 'imagestore:image-album' album_id=album.id pk=image.id %}
 {% else %}

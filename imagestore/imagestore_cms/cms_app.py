@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class ImagestoreApp(CMSApp):
-    name = _("Imagestore App") # give your app a name, this is required
+    name = _("Imagestore App")  # give your app a name, this is required
     urls = ["imagestore.imagestore_cms.urls"]  # link your app to url configuration(s)
 
 apphook_pool.register(ImagestoreApp)  # register your app

@@ -1,4 +1,4 @@
-#category-list li{
+#category-list li {
     font-size: 120%;
     padding-bottom: 15px;
 }
@@ -69,6 +69,7 @@ img.current {
     vertical-align: middle;
     text-align: center;
 }
+
 .album-head a {
     text-align: center;
 }

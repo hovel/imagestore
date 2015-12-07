@@ -1,10 +1,10 @@
 {% extends IMAGESTORE_TEMPLATE|default:"base.html" %}
 {% load i18n %}
-{% load url from future %}
+{% load staticfiles %}
 
 {% block head %}
     {% if IMAGESTORE_LOAD_CSS %}
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}imagestore.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="{% static 'imagestore/imagestore.css' %}" media="screen" />
     {% endif %}
 {% endblock %}
 

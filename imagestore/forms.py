@@ -1,25 +1,26 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
 from __future__ import unicode_literals
+import swapper
 try:
     import autocomplete_light
     AUTOCOMPLETE_LIGHT_INSTALLED = True
 except ImportError:
     AUTOCOMPLETE_LIGHT_INSTALLED = False
 from django import forms
-import swapper
+from django.utils.translation import ugettext_lazy as _
 Image = swapper.load_model('imagestore', 'Image')
 Album = swapper.load_model('imagestore', 'Album')
-from django.utils.translation import ugettext_lazy as _
 
 
 class ImageForm(forms.ModelForm):
-    class Meta(object):
+    class Meta:
         model = Image
         exclude = ('user', 'order')
 
-    description = forms.CharField(widget=forms.Textarea(attrs={'rows': 2, 'cols': 19}), required=False,
-                                  label=_('Description'))
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 2, 'cols': 19}), required=False,
+        label=_('Description'))
 
     def __init__(self, user, *args, **kwargs):
         super(ImageForm, self).__init__(*args, **kwargs)
@@ -30,7 +31,7 @@ class ImageForm(forms.ModelForm):
 
 
 class AlbumForm(forms.ModelForm):
-    class Meta(object):
+    class Meta:
         model = Album
         exclude = ('user', 'created', 'updated')
 

@@ -18,7 +18,6 @@ Installation
         'imagestore',
         'sorl.thumbnail',
         'tagging',
-        'south' # before django 1.7
     )
 
 * Add `imagestore.urls` to your urls with `namespace='imagestore'`::
@@ -32,10 +31,6 @@ Installation
 * Set `IMAGESTORE_SHOW_USER` to False, if you don't want to show information from user profile or have no user profile.
 
 * Run::
-
-        ./manage.py syncdb
-
-  or::
 
         ./manage.py migrate
 

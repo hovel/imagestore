@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
-from django.contrib import admin
 import swapper
-from imagestore.models.album import Album
-from imagestore.models.image import Image
-from imagestore.models.upload import AlbumUpload
+from django.contrib import admin
 from sorl.thumbnail.admin import AdminInlineImageMixin
+from .models.album import Album
+from .models.image import Image
+from .models.upload import AlbumUpload
 
 
 class InlineImageAdmin(AdminInlineImageMixin, admin.TabularInline):
@@ -23,9 +23,21 @@ class AlbumAdmin(admin.ModelAdmin):
 
 class ImageAdmin(admin.ModelAdmin):
     fieldsets = ((None, {'fields': ['user', 'title', 'image', 'description', 'order', 'tags', 'album']}),)
-    list_display = ('admin_thumbnail', 'user', 'order', 'album', 'title')
+    list_display = ('admin_thumbnail', 'user', 'order', 'album', 'title', 'width', 'height')
     raw_id_fields = ('user', )
     list_filter = ('album', )
+
+    def width(self, obj):
+        try:
+            return obj.image.width
+        except IOError:
+            return None
+
+    def height(self, obj):
+        try:
+            return obj.image.height
+        except IOError:
+            return None
 
 
 class AlbumUploadAdmin(admin.ModelAdmin):

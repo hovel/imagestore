@@ -1,11 +1,16 @@
-#!/usr/bin/env python
-# vim:fileencoding=utf-8
-
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os
 import uuid
+import logging
+import logging.config
+from importlib import import_module
+from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.importlib import import_module
+from django.utils.deconstruct import deconstructible
+from django.utils.encoding import force_text
+
+logger = logging.getLogger(__name__)
 
 
 def load_class(class_path, setting_name=None):
@@ -20,7 +25,7 @@ def load_class(class_path, setting_name=None):
         class_module, class_name = class_path.rsplit('.', 1)
     except ValueError:
         if setting_name:
-            txt = '%s isn\'t a valid module. Check your %s setting' % (class_path,setting_name)
+            txt = '%s isn\'t a valid module. Check your %s setting' % (class_path, setting_name)
         else:
             txt = '%s isn\'t a valid module.' % class_path
         raise ImproperlyConfigured(txt)
@@ -38,32 +43,33 @@ def load_class(class_path, setting_name=None):
         clazz = getattr(mod, class_name)
     except AttributeError as e:
         if setting_name:
-            txt = 'Backend module "%s" does not define a "%s" class. Check your %s setting. (%s)' % (class_module, class_name, setting_name)
+            txt = 'Backend module "%s" does not define a "%s" class. Check your %s setting. (%s)' % (class_module, class_name, setting_name, e)
         else:
             txt = 'Backend module "%s" does not define a "%s" class. (%s)' % (class_module, class_name, e)
         raise ImproperlyConfigured(txt)
     return clazz
 
 
+@deconstructible
 class FilePathGenerator(object):
     """
-    Special class for generating random filenames
-    Can be deconstructed for correct migration
+    Special class for generating random filenames with `uuid.uuid4()`.
+    Can be deconstructed for correct migration.
+    It's useful if:
+    - you don't want to allow others to see original names of uploaded files
+    - you're afraid that weird unicode names can confuse browsers or filesystem
     """
 
-    def __init__(self, to, *args, **kwargs):
+    def __init__(self, to):
         self.to = to
 
-    def deconstruct(self, *args, **kwargs):
-        return 'imagestore.utils.FilePathGenerator', [], {'to': self.to}
-
     def __call__(self, instance, filename):
-        """
-        This function generate filename with uuid4
-        it's useful if:
-        - you don't want to allow others to see original uploaded filenames
-        - users can upload images with unicode in filenames wich can confuse browsers and filesystem
-        """
-        ext = filename.split('.')[-1]
-        filename = "%s.%s" % (uuid.uuid4(), ext)
-        return os.path.join(self.to, filename)
+        extension = os.path.splitext(filename)[1]
+        uuid_filename = force_text(uuid.uuid4()) + extension
+        upload_path = os.path.join(self.to, uuid_filename[:2])
+        if settings.MEDIA_ROOT:
+            upload_path_media = os.path.join(settings.MEDIA_ROOT, upload_path)
+            if not os.path.exists(upload_path_media):
+                os.makedirs(upload_path_media)
+                logger.debug('Create directory: "{}".'.format(upload_path_media))
+        return os.path.join(upload_path, uuid_filename)

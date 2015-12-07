@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django import template
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.encoding import force_text
+from django.utils.html import conditional_escape
 
 register = template.Library()
 
@@ -15,23 +16,13 @@ def imagestore_alt(image, counter=None):
         data = image.title
     elif hasattr(image.album, 'brief'):
         if image.album.brief and counter is not None:
-            tpl = force_text(
-                getattr(settings, 'IMAGESTORE_BRIEF_TO_ALT_TEMPLATE', '{0}_{1}')
-            )
             try:
-                if '{' not in tpl:
-                    raise ValueError
+                tpl = force_text(getattr(
+                    settings, 'IMAGESTORE_BRIEF_TO_ALT_TEMPLATE', '{0}_{1}'))
                 data = tpl.format(image.album.brief, counter)
-            except (ValueError, IndexError):
-                message = 'IMAGESTORE_BRIEF_TO_ALT_TEMPLATE has wrong format'
-                print(message)
-                if settings.DEBUG:
-                    data = message
+            except IndexError:
+                raise ImproperlyConfigured('IMAGESTORE_BRIEF_TO_ALT_TEMPLATE '
+                                           'has wrong format')
         elif image.album.brief:
             data = image.album.brief
-
-    if data:
-        data = data.replace('\'', '&#39;').replace('\"', '&#34;')
-        return 'alt="{0}"'.format(data)
-    else:
-        return ''
+    return 'alt="{}"'.format(conditional_escape(data))

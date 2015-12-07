@@ -7,6 +7,7 @@ from .models import ImagestoreAlbumPtr, ImagestoreAlbumCarousel
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
+
 class AlbumPlugin(CMSPluginBase):
     model = ImagestoreAlbumPtr
     name = _('Album')
@@ -28,7 +29,7 @@ class AlbumCarouselPlugin(CMSPluginBase):
 
         # default carousel template in the settings file
         carousel_template = getattr(settings, 'IMAGESTORE_CAROUSEL_TEMPLATE', None)
-        
+
         if carousel_template:
             self.render_template = carousel_template
 

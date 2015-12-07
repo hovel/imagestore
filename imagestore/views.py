@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
+import swapper
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
-import swapper
 from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.conf import settings
@@ -11,8 +11,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from tagging.models import TaggedItem
 from tagging.utils import get_tag
-from .utils import load_class
 from django.db.models import Q
+from .utils import load_class
 
 Image = swapper.load_model('imagestore', 'Image')
 Album = swapper.load_model('imagestore', 'Album')
@@ -120,7 +120,7 @@ class ImageView(DetailView):
         base_qs = self.get_queryset()
         count = base_qs.count()
         img_pos = base_qs.filter(
-            Q(order__lt=image.order)|
+            Q(order__lt=image.order) |
             Q(id__lt=image.id, order=image.order)
         ).count()
         next = None
@@ -128,7 +128,7 @@ class ImageView(DetailView):
         if count - 1 > img_pos:
             try:
                 next = base_qs.filter(
-                    Q(order__gt=image.order)|
+                    Q(order__gt=image.order) |
                     Q(id__gt=image.id, order=image.order)
                 )[0]
             except IndexError:
@@ -136,7 +136,7 @@ class ImageView(DetailView):
         if img_pos > 0:
             try:
                 previous = base_qs.filter(
-                    Q(order__lt=image.order)|
+                    Q(order__lt=image.order) |
                     Q(id__lt=image.id, order=image.order)
                 ).order_by('-order', '-id')[0]
             except IndexError:
