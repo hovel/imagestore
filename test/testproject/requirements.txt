@@ -1,6 +1,6 @@
 pillow
 sorl-thumbnail
-django-autocomplete-light
+django-autocomplete-light>=2.2,<3.0
 django-tagging
 swapper
 chardet
