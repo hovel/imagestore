@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 import swapper
 try:
-    import autocomplete_light
+    from autocomplete_light import shortcuts as autocomplete_light
     AUTOCOMPLETE_LIGHT_INSTALLED = True
 except ImportError:
     AUTOCOMPLETE_LIGHT_INSTALLED = False

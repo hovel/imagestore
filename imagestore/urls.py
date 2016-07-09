@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from .views import AlbumListView, ImageListView, UpdateImage, UpdateAlbum, \
     CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', AlbumListView.as_view(), name='index'),
 
     url(r'^album/add/$', CreateAlbum.as_view(), name='create-album'),
@@ -25,4 +24,4 @@ urlpatterns = patterns(
     url(r'^tag/(?P<tag>[^/]+)/image/(?P<pk>\d+)/$', ImageView.as_view(), name='image-tag'),
     url(r'^image/(?P<pk>\d+)/delete/$', DeleteImage.as_view(), name='delete-image'),
     url(r'^image/(?P<pk>\d+)/update/$', UpdateImage.as_view(), name='update-image'),
-)
+]

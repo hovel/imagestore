@@ -2,11 +2,11 @@ language: python
 sudo: false
 python:
   - "2.7"
-  - "3.3"
   - "3.4"
+  - "3.5"
 env:
-  - DJANGO="Django>=1.7,<1.8" DB=sqlite
   - DJANGO="Django>=1.8,<1.9" DB=sqlite
+  - DJANGO="Django>=1.9,<1.10" DB=sqlite
 install:
   - export PYTHONPATH=./imagestore/:$PYTHONPATH
   - pip install $DJANGO
