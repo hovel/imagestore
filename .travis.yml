@@ -7,6 +7,8 @@ python:
 env:
   - DJANGO="Django>=1.8,<1.9" DB=sqlite
   - DJANGO="Django>=1.9,<1.10" DB=sqlite
+  - DJANGO="Django>=1.10,<1.11rc1" DB=sqlite
+  - DJANGO="Django>=1.11rc1,<2.0" DB=sqlite
 install:
   - export PYTHONPATH=./imagestore/:$PYTHONPATH
   - pip install $DJANGO
