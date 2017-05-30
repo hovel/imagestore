@@ -27,4 +27,7 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='main.html')),
     url(r'^gallery/', include('imagestore.urls', namespace='imagestore')),
     url(r'^autocomplete/', include('autocomplete_light.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.MEDIA_URL:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
