@@ -1,3 +1,12 @@
+3.0.0
+Fix migrations, use actual versions of Django
+
+2.9.0
+Use django-swappable-models app for swapping models
+
+2.8.0
+Django 1.7 migrations
+
 2.7.0
 Code cleanup
 Changed breadcrumb and pagination templates
@@ -11,6 +20,5 @@ Docs updated
 Fix previous/next links when ordering enable
 
 2.6.0
-
-* Replaceable Image and Album models
-* Add testapp with example gallery
+Replaceable Image and Album models
+Add testapp with example gallery
