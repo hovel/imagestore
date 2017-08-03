@@ -66,10 +66,6 @@ class FilePathGenerator(object):
     def __call__(self, instance, filename):
         extension = os.path.splitext(filename)[1]
         uuid_filename = force_text(uuid.uuid4()) + extension
-        upload_path = os.path.join(self.to, uuid_filename[:2])
-        if settings.MEDIA_ROOT:
-            upload_path_media = os.path.join(settings.MEDIA_ROOT, upload_path)
-            if not os.path.exists(upload_path_media):
-                os.makedirs(upload_path_media)
-                logger.debug('Create directory: "{}".'.format(upload_path_media))
-        return os.path.join(upload_path, uuid_filename)
+        path = os.path.join(
+            self.to, uuid_filename[:2], uuid_filename[2:4], uuid_filename)
+        return path

@@ -5,4 +5,4 @@ django-tagging
 swapper
 chardet
 lxml
-django-cms>=3.3
+django-cms==3.4.4
