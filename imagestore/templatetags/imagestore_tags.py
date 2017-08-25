@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.encoding import force_text
 from django.utils.html import conditional_escape
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -25,4 +26,4 @@ def imagestore_alt(image, counter=None):
                                            'has wrong format')
         elif image.album.brief:
             data = image.album.brief
-    return 'alt="{}"'.format(conditional_escape(data))
+    return mark_safe('alt="{}"'.format(conditional_escape(data)))
