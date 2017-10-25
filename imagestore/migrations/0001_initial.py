@@ -24,7 +24,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=100, verbose_name='Name')),
-                ('brief', models.CharField(default='', help_text='Short description', max_length=255, verbose_name='Brief', blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True, verbose_name='Created')),
                 ('updated', models.DateTimeField(auto_now=True, verbose_name='Updated')),
                 ('is_public', models.BooleanField(default=True, verbose_name='Is public')),
