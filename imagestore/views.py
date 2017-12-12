@@ -9,10 +9,15 @@ from django.conf import settings
 from django.contrib.auth.decorators import permission_required, login_required
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from tagging.models import TaggedItem
+from tagging.models import Tag, TaggedItem
 from tagging.utils import get_tag
 from django.db.models import Q
 from .utils import load_class
+try:
+    from dal.autocomplete import Select2QuerySetView
+except ImportError:
+    from django.views import View
+    Select2QuerySetView = View
 
 Image = swapper.load_model('imagestore', 'Image')
 Album = swapper.load_model('imagestore', 'Album')
@@ -261,3 +266,11 @@ class DeleteImage(DeleteView):
     @method_decorator(permission_required('%s.delete_%s' % (image_applabel, image_classname)))
     def dispatch(self, *args, **kwargs):
         return super(DeleteImage, self).dispatch(*args, **kwargs)
+
+
+class TagAutocomplete(Select2QuerySetView):
+    def get_queryset(self):
+        qs = Tag.objects.all()
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+        return qs

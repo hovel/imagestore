@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # vim:fileencoding=utf-8
 from __future__ import unicode_literals
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^', include('imagestore.urls', namespace='imagestore')),
-)
+]

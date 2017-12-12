@@ -2,18 +2,19 @@
 # vim:fileencoding=utf-8
 from __future__ import unicode_literals
 import swapper
+from django import forms
 try:
-    from autocomplete_light import shortcuts as autocomplete_light
+    from dal.autocomplete import FutureModelForm, TaggingSelect2
     AUTOCOMPLETE_LIGHT_INSTALLED = True
 except ImportError:
+    FutureModelForm = forms.ModelForm
     AUTOCOMPLETE_LIGHT_INSTALLED = False
-from django import forms
 from django.utils.translation import ugettext_lazy as _
 Image = swapper.load_model('imagestore', 'Image')
 Album = swapper.load_model('imagestore', 'Album')
 
 
-class ImageForm(forms.ModelForm):
+class ImageForm(FutureModelForm):
     class Meta:
         model = Image
         exclude = ('user', 'order')
@@ -27,7 +28,7 @@ class ImageForm(forms.ModelForm):
         self.fields['album'].queryset = Album.objects.filter(user=user)
         self.fields['album'].required = True
         if AUTOCOMPLETE_LIGHT_INSTALLED:
-            self.fields['tags'].widget = autocomplete_light.TextWidget('TagAutocomplete')
+            self.fields['tags'].widget = TaggingSelect2(url='tag-autocomplete')
 
 
 class AlbumForm(forms.ModelForm):

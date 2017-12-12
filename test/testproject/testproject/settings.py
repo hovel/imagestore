@@ -39,6 +39,10 @@ IMAGESTORE_IMAGE_MODEL = 'mystore.MyImage'
 # Application definition
 
 INSTALLED_APPS = (
+    'dal',
+    'dal_select2',
+    'dal_select2_tagging',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,7 +53,6 @@ INSTALLED_APPS = (
 
     'sorl.thumbnail',
     'tagging',
-    'autocomplete_light',
     'treebeard',
     'menus',
     'cms',
