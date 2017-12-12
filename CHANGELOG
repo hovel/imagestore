@@ -1,3 +1,7 @@
+3.1.0
+Imagestore is now compatible with Django < 2.0
+Initial migration splitted, so if you already have column for Album.brief in the database, you need to fake migration 0002 (`manage.py migrate imagestore 0002 --fake`)
+
 3.0.0
 Fix migrations, use actual versions of Django
 

@@ -6,7 +6,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 
 setup(
     name='imagestore',
-    version='3.0.0',
+    version='3.1.0',
     packages=find_packages(),
     install_requires=[
         'django',
