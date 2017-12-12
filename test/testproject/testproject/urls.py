@@ -13,21 +13,15 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from autocomplete_light import shortcuts as autocomplete_light
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-autocomplete_light.autodiscover()
-
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', TemplateView.as_view(template_name='main.html')),
     url(r'^gallery/', include('imagestore.urls', namespace='imagestore')),
     url(r'^autocomplete/', include('autocomplete_light.urls')),
-]
-
-if settings.MEDIA_URL:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

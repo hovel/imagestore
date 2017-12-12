@@ -3,17 +3,13 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="application/html; charset=utf-8">
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" type='text/css'>
+    <link rel="stylesheet" href="{% static 'style.less' %}" type='text/less'>
 
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" type="text/css" />
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/i18n/jquery-ui-i18n.min.js"></script>
-    <script src="http://yandex.st/json2/2011-01-18/json2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/i18n/jquery-ui-i18n.min.js"></script>
+    <script src="https://yandex.st/json2/2011-01-18/json2.min.js"></script>
     {% include 'autocomplete_light/static.html' %}
     <script src="{% static 'csrf.js' %}"></script>
     <title>{% block title %}{% endblock %}</title>
@@ -38,8 +34,8 @@
                     {% endif %}
                 {% endif %}
                 <li><a href="https://github.com/hovel/imagestore">Code</a></li>
-                <li><a href="http://pypi.python.org/pypi/imagestore">Download</a></li>
-                <li><a href="http://readthedocs.org/docs/imagestore/en/latest/">Documentation</a></li>
+                <li><a href="https://pypi.python.org/pypi/imagestore">Download</a></li>
+                <li><a href="https://readthedocs.org/docs/imagestore/en/latest/">Documentation</a></li>
             </ul>
         </div>
     </div>
@@ -85,5 +81,6 @@
     {% endif %}
 
 </div> <!-- /container -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
 </body>
 </html>
