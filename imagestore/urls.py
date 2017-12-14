@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 from django.conf.urls import url
 from .views import AlbumListView, ImageListView, UpdateImage, UpdateAlbum, \
-    CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView
+    CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView, \
+    ImageTagAutocompleteView
 
 urlpatterns = [
     url(r'^$', AlbumListView.as_view(), name='index'),
@@ -24,4 +25,6 @@ urlpatterns = [
     url(r'^tag/(?P<tag>[^/]+)/image/(?P<pk>\d+)/$', ImageView.as_view(), name='image-tag'),
     url(r'^image/(?P<pk>\d+)/delete/$', DeleteImage.as_view(), name='delete-image'),
     url(r'^image/(?P<pk>\d+)/update/$', UpdateImage.as_view(), name='update-image'),
+
+    url(r'^tag-autocomplete/$', ImageTagAutocompleteView.as_view(), name='tag-autocomplete'),
 ]

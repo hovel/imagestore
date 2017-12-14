@@ -268,9 +268,9 @@ class DeleteImage(DeleteView):
         return super(DeleteImage, self).dispatch(*args, **kwargs)
 
 
-class TagAutocomplete(Select2QuerySetView):
+class ImageTagAutocompleteView(Select2QuerySetView):
     def get_queryset(self):
-        qs = Tag.objects.all()
+        usage = Tag.objects.usage_for_model(Image)
         if self.q:
-            qs = qs.filter(name__istartswith=self.q)
-        return qs
+            usage = [t for t in usage if t.name.lower().startswith(self.q.lower())]
+        return usage

@@ -28,7 +28,7 @@ class ImageForm(FutureModelForm):
         self.fields['album'].queryset = Album.objects.filter(user=user)
         self.fields['album'].required = True
         if AUTOCOMPLETE_LIGHT_INSTALLED:
-            self.fields['tags'].widget = TaggingSelect2(url='tag-autocomplete')
+            self.fields['tags'].widget = TaggingSelect2(url='imagestore:tag-autocomplete')
 
 
 class AlbumForm(forms.ModelForm):
