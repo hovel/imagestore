@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(auto_now=True, verbose_name='Updated')),
                 ('is_public', models.BooleanField(default=True, verbose_name='Is public')),
                 ('order', models.IntegerField(default=0, verbose_name='Order')),
-                ('user', models.ForeignKey(related_name='albums', verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('user', models.ForeignKey(related_name='albums', verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'ordering': ('order', 'created', 'name'),
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('image', sorl.thumbnail.fields.ImageField(upload_to=imagestore.utils.FilePathGenerator(to='imagestore/'), max_length=255, verbose_name='File')),
                 ('created', models.DateTimeField(auto_now_add=True, verbose_name='Created', null=True)),
                 ('updated', models.DateTimeField(auto_now=True, verbose_name='Updated', null=True)),
-                ('user', models.ForeignKey(related_name='images', verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('user', models.ForeignKey(related_name='images', verbose_name='User', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'ordering': ('order', 'id'),
@@ -70,7 +70,7 @@ class Migration(migrations.Migration):
                 ('zip_file', models.FileField(help_text='Select a .zip file of images to upload into a new Gallery.', upload_to=b'temp/', verbose_name='images file (.zip)')),
                 ('new_album_name', models.CharField(help_text='If not empty new album with this name will be created and images will be upload to this album', max_length=255, verbose_name='New album name', blank=True)),
                 ('tags', models.CharField(max_length=255, verbose_name='tags', blank=True)),
-                ('album', models.ForeignKey(blank=True, to=swapper.get_model_name('imagestore', 'Album'), help_text='Select an album to add these images to. leave this empty to create a new album from the supplied title.', null=True)),
+                ('album', models.ForeignKey(blank=True, to=swapper.get_model_name('imagestore', 'Album'), help_text='Select an album to add these images to. leave this empty to create a new album from the supplied title.', null=True, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 ''
@@ -88,7 +88,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='image',
             name='album',
-            field=models.ForeignKey(related_name='images', verbose_name='Album', blank=True, to=swapper.get_model_name('imagestore', 'Album'), null=True),
+            field=models.ForeignKey(related_name='images', verbose_name='Album', blank=True, to=swapper.get_model_name('imagestore', 'Album'), null=True, on_delete=django.db.models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]
