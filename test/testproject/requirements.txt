@@ -1,9 +1,9 @@
-django<2.0
-pillow
-sorl-thumbnail
+django<3.0
+pillow>=5.4.1
+sorl-thumbnail>=12.4.0
 django-autocomplete-light>=3.0
 django-tagging
 swapper
-chardet
+cchardet>=2.1.4
 lxml
 django-cms==3.4.5

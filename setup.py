@@ -6,16 +6,16 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 
 setup(
     name='imagestore',
-    version='3.1.0',
+    version='3.2.0',
     packages=find_packages(),
     install_requires=[
-        'django',
-        'pillow',
-        'sorl-thumbnail',
+        'django>=1.11',
+        'pillow>=5.4.1',
+        'sorl-thumbnail>=12.4.0',
         'django-autocomplete-light',
         'django-tagging',
         'swapper',
-        'chardet',
+        'cchardet>=2.1.4',
     ],
     author='Pavel Zhukov',
     author_email='gelios@gmail.com',
