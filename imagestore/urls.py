@@ -5,6 +5,8 @@ from .views import AlbumListView, ImageListView, UpdateImage, UpdateAlbum, \
     CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView, \
     ImageTagAutocompleteView
 
+app_name = 'imagestore'
+
 urlpatterns = [
     url(r'^$', AlbumListView.as_view(), name='index'),
 

@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import swapper
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect
