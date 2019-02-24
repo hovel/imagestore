@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 import swapper
 from django import forms
+from django.urls import reverse
 try:
     from dal.autocomplete import FutureModelForm, TaggingSelect2
     AUTOCOMPLETE_LIGHT_INSTALLED = True
@@ -27,8 +28,10 @@ class ImageForm(FutureModelForm):
         super(ImageForm, self).__init__(*args, **kwargs)
         self.fields['album'].queryset = Album.objects.filter(user=user)
         self.fields['album'].required = True
+
         if AUTOCOMPLETE_LIGHT_INSTALLED:
-            self.fields['tags'].widget = TaggingSelect2(url='imagestore:tag-autocomplete')
+            self.fields['tags'].widget = TaggingSelect2(
+                url=reverse('imagestore:tag-autocomplete'))
 
 
 class AlbumForm(forms.ModelForm):

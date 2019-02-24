@@ -5,6 +5,7 @@ import logging.config
 import swapper
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -45,7 +46,7 @@ class BaseAlbum(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return 'imagestore:album', (), {'album_id': self.id}
+        return reverse('imagestore:album', kwargs={'album_id': self.id})
 
     def admin_thumbnail(self):
         img = self.get_head()

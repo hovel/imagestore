@@ -4,6 +4,7 @@ import swapper
 import logging
 import logging.config
 from django.conf import settings
+from django.urls import reverse
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
@@ -54,7 +55,7 @@ class BaseImage(models.Model):
         return '%s' % self.id
 
     def get_absolute_url(self):
-        return 'imagestore:image', (), {'pk': self.id}
+        return reverse('imagestore:image', kwargs={'pk': self.id})
 
     def admin_thumbnail(self):
         try:

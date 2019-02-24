@@ -10,7 +10,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'django>=1.11',
-        'pillow>=5.4.1',
+        'pillow',
         'sorl-thumbnail>=12.4.0',
         'django-autocomplete-light',
         'django-tagging',
