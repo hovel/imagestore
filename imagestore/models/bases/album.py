@@ -5,9 +5,10 @@ import logging.config
 import swapper
 from django.conf import settings
 from django.db import models
-from django.db.models import permalink
+from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail.helpers import ThumbnailError
 
@@ -44,9 +45,8 @@ class BaseAlbum(models.Model):
     def __str__(self):
         return self.name
 
-    @permalink
     def get_absolute_url(self):
-        return 'imagestore:album', (), {'album_id': self.id}
+        return reverse('imagestore:album', kwargs={'album_id': self.id})
 
     def admin_thumbnail(self):
         img = self.get_head()
@@ -55,7 +55,7 @@ class BaseAlbum(models.Model):
 
         try:
             thumb = get_thumbnail(img.image, '100x100', crop='center')
-            return '<img src="{}" alt="">'.format(thumb.url)
+            return mark_safe('<img src="{}" alt="">'.format(thumb.url))
         except (IOError, ThumbnailError):
             logger.info('Can\'t crate thumbnail from image {}'.format(img),
                         exc_info=settings.DEBUG)

@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^$', TemplateView.as_view(template_name='main.html')),
     url(r'^gallery/', include('imagestore.urls', namespace='imagestore')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

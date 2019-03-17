@@ -4,7 +4,7 @@ import collections
 import logging
 import logging.config
 import zipfile
-import chardet
+import cchardet
 import swapper
 from io import BytesIO
 from PIL import Image as PILImage
@@ -38,9 +38,9 @@ def process_zipfile(uploaded_album):
 
         for filename in sorted(zip.namelist()):
             try:
-                encoding = chardet.detect(filename)['encoding']
+                encoding = cchardet.detect(filename)['encoding']
                 unicode_filename = filename.decode(encoding)
-            except ValueError:  # if detect takes unicode string
+            except (ValueError, TypeError):  # if detect takes unicode string
                 unicode_filename = filename
 
             # do not process meta files

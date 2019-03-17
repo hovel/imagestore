@@ -4,13 +4,14 @@ import swapper
 import logging
 import logging.config
 from django.conf import settings
+from django.urls import reverse
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import permalink
 from django.db.models.signals import post_save
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 from sorl.thumbnail import ImageField, get_thumbnail
 from sorl.thumbnail.helpers import ThumbnailError
 from tagging.fields import TagField
@@ -53,14 +54,13 @@ class BaseImage(models.Model):
     def __str__(self):
         return '%s' % self.id
 
-    @permalink
     def get_absolute_url(self):
-        return 'imagestore:image', (), {'pk': self.id}
+        return reverse('imagestore:image', kwargs={'pk': self.id})
 
     def admin_thumbnail(self):
         try:
             thumb = get_thumbnail(self.image, '100x100', crop='center')
-            return '<img src="{}" alt="">'.format(thumb.url)
+            return mark_safe('<img src="{}" alt="">'.format(thumb.url))
         except (IOError, ThumbnailError):
             logger.info('Can\'t crate thumbnail from image {}'.format(self),
                         exc_info=settings.DEBUG)
