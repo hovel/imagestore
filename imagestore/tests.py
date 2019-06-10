@@ -27,6 +27,10 @@ class ImagestoreTest(TestCase):
         self.album = Album(name='test album', user=self.user)
         self.album.save()
 
+    def tearDown(self):
+        if not self.image_file.closed:
+            self.image_file.close()
+
     def _upload_test_image(self, username='zeus', password='zeus'):
         self.client.login(username=username, password=password)
         self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'), 'rb')
