@@ -9,7 +9,6 @@ from django.contrib.auth.models import Permission
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.signals import post_save
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from sorl.thumbnail import ImageField, get_thumbnail
@@ -23,7 +22,6 @@ SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
 UPLOAD_TO = getattr(settings, 'IMAGESTORE_UPLOAD_TO', 'imagestore/')
 
 
-@python_2_unicode_compatible
 class BaseImage(models.Model):
     title = models.CharField(verbose_name=_('Title'), max_length=255,
                              blank=True, null=True)

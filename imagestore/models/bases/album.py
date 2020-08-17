@@ -6,7 +6,6 @@ import swapper
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from sorl.thumbnail import get_thumbnail
@@ -17,7 +16,6 @@ logger = logging.getLogger(__name__)
 SELF_MANAGE = getattr(settings, 'IMAGESTORE_SELF_MANAGE', True)
 
 
-@python_2_unicode_compatible
 class BaseAlbum(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, verbose_name=_('User'),
