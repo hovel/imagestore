@@ -23,6 +23,7 @@ SITE_ID = 1
 IMAGESTORE_SHOW_USER = False
 IMAGESTORE_LOAD_CSS = False
 IMAGESTORE_IMAGE_MODEL = 'mystore.MyImage'
+IMAGESTORE_ALBUM_MODEL = 'mystore.MyAlbum'
 
 # Application definition
 INSTALLED_APPS = (
