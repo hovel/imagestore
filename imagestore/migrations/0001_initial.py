@@ -67,7 +67,7 @@ class Migration(migrations.Migration):
             name='AlbumUpload',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('zip_file', models.FileField(help_text='Select a .zip file of images to upload into a new Gallery.', upload_to=b'temp/', verbose_name='images file (.zip)')),
+                ('zip_file', models.FileField(help_text='Select a .zip file of images to upload into a new Gallery.', upload_to='temp/', verbose_name='images file (.zip)')),
                 ('new_album_name', models.CharField(help_text='If not empty new album with this name will be created and images will be upload to this album', max_length=255, verbose_name='New album name', blank=True)),
                 ('tags', models.CharField(max_length=255, verbose_name='tags', blank=True)),
                 ('album', models.ForeignKey(blank=True, to=swapper.get_model_name('imagestore', 'Album'), help_text='Select an album to add these images to. leave this empty to create a new album from the supplied title.', null=True, on_delete=django.db.models.deletion.CASCADE)),
