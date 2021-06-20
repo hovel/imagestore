@@ -5,7 +5,6 @@ import uuid
 import logging
 import logging.config
 from importlib import import_module
-from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.deconstruct import deconstructible
 from django.utils.encoding import force_text
@@ -69,3 +68,14 @@ class FilePathGenerator(object):
         path = os.path.join(
             self.to, uuid_filename[:2], uuid_filename[2:4], uuid_filename)
         return path
+
+
+def valid_filename(name):
+    return not name.startswith(('@', '.', '__', 'Thumbs.db'))
+
+
+def valid_filepath(path):
+    for part in os.path.normpath(path).split(os.sep):
+        if len(part) and not valid_filename(part):
+            return False
+    return True

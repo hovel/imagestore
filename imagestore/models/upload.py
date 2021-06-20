@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, annotations
 import collections
 import logging
 import logging.config
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 TEMP_DIR = getattr(settings, 'TEMP_DIR', 'temp/')
 
 
-def process_zipfile(uploaded_album):
+def process_zipfile(uploaded_album: AlbumUpload) -> None:
     Image = swapper.load_model('imagestore', 'Image')
     Album = swapper.load_model('imagestore', 'Album')
 
