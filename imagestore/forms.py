@@ -10,7 +10,7 @@ try:
 except ImportError:
     FutureModelForm = forms.ModelForm
     AUTOCOMPLETE_LIGHT_INSTALLED = False
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 Image = swapper.load_model('imagestore', 'Image')
 Album = swapper.load_model('imagestore', 'Album')
 

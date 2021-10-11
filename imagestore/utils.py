@@ -7,7 +7,6 @@ import logging.config
 from importlib import import_module
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.deconstruct import deconstructible
-from django.utils.encoding import force_text
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +63,7 @@ class FilePathGenerator(object):
 
     def __call__(self, instance, filename):
         extension = os.path.splitext(filename)[1]
-        uuid_filename = force_text(uuid.uuid4()) + extension
+        uuid_filename = str(uuid.uuid4()) + extension
         path = os.path.join(
             self.to, uuid_filename[:2], uuid_filename[2:4], uuid_filename)
         return path

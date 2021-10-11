@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from .models import ImagestoreAlbumPtr, ImagestoreAlbumCarousel
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 

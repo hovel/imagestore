@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, annotations
+from __future__ import unicode_literals
 import collections
 import logging
 import logging.config
@@ -14,14 +14,14 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
 TEMP_DIR = getattr(settings, 'TEMP_DIR', 'temp/')
 
 
-def process_zipfile(uploaded_album: AlbumUpload) -> None:
+def process_zipfile(uploaded_album: 'AlbumUpload') -> None:
     Image = swapper.load_model('imagestore', 'Image')
     Album = swapper.load_model('imagestore', 'Album')
 
